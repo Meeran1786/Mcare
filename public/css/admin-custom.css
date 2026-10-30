@@ -1,0 +1,21 @@
+:root{
+  --brand-color:#4328B7;
+}
+
+.navbar-primary{
+  background-color:#4328B7!important;
+}
+
+.main-sidebar{
+  background-color:#4328B7!important;
+}
+
+.btn-primary{
+  background-color:#4328B7!important;
+  border-color:#4328B7!important;
+}
+
+.card-header{
+  background-color:#4328B7;
+  color:white;
+}

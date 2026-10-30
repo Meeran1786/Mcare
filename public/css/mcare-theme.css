@@ -1,0 +1,846 @@
+:root {
+  --mcare-primary: #2E86FF;
+  --mcare-secondary: #7A3CFF;
+  --mcare-accent: #00C6FF;
+  --mcare-sidebar: #1A1A2E;
+  --mcare-page: #F5F7FF;
+  --mcare-card: #FFFFFF;
+  --mcare-text: #1A1A2E;
+  --mcare-muted: #6C757D;
+  --mcare-border: rgba(122, 60, 255, 0.12);
+  --mcare-shadow: 0 18px 40px rgba(46, 134, 255, 0.12);
+  --mcare-gradient: linear-gradient(135deg, #2E86FF 0%, #7A3CFF 100%);
+  --mcare-cyan-gradient: linear-gradient(135deg, #00C6FF 0%, #2E86FF 100%);
+  --mcare-purple-gradient: linear-gradient(135deg, #7A3CFF 0%, #FF4FD8 100%);
+  --mcare-green-gradient: linear-gradient(135deg, #00C9A7 0%, #00B4D8 100%);
+}
+
+body,
+.content-wrapper,
+.login-page,
+.register-page,
+.hold-transition {
+  background: linear-gradient(180deg, #f9fbff 0%, #f5f7ff 100%);
+  color: var(--mcare-text);
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-header.mcare-topnav {
+  background: var(--mcare-gradient);
+  border-bottom: 0;
+  box-shadow: 0 10px 30px rgba(46, 134, 255, 0.18);
+}
+
+.main-header.mcare-topnav .nav-link,
+.main-header.mcare-topnav .navbar-nav .nav-link,
+.main-header.mcare-topnav .navbar-nav .nav-link i,
+.main-header.mcare-topnav .dropdown-toggle,
+.main-header.mcare-topnav .navbar-brand {
+  color: #fff !important;
+}
+
+.main-header.mcare-topnav .nav-link:hover,
+.main-header.mcare-topnav .dropdown-toggle:hover {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.mcare-topnav-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-left: 0.35rem;
+  margin-right: 0.75rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.mcare-topnav-logo img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.main-sidebar,
+.main-sidebar::before {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f8ff 100%) !important;
+  border-right: 1px solid rgba(122, 60, 255, 0.08);
+}
+
+.brand-link.mcare-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 74px;
+  padding: 0.9rem 1.15rem;
+  background: linear-gradient(135deg, rgba(46, 134, 255, 0.08) 0%, rgba(122, 60, 255, 0.08) 100%);
+  border-bottom: 1px solid rgba(122, 60, 255, 0.1);
+}
+
+.brand-link .brand-image,
+.brand-link .brand-image-xl,
+.brand-link .logo-xs,
+.brand-link .logo-xl {
+  float: none;
+  margin: 0;
+  opacity: 1 !important;
+}
+
+.brand-link .brand-image {
+  width: 40px;
+  height: 40px;
+  max-height: 40px;
+  object-fit: contain;
+}
+
+.logo-switch .logo-xl {
+  max-height: 44px;
+  width: auto;
+}
+
+.mcare-brand-text {
+  font-weight: 700 !important;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--mcare-text) !important;
+}
+
+.sidebar .nav-header {
+  color: rgba(26, 26, 46, 0.5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-sidebar .nav-link {
+  border-radius: 12px;
+  margin: 0.2rem 0.7rem;
+  color: rgba(26, 26, 46, 0.82) !important;
+  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-sidebar .nav-link:hover,
+.nav-sidebar .nav-link:focus {
+  background: linear-gradient(135deg, rgba(46, 134, 255, 0.1) 0%, rgba(122, 60, 255, 0.1) 100%);
+  color: var(--mcare-primary) !important;
+  transform: translateX(4px);
+  box-shadow: 0 10px 24px rgba(46, 134, 255, 0.1);
+}
+
+.nav-sidebar .nav-item > .nav-link.active,
+.nav-sidebar .nav-item.menu-open > .nav-link {
+  background: var(--mcare-gradient) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 30px rgba(46, 134, 255, 0.28);
+}
+
+.nav-sidebar .nav-treeview > .nav-item > .nav-link {
+  color: rgba(26, 26, 46, 0.7) !important;
+}
+
+.nav-sidebar .nav-treeview > .nav-item > .nav-link:hover,
+.nav-sidebar .nav-treeview > .nav-item > .nav-link:focus {
+  color: var(--mcare-secondary) !important;
+}
+
+.nav-sidebar .nav-icon {
+  color: inherit !important;
+}
+
+.nav-sidebar .nav-item > .nav-link.active .nav-icon,
+.nav-sidebar .nav-item.menu-open > .nav-link .nav-icon {
+  color: #fff !important;
+}
+
+.sidebar .os-content,
+.sidebar {
+  background: transparent !important;
+}
+
+.content-wrapper {
+  background: var(--mcare-page);
+}
+
+.content-header h1,
+.content-header h2,
+.content-header .content-header-title,
+.card-title,
+.card-header,
+.table thead th,
+label,
+.form-check-label {
+  color: var(--mcare-text);
+}
+
+.content-header {
+  padding-bottom: 0.25rem;
+}
+
+.card,
+.small-box,
+.info-box,
+.login-card-body,
+.register-card-body,
+.login-box .card,
+.register-box .card {
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--mcare-shadow);
+}
+
+.card {
+  background: var(--mcare-card);
+  overflow: hidden;
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--mcare-border);
+  font-weight: 700;
+  padding: 1rem 1.25rem;
+}
+
+.card-body,
+.card-footer {
+  padding: 1.25rem;
+}
+
+.btn,
+.page-link,
+.form-control,
+.custom-select,
+.input-group-text,
+.select2-container--default .select2-selection--single {
+  border-radius: 12px;
+}
+
+.btn-primary,
+.mcare-btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn-primary,
+.mcare-btn-primary {
+  background: var(--mcare-gradient) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.mcare-btn-primary:hover,
+.btn-primary:focus,
+.mcare-btn-primary:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(46, 134, 255, 0.24) !important;
+}
+
+.btn-success {
+  background: var(--mcare-green-gradient) !important;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%) !important;
+  color: #fff !important;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%) !important;
+}
+
+.btn {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.form-control,
+.custom-select,
+.input-group-text {
+  border: 1px solid rgba(122, 60, 255, 0.14);
+  min-height: 46px;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  border-color: rgba(46, 134, 255, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(46, 134, 255, 0.12);
+}
+
+.input-group-text {
+  background: #fff;
+  color: var(--mcare-muted);
+}
+
+.table {
+  color: var(--mcare-text);
+}
+
+.table thead th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(122, 60, 255, 0.18);
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(46, 134, 255, 0.045);
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+}
+
+.pagination .page-link {
+  border: 0;
+  color: var(--mcare-text);
+  margin: 0 0.2rem;
+  box-shadow: 0 8px 20px rgba(26, 26, 46, 0.08);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--mcare-gradient);
+  color: #fff;
+}
+
+.login-page .login-box,
+.register-page .register-box {
+  width: 420px;
+  max-width: calc(100vw - 2rem);
+}
+
+.mcare-auth-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.mcare-auth-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.mcare-auth-layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(380px, 460px);
+  gap: 2rem;
+  align-items: center;
+  width: min(1120px, 100%);
+}
+
+.mcare-auth-backdrop {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.55;
+}
+
+.mcare-auth-backdrop-one {
+  top: -80px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(46, 134, 255, 0.22) 0%, rgba(46, 134, 255, 0) 72%);
+}
+
+.mcare-auth-backdrop-two {
+  right: -80px;
+  bottom: -80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(122, 60, 255, 0.22) 0%, rgba(122, 60, 255, 0) 72%);
+}
+
+.mcare-auth-intro {
+  flex-direction: column;
+  gap: 1.25rem;
+  color: var(--mcare-text);
+  padding: 2rem;
+}
+
+.mcare-auth-intro-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(46, 134, 255, 0.1);
+  color: var(--mcare-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mcare-auth-intro h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mcare-auth-intro p {
+  margin: 0;
+  max-width: 540px;
+  color: var(--mcare-muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.mcare-auth-highlights {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.mcare-auth-highlight {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(122, 60, 255, 0.08);
+  box-shadow: 0 18px 38px rgba(26, 26, 46, 0.06);
+}
+
+.mcare-auth-highlight strong {
+  display: block;
+  color: var(--mcare-text);
+  margin-bottom: 0.25rem;
+}
+
+.mcare-auth-highlight small {
+  color: var(--mcare-muted);
+  line-height: 1.6;
+}
+
+.mcare-auth-highlight-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: var(--mcare-gradient);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.mcare-auth-box {
+  width: 100% !important;
+  max-width: 460px !important;
+  margin: 0 auto;
+}
+
+.login-page .login-logo,
+.register-page .register-logo {
+  margin-bottom: 1rem;
+}
+
+.login-page .login-logo a,
+.register-page .register-logo a {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--mcare-text);
+  font-weight: 800;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+.login-page .login-logo img,
+.register-page .register-logo img {
+  height: 70px;
+  width: auto;
+}
+
+.mcare-auth-brand {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mcare-auth-tagline {
+  color: var(--mcare-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.mcare-auth-card {
+  border: 0 !important;
+  border-radius: 24px !important;
+  box-shadow: 0 28px 60px rgba(46, 134, 255, 0.16) !important;
+  overflow: hidden;
+}
+
+.mcare-auth-header {
+  background: transparent;
+  border-bottom: 0;
+  padding: 1.6rem 1.75rem 0;
+}
+
+.mcare-auth-body {
+  padding: 0 1.75rem 1.75rem;
+}
+
+.mcare-auth-footer {
+  background: transparent;
+  border-top: 1px solid var(--mcare-border);
+  padding: 1rem 1.75rem 1.5rem;
+}
+
+.login-box-msg,
+.register-box-msg,
+.text-muted {
+  color: var(--mcare-muted) !important;
+}
+
+.mcare-auth-card .card-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.login-page .input-group,
+.register-page .input-group {
+  align-items: stretch;
+}
+
+.login-page .input-group .form-control,
+.register-page .input-group .form-control {
+  padding: 0.9rem 1rem;
+  border-right: 0;
+}
+
+.login-page .input-group .input-group-text,
+.register-page .input-group .input-group-text {
+  padding: 0 1rem;
+  border-left: 0;
+}
+
+.mcare-login-btn {
+  min-height: 50px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.mcare-dashboard-hero {
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(46, 134, 255, 0.12) 0%, rgba(122, 60, 255, 0.12) 100%);
+  border: 1px solid rgba(46, 134, 255, 0.1);
+}
+
+.mcare-dashboard-hero h2 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--mcare-text) !important;
+}
+
+.mcare-toolbar .form-control,
+.mcare-toolbar .btn {
+  min-height: 44px;
+}
+
+.mcare-stat-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mcare-stat-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 28px 46px rgba(26, 26, 46, 0.16);
+}
+
+.mcare-stat-card .card-body {
+  position: relative;
+  padding: 1.4rem;
+}
+
+.mcare-stat-card .mcare-stat-icon {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 1.35rem;
+}
+
+.mcare-stat-card .mcare-stat-value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.mcare-stat-card .mcare-stat-label {
+  margin: 0.35rem 0 0;
+  opacity: 0.9;
+  font-size: 0.96rem;
+}
+
+.mcare-gradient-orders { background: var(--mcare-gradient); }
+.mcare-gradient-users { background: var(--mcare-cyan-gradient); }
+.mcare-gradient-vendors { background: var(--mcare-purple-gradient); }
+.mcare-gradient-revenue { background: var(--mcare-green-gradient); }
+
+.mcare-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+}
+
+.mcare-panel-title i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(46, 134, 255, 0.1);
+  color: var(--mcare-primary);
+}
+
+.mcare-chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.mcare-chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.mcare-chart-wrap-lg {
+  height: 320px;
+}
+
+.mcare-chart-wrap-sm {
+  height: 320px;
+}
+
+.mcare-activity-list .list-group-item {
+  border: 0;
+  border-bottom: 1px solid rgba(122, 60, 255, 0.08);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.mcare-activity-list .list-group-item:last-child {
+  border-bottom: 0;
+}
+
+@media (max-width: 991.98px) {
+  .mcare-topnav-logo {
+    margin-right: 0.35rem;
+  }
+
+  .brand-link.mcare-brand-link {
+    min-height: 68px;
+    padding: 0.85rem 1rem;
+  }
+
+  .mcare-dashboard-hero {
+    padding: 1.15rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .login-page .login-box,
+  .register-page .register-box {
+    width: 100%;
+  }
+
+  .mcare-chart-wrap-lg,
+  .mcare-chart-wrap-sm {
+    height: 240px;
+  }
+
+  .mcare-dashboard-hero h2 {
+    font-size: 1.55rem;
+  }
+
+  .mcare-stat-card .mcare-stat-value {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .mcare-auth-layout {
+    grid-template-columns: 1fr;
+    width: min(460px, 100%);
+  }
+
+  .mcare-auth-shell {
+    padding: 1.25rem;
+  }
+
+  .mcare-auth-box {
+    max-width: 100% !important;
+  }
+}
+
+/* Admin readability normalization */
+body {
+  font-size: 14px;
+}
+
+.content-header h1,
+.content-header h2 {
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+
+.main-header .nav-link,
+.main-header .navbar-nav .nav-link,
+.dropdown-menu,
+.dropdown-item {
+  font-size: 0.9rem;
+}
+
+.sidebar .nav-header {
+  padding: 0.75rem 1rem 0.35rem;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.nav-sidebar .nav-link {
+  min-height: 40px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.nav-sidebar .nav-link p {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.nav-sidebar .nav-icon {
+  width: 1.35rem;
+  margin-right: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.nav-sidebar .right,
+.nav-sidebar .right.fas,
+.nav-sidebar .right.far,
+.nav-sidebar .right.fab {
+  top: 0.78rem;
+  font-size: 0.72rem;
+}
+
+.nav-sidebar .nav-treeview > .nav-item > .nav-link {
+  min-height: 36px;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  padding-left: 1rem;
+  font-size: 0.88rem;
+}
+
+.card-header,
+.card-title,
+.mcare-panel-title {
+  font-size: 0.98rem;
+}
+
+.card-body,
+.table,
+.form-control,
+.custom-select,
+.btn,
+.input-group-text,
+label,
+.small,
+small {
+  font-size: 0.9rem;
+}
+
+.form-control,
+.custom-select,
+.input-group-text {
+  min-height: 40px;
+}
+
+.btn {
+  min-height: 38px;
+  padding: 0.45rem 0.9rem;
+}
+
+.table thead th {
+  font-size: 0.76rem;
+  letter-spacing: 0.035em;
+}
+
+.table td {
+  font-size: 0.88rem;
+}
+
+.mcare-dashboard-hero h2 {
+  font-size: 1.55rem;
+}
+
+.mcare-dashboard-hero small {
+  font-size: 0.86rem;
+}
+
+.mcare-stat-card .card-body {
+  min-height: 104px;
+  padding: 1.2rem;
+}
+
+.mcare-stat-card .mcare-stat-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 1.12rem;
+}
+
+.mcare-stat-card .mcare-stat-value {
+  font-size: 1.62rem;
+  line-height: 1.1;
+  max-width: calc(100% - 58px);
+}
+
+.mcare-stat-card .mcare-stat-label {
+  font-size: 0.86rem;
+}
+
+.mcare-panel-title i {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
