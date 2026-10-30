@@ -1,0 +1,95 @@
+{
+  "expo": {
+    "name": "Mcare+",
+    "slug": "mcare-patient",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "mcare",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.Mcare",
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Mcare+ uses the camera to take photos of your prescriptions.",
+        "NSPhotoLibraryUsageDescription": "Mcare+ lets you upload prescription photos from your gallery.",
+        "NSLocationWhenInUseUsageDescription": "Mcare+ uses your location to find pharmacies that deliver to you.",
+        "NSMicrophoneUsageDescription": "Mcare+ listens when you tap the microphone so you can set reminders and order medicines by voice.",
+        "NSSpeechRecognitionUsageDescription": "Mcare+ turns your voice into text so you can set reminders and order medicines by speaking."
+      }
+    },
+    "android": {
+      "package": "com.Mcare",
+      "versionCode": 5,
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "VIBRATE",
+        "CAMERA",
+        "RECORD_AUDIO",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1E63D6"
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Mcare+ listens when you tap the microphone so you can set reminders and order medicines by voice.",
+          "speechRecognitionPermission": "Mcare+ turns your voice into text so you can set reminders and order medicines by speaking.",
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Mcare+ uses the camera to take photos of your prescriptions.",
+          "photosPermission": "Mcare+ lets you upload prescription photos from your gallery."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Mcare+ uses your location to find pharmacies that deliver to you."
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "https://maqsusi.care/api"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
