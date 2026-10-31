@@ -69,7 +69,8 @@
         {
           "locationWhenInUsePermission": "Mcare+ Partner uses your location to place your pharmacy on the map so nearby patients can reach you."
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "extra": {
       "apiUrl": "https://maqsusi.care/api"

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { api } from '@/api/partner';
@@ -61,6 +62,7 @@ export default function EarningsScreen() {
               </T>
             </Card>
           </View>
+          <BigButton label={t('exportTitle')} icon="file-export" kind="secondary" onPress={() => router.push('/export')} />
           {data.totals.completed_deliveries === 0 ? (
             <T color={colors.muted}>{t('noEarnings')}</T>
           ) : (
