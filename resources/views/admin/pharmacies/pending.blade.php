@@ -156,13 +156,13 @@
 
 <div class="col-md-6">
     <label>License File</label>
-    <img src="{{ asset('storage/'.$pharmacy->license_file) }}"
+    <img src="{{ $pharmacy->documentUrl('license_file') }}"
          style="width:100%;border-radius:8px;">
 </div>
 
 <div class="col-md-6">
     <label>GST File</label>
-    <img src="{{ asset('storage/'.$pharmacy->gst_file) }}"
+    <img src="{{ $pharmacy->documentUrl('gst_file') }}"
          style="width:100%;border-radius:8px;">
 </div>
 

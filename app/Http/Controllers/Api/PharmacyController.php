@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
+use App\Support\PrivateFiles;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -205,18 +206,14 @@ class PharmacyController extends Controller
          */
         if ($request->hasFile('license_file')) {
 
-            $this->ensureDirectory('pharmacies/licenses');
-
-            if ($pharmacy->license_file && Storage::disk('public')->exists($pharmacy->license_file)) {
-                Storage::disk('public')->delete($pharmacy->license_file);
-            }
+            PrivateFiles::delete($pharmacy->license_file);
 
             $ext = $request->file('license_file')->getClientOriginalExtension();
 
             $filename = $user->id . '-' . Str::slug($pharmacy->pharmacy_name) . '-license.' . $ext;
 
             $pharmacy->license_file = $request->file('license_file')
-                ->storeAs('pharmacies/licenses', $filename, 'public');
+                ->storeAs('pharmacies/licenses', $filename, PrivateFiles::DISK);
         }
 
         /**
@@ -224,18 +221,14 @@ class PharmacyController extends Controller
          */
         if ($request->hasFile('gst_file')) {
 
-            $this->ensureDirectory('pharmacies/gst');
-
-            if ($pharmacy->gst_file && Storage::disk('public')->exists($pharmacy->gst_file)) {
-                Storage::disk('public')->delete($pharmacy->gst_file);
-            }
+            PrivateFiles::delete($pharmacy->gst_file);
 
             $ext = $request->file('gst_file')->getClientOriginalExtension();
 
             $filename = $user->id . '-' . Str::slug($pharmacy->pharmacy_name) . '-gst.' . $ext;
 
             $pharmacy->gst_file = $request->file('gst_file')
-                ->storeAs('pharmacies/gst', $filename, 'public');
+                ->storeAs('pharmacies/gst', $filename, PrivateFiles::DISK);
         }
 
         $pharmacy->verification_status = 'pending';
@@ -310,13 +303,9 @@ class PharmacyController extends Controller
                         ? Storage::disk('public')->url($pharmacy->pharmacy_photo)
                         : null,
 
-                    'license_file_url' => $pharmacy->license_file
-                        ? Storage::disk('public')->url($pharmacy->license_file)
-                        : null,
+                    'license_file_url' => PrivateFiles::url($pharmacy->license_file),
 
-                    'gst_file_url' => $pharmacy->gst_file
-                        ? Storage::disk('public')->url($pharmacy->gst_file)
-                        : null,
+                    'gst_file_url' => PrivateFiles::url($pharmacy->gst_file),
 
                     'verification_status' => $pharmacy->verification_status,
                     'is_verified' => $pharmacy->is_verified,
@@ -407,13 +396,9 @@ class PharmacyController extends Controller
         }
 
         if ($request->hasFile('license_file')) {
-            $this->ensureDirectory('pharmacies/licenses');
+            PrivateFiles::delete($pharmacy->license_file);
 
-            if ($pharmacy->license_file && Storage::disk('public')->exists($pharmacy->license_file)) {
-                Storage::disk('public')->delete($pharmacy->license_file);
-            }
-
-            $pharmacyData['license_file'] = $request->file('license_file')->store('pharmacies/licenses', 'public');
+            $pharmacyData['license_file'] = $request->file('license_file')->store('pharmacies/licenses', PrivateFiles::DISK);
             $pharmacyData['verification_status'] = 'pending';
             $pharmacyData['is_verified'] = false;
         }
