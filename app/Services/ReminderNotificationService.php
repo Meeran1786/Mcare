@@ -15,19 +15,21 @@ class ReminderNotificationService
         $title = $reminder->medicine_name ?? 'Medicine Reminder';
         $message = $reminder->note ?? 'Time to take your medicine';
 
-        // 🔔 Send Push
-        $firebase->sendNotification(
-            $user->fcm_token,
-            $title,
-            $message,
-            [
-                'type' => 'MEDICINE_REMINDER',
-                'reminder_id' => (string) $reminder->id,
-                'sound' => 'reminder_sound',
-                'channel_id' => 'reminder_channel',
-                'click_action' => 'OPEN_MCARE_APP',
-            ]
-        );
+        // 🔔 Send Push, unless the app already rings this reminder as a local alarm
+        if (!$user->local_reminders) {
+            $firebase->sendNotification(
+                $user->fcm_token,
+                $title,
+                $message,
+                [
+                    'type' => 'MEDICINE_REMINDER',
+                    'reminder_id' => (string) $reminder->id,
+                    'sound' => 'reminder_sound',
+                    'channel_id' => 'reminder_channel',
+                    'click_action' => 'OPEN_MCARE_APP',
+                ]
+            );
+        }
 
         // 💾 Save in DB
         Notification::create([
