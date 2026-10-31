@@ -24,6 +24,13 @@ use App\Http\Controllers\Admin\PushNotificationController;
 use App\Http\Controllers\Admin\ManageTranslationController;
 
 
+// Private prescription images. Same URL shape as the old public files, so the
+// live apps keep working, but the link must carry a valid, unexpired signature.
+Route::get('/storage/prescriptions/{file}', [\App\Http\Controllers\PrescriptionFileController::class, 'show'])
+    ->where('file', '[A-Za-z0-9._-]+')
+    ->middleware('signed:relative')
+    ->name('prescription-files.show');
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN AUTH ROUTES

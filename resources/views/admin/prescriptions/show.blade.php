@@ -18,7 +18,7 @@
 
 @foreach($prescription->files as $file)
 
-<a href="/storage/{{ $file->file_path }}" target="_blank">
+<a href="{{ $file->url }}" target="_blank">
 View File
 </a>
 

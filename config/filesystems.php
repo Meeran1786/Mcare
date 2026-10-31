@@ -33,7 +33,9 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            // Private files (prescriptions) are served by PrescriptionFileController
+            // behind signed links, not by Laravel's generic /storage route.
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],

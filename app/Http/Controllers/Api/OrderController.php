@@ -692,7 +692,7 @@ class OrderController extends Controller
         $orders = $query
             ->get()
             ->map(function ($order) {
-                $file = optional(optional($order->prescription)->files)->first()?->file_path;
+                $file = optional(optional($order->prescription)->files)->first();
 
                 return [
                     'id' => $order->id,
@@ -713,7 +713,7 @@ class OrderController extends Controller
                         'address_line' => $order->pharmacy->address_line ?? null,
                         'city' => $order->pharmacy->city ?? null,
                     ],
-                    'prescription_image' => $file ? asset('storage/' . $file) : null,
+                    'prescription_image' => $file?->url,
                     'prescription' => $order->prescription,
                 ];
             });
@@ -723,13 +723,13 @@ class OrderController extends Controller
             ->latest()
             ->get()
             ->map(function ($prescription) {
-                $file = optional($prescription->files)->first()?->file_path;
+                $file = optional($prescription->files)->first();
 
                 return [
                     'id' => $prescription->id,
                     'status' => $prescription->status,
                     'created_at' => $prescription->created_at,
-                    'image' => $file ? asset('storage/' . $file) : null,
+                    'image' => $file?->url,
                 ];
             });
 

@@ -44,4 +44,15 @@ return [
         'otp_template' => env('TWO_FACTOR_OTP_TEMPLATE', 'OTP1'),
     ],
 
+    'otp' => [
+        // Store-review demo logins that always use OTP 1234 and never get an SMS.
+        // Set OTP_DEMO_NUMBERS= (empty) in production once store review is done.
+        'demo_numbers' => array_values(array_filter(array_map(
+            'trim',
+            explode(',', (string) env('OTP_DEMO_NUMBERS', '9955995599,9911991199'))
+        ))),
+        // Wrong codes allowed for one OTP before it is thrown away.
+        'max_verify_attempts' => (int) env('OTP_MAX_VERIFY_ATTEMPTS', 5),
+    ],
+
 ];
