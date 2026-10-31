@@ -27,7 +27,10 @@ return new class extends Migration
             }
         });
 
-        DB::statement("ALTER TABLE orders MODIFY status ENUM('pending','accepted','preparing','ready_for_delivery','out_for_delivery','delivered','completed','cancelled','rejected') NOT NULL DEFAULT 'pending'");
+        // MySQL-only syntax; skipped on SQLite so the test suite can run.
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE orders MODIFY status ENUM('pending','accepted','preparing','ready_for_delivery','out_for_delivery','delivered','completed','cancelled','rejected') NOT NULL DEFAULT 'pending'");
+        }
     }
 
     public function down(): void
@@ -50,6 +53,9 @@ return new class extends Migration
             }
         });
 
-        DB::statement("ALTER TABLE orders MODIFY status ENUM('accepted','preparing','out_for_delivery','delivered','cancelled') NOT NULL DEFAULT 'accepted'");
+        // MySQL-only syntax; skipped on SQLite so the test suite can run.
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE orders MODIFY status ENUM('accepted','preparing','out_for_delivery','delivered','cancelled') NOT NULL DEFAULT 'accepted'");
+        }
     }
 };

@@ -55,7 +55,6 @@ class PrescriptionController extends Controller
 
     try {
 
-        \Log::info("UPLOAD REQUEST:", $request->all());
 
         // âœ… Create prescription
         $prescription = Prescription::create([
@@ -70,7 +69,7 @@ class PrescriptionController extends Controller
 
         // âœ… Save files
         foreach ($request->file('files') as $file) {
-            $path = $file->store('prescriptions', 'public');
+            $path = $file->store(PrescriptionFile::DIRECTORY, PrescriptionFile::DISK);
 
             PrescriptionFile::create([
                 'prescription_id' => $prescription->id,
@@ -571,47 +570,62 @@ class PrescriptionController extends Controller
     }
     public function updatePrescription(Request $request)
     {
+        $user = $request->user();
+
+        if ($user->role !== 'user') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only users can update prescriptions.'
+            ], 403);
+        }
+
         $request->validate([
-            'prescription_id' => 'nullable|exists:prescriptions,id',
-            'order_id' => 'nullable|exists:orders,id',
+            'prescription_id' => 'nullable|integer',
+            'order_id' => 'nullable|integer',
             'prescription' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // ðŸ” Identify prescription
+        // 🔍 Identify prescription. Only the patient who owns it may replace the image.
         if ($request->prescription_id) {
-            $prescription = Prescription::with('files')->find($request->prescription_id);
+            $prescription = Prescription::with('files')
+                ->where('id', $request->prescription_id)
+                ->where('user_id', $user->id)
+                ->first();
         } elseif ($request->order_id) {
-            $order = Order::with('prescription.files')->find($request->order_id);
+            $order = Order::with('prescription.files')
+                ->where('id', $request->order_id)
+                ->where('user_id', $user->id)
+                ->first();
             $prescription = $order->prescription ?? null;
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Prescription or Order required'
-            ]);
+            ], 422);
         }
 
-        if (!$prescription) {
+        if (!$prescription || (int) $prescription->user_id !== (int) $user->id) {
             return response()->json([
                 'success' => false,
                 'message' => 'Prescription not found'
-            ]);
+            ], 404);
         }
 
-        // âœ… upload file
+        // ✅ upload file to private storage
         $file = $request->file('prescription');
-        $path = $file->store('prescriptions', 'public');
+        $path = $file->store(PrescriptionFile::DIRECTORY, PrescriptionFile::DISK);
 
         $existingFile = $prescription->files->first();
 
         if ($existingFile) {
             $existingFile->update(['file_path' => $path]);
         } else {
-            $prescription->files()->create(['file_path' => $path]);
+            $existingFile = $prescription->files()->create(['file_path' => $path]);
         }
 
         return response()->json([
             'success' => true,
-            'image' => asset('storage/' . $path)
+            'image' => $existingFile->url
         ]);
     }
 

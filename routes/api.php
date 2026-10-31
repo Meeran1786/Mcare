@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\NotificationController;
 
-use App\Http\Controllers\Admin\DatabaseController;
 use App\Http\Controllers\Api\ReminderController;
 
 use App\Http\Controllers\Api\HelpController;
@@ -41,7 +40,6 @@ Route::get('/insights', [InsightController::class, 'index']);
 
 
 
-Route::post('/clear-database', [DatabaseController::class, 'clearData']);
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +47,8 @@ Route::post('/clear-database', [DatabaseController::class, 'clearData']);
 |--------------------------------------------------------------------------
 */
 
-Route::post('/auth/send-otp', [AuthController::class, 'sendOtp']);
-Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp']);
+Route::post('/auth/send-otp', [AuthController::class, 'sendOtp'])->middleware('throttle:otp-send');
+Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp'])->middleware('throttle:otp-verify');
 Route::middleware('auth:sanctum')->post('/auth/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->post('/save-fcm-token', [AuthController::class, 'saveFcmToken']);

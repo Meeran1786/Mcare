@@ -192,7 +192,7 @@
                     <div class="col-md-4">
                         <b>License</b><br>
                         @if($pharmacy->license_file)
-                            <a href="{{ asset('storage/'.$pharmacy->license_file) }}"
+                            <a href="{{ $pharmacy->documentUrl('license_file') }}"
                                target="_blank"
                                class="btn btn-outline-primary btn-sm mt-2">
                                 View
@@ -206,7 +206,7 @@
                     <div class="col-md-4">
                         <b>GST Proof</b><br>
                         @if($pharmacy->gst_file)
-                            <a href="{{ asset('storage/'.$pharmacy->gst_file) }}"
+                            <a href="{{ $pharmacy->documentUrl('gst_file') }}"
                                target="_blank"
                                class="btn btn-outline-primary btn-sm mt-2">
                                 View
@@ -220,7 +220,7 @@
                     <div class="col-md-4">
                         <b>Owner ID</b><br>
                         @if($pharmacy->owner_id_file)
-                            <a href="{{ asset('storage/'.$pharmacy->owner_id_file) }}"
+                            <a href="{{ $pharmacy->documentUrl('owner_id_file') }}"
                                target="_blank"
                                class="btn btn-outline-primary btn-sm mt-2">
                                 View
