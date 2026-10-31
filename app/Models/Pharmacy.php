@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Support\PrivateFiles;
 use Illuminate\Database\Eloquent\Model;
 
 class Pharmacy extends Model
@@ -47,6 +48,26 @@ class Pharmacy extends Model
         'is_verified' => 'boolean',
         'is_delivery_available' => 'boolean',
     ];
+
+    /** Licence and GST documents are private: signed, expiring link or null. */
+    public function documentUrl(string $attribute): ?string
+    {
+        return PrivateFiles::url($this->{$attribute} ?? null);
+    }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+
+        // Signed paths, so apps that build "<site>/storage/<file>" still work.
+        foreach (['license_file', 'gst_file'] as $document) {
+            if (array_key_exists($document, $data)) {
+                $data[$document] = PrivateFiles::storagePath($this->{$document});
+            }
+        }
+
+        return $data;
+    }
 
     public function user()
     {

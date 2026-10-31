@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Order;
 use App\Models\Prescription;
-use App\Models\PrescriptionFile;
+use App\Support\PrivateFiles;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -230,7 +230,7 @@ class SecurityHotfixTest extends TestCase
         $this->get($link)->assertOk();
 
         // The link expires.
-        $this->travel(PrescriptionFile::LINK_MINUTES + 1)->minutes();
+        $this->travel(PrivateFiles::LINK_MINUTES + 1)->minutes();
         $this->get($link)->assertForbidden();
     }
 
@@ -251,10 +251,61 @@ class SecurityHotfixTest extends TestCase
     public function test_command_moves_existing_public_images_to_private_storage(): void
     {
         Storage::disk('public')->put('prescriptions/legacy.jpg', 'legacy-image');
+        Storage::disk('public')->put('pharmacies/licenses/7-shop-license.pdf', 'licence');
+        Storage::disk('public')->put('pharmacies/gst/7-shop-gst.pdf', 'gst');
+        Storage::disk('public')->put('pharmacies/photos/shop.jpg', 'photo');
 
-        $this->artisan('prescriptions:make-private')->assertSuccessful();
+        $this->artisan('storage:make-private')->assertSuccessful();
 
-        Storage::disk('public')->assertMissing('prescriptions/legacy.jpg');
-        Storage::disk('local')->assertExists('prescriptions/legacy.jpg');
+        foreach (['prescriptions/legacy.jpg', 'pharmacies/licenses/7-shop-license.pdf', 'pharmacies/gst/7-shop-gst.pdf'] as $path) {
+            Storage::disk('public')->assertMissing($path);
+            Storage::disk('local')->assertExists($path);
+        }
+
+        // Shop photos are shown to patients and stay public.
+        Storage::disk('public')->assertExists('pharmacies/photos/shop.jpg');
+    }
+
+    /* ---------------- 5. private pharmacy documents ---------------- */
+
+    public function test_pharmacy_licence_and_gst_uploads_are_private(): void
+    {
+        $vendor = $this->makeUser('9000000113', 'vendor');
+        $pharmacyId = DB::table('pharmacies')->insertGetId([
+            'user_id' => $vendor->id,
+            'pharmacy_name' => 'Shop',
+            'license_number' => 'LIC-1',
+            'address_line' => '1 Main Road',
+            'area' => 'Center',
+            'city' => 'Hyderabad',
+            'state' => 'Telangana',
+            'pincode' => '500001',
+            'latitude' => 17.38,
+            'longitude' => 78.48,
+            'verification_status' => 'pending',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Sanctum::actingAs($vendor);
+
+        $this->post('/api/vendor/pharmacy/documents', [
+            'license_file' => UploadedFile::fake()->create('licence.pdf', 10, 'application/pdf'),
+            'gst_file' => UploadedFile::fake()->create('gst.pdf', 10, 'application/pdf'),
+        ], ['Accept' => 'application/json'])->assertOk();
+
+        $pharmacy = \App\Models\Pharmacy::find($pharmacyId);
+
+        foreach (['license_file', 'gst_file'] as $document) {
+            Storage::disk('local')->assertExists($pharmacy->{$document});
+            Storage::disk('public')->assertMissing($pharmacy->{$document});
+
+            // The bare, guessable path is refused; the signed link works.
+            $this->get('/storage/'.$pharmacy->{$document})->assertForbidden();
+            $this->get($pharmacy->documentUrl($document))->assertOk();
+
+            // Serialized paths carry the signature for apps that prefix "/storage/".
+            $this->get('/storage/'.$pharmacy->toArray()[$document])->assertOk();
+        }
     }
 }
