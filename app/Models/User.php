@@ -18,7 +18,12 @@ class User extends Authenticatable
         'role',
         'status',
         'preferred_language',
-        'fcm_token', 
+        'fcm_token',
+        'local_reminders',
+    ];
+
+    protected $casts = [
+        'local_reminders' => 'boolean',
     ];
 
     protected $hidden = [

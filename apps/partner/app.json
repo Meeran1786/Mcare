@@ -1,0 +1,82 @@
+{
+  "expo": {
+    "name": "Mcare+ Partner",
+    "slug": "mcare-partner",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "mcarepartner",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.mcarepartner",
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Mcare+ Partner uses the camera to photograph your pharmacy, licence and GST documents.",
+        "NSPhotoLibraryUsageDescription": "Mcare+ Partner lets you upload your pharmacy photo and documents from your gallery.",
+        "NSLocationWhenInUseUsageDescription": "Mcare+ Partner uses your location to place your pharmacy on the map so nearby patients can reach you."
+      }
+    },
+    "android": {
+      "package": "com.mcarepartner",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "VIBRATE",
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#2E7D6B"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Mcare+ Partner uses the camera to photograph your pharmacy, licence and GST documents.",
+          "photosPermission": "Mcare+ Partner lets you upload your pharmacy photo and documents from your gallery."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Mcare+ Partner uses your location to place your pharmacy on the map so nearby patients can reach you."
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "https://maqsusi.care/api"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

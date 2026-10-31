@@ -244,13 +244,17 @@ class AuthController extends Controller
    public function saveFcmToken(Request $request)
 {
     $request->validate([
-        'fcm_token' => 'required|string'
+        'fcm_token' => 'required|string',
+        'local_reminders' => 'sometimes|boolean',
     ]);
 
     $user = $request->user(); // 🔥 logged-in user
 
     $user->update([
-        'fcm_token' => $request->fcm_token
+        'fcm_token' => $request->fcm_token,
+        // The 2.0 app rings reminders itself. Older apps don't send this,
+        // so signing in on an old app turns the server push back on.
+        'local_reminders' => $request->boolean('local_reminders'),
     ]);
 
     try {
