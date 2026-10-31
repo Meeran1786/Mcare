@@ -3,6 +3,7 @@ import { AndroidImportance } from 'expo-notifications';
 import { Platform } from 'react-native';
 
 import { api } from '@/api/mcare';
+import { setupReminderChannel } from '@/reminders/alarms';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -14,23 +15,28 @@ Notifications.setNotificationHandler({
 });
 
 /**
- * Registers this phone for the backend's Firebase pushes (order updates and
- * medicine reminders, sent by `php artisan reminder:send`).
+ * Asks for notification permission (needed for the phone's own medicine
+ * alarms on both platforms) and registers for the backend's Firebase pushes,
+ * which now carry order updates. Medicine reminders ring locally instead: the
+ * token is saved with `local_reminders: true`, so `php artisan reminder:send`
+ * skips this phone.
  *
  * Android: the device token from expo-notifications is the FCM token.
  * iOS: the backend sends through FCM, so iOS needs the Firebase SDK to swap the
- * APNs token for an FCM token. Until that is added, iOS skips registration.
+ * APNs token for an FCM token. Until that is added, iOS gets alarms but no
+ * order pushes.
  */
 export async function registerForPush(): Promise<void> {
-  if (Platform.OS !== 'android') return;
+  if (Platform.OS === 'web') return;
+  await setupReminderChannel();
+  const { granted } = await Notifications.requestPermissionsAsync();
+  if (!granted || Platform.OS !== 'android') return;
   await Notifications.setNotificationChannelAsync('default', {
     name: 'Mcare',
     importance: AndroidImportance.MAX,
     sound: 'default',
     vibrationPattern: [0, 400, 200, 400],
   });
-  const { granted } = await Notifications.requestPermissionsAsync();
-  if (!granted) return;
   try {
     const token = await Notifications.getDevicePushTokenAsync();
     await api.saveFcmToken(String(token.data), Platform.OS);

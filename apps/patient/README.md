@@ -53,12 +53,12 @@ npx expo run:android   # or: npx expo run:ios  (needs Xcode on a Mac)
 ## Release builds
 
 - **Android package `com.Mcare`, versionCode 5.** This matches the live Play Store app (versionCode 4), so the new app installs as an update. You need the original upload key, or ask Google Play to reset the upload key (Play Console › Test and release › App integrity).
-- **Push notifications:** put the Firebase `google-services.json` (Android) in this folder. It is git-ignored on purpose. The backend's FCM pushes for orders and medicine reminders (`php artisan reminder:send`) then reach the app.
+- **Push notifications:** put the Firebase `google-services.json` (Android) in this folder. It is git-ignored on purpose. The backend's FCM pushes for orders then reach the app.
+- **Medicine reminders ring as local phone alarms** (`src/reminders/alarms.ts`), so they work offline and survive battery saving. The app re-schedules them whenever the reminder list loads or changes. It tells the backend `local_reminders: true` when it saves the push token, so the server skips its own reminder push for this app and only old app versions get it. That needs the small backend change in its own pull request.
 - **iOS** (`com.Mcare`): builds and runs, but push is not wired yet. The backend sends through FCM, so iOS needs the Firebase SDK to exchange the APNs token for an FCM token.
 - Build in the cloud with EAS: `npx eas build --platform all`, after `npx eas init` under your Expo account.
 
 ## Known follow-ups
 
-- Reminders currently ring through the backend push. Local phone alarms (which work offline and are more reliable under Android battery saving) need a small backend switch, so the server stops sending a duplicate push.
-- Address management, help and FAQ screens from the old app are not rebuilt yet. Prescription upload uses the default saved address, or the phone's location.
+- Until the backend `local_reminders` change is deployed, people on the new app get each reminder twice (alarm and push).
 - Urdu text is right-aligned, but the layout is not mirrored.

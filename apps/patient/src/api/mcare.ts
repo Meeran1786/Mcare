@@ -1,7 +1,17 @@
 /** Typed calls to the existing Mcare Laravel API (routes/api.php). */
+import { getLanguage } from '@/i18n';
+import { syncAlarms } from '@/reminders/alarms';
 import type { Day } from '@/voice/types';
 
-import { request } from './client';
+import { getAppLanguage, request } from './client';
+
+/** After any reminder change, reload the list, which reschedules the phone's alarms. */
+function thenResync<T>(p: Promise<T>): Promise<T> {
+  return p.then((value) => {
+    api.reminders().catch(() => undefined);
+    return value;
+  });
+}
 
 export interface User {
   id: number;
@@ -46,6 +56,23 @@ export interface Address {
   is_default: boolean | number;
 }
 
+export interface NewAddress {
+  label?: string;
+  name: string;
+  phone: string;
+  address_line: string;
+  city?: string;
+  pincode?: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+}
+
 export interface AppNotification {
   id: number;
   title: string;
@@ -74,22 +101,27 @@ export const api = {
 
   profile: () => request<{ user: User }>('GET', '/profile').then((r) => r.user),
 
+  /** local_reminders: this phone rings reminders itself, so the server should not push them. */
   saveFcmToken: (fcm_token: string, platform: string) =>
-    request('POST', '/save-fcm-token', { body: { fcm_token, platform } }),
+    request('POST', '/save-fcm-token', { body: { fcm_token, platform, local_reminders: true } }),
 
   logout: () => request('POST', '/auth/logout').catch(() => undefined),
 
-  reminders: () => request<{ data: Reminder[] }>('GET', '/reminders').then((r) => r.data),
+  reminders: () =>
+    request<{ data: Reminder[] }>('GET', '/reminders').then((r) => {
+      syncAlarms(r.data, getLanguage(getAppLanguage()));
+      return r.data;
+    }),
 
   createReminder: (r: { time: string; days: Day[]; medicine_name?: string; note?: string; timezone: string }) =>
-    request<{ data: Reminder }>('POST', '/reminders', { body: r }).then((x) => x.data),
+    thenResync(request<{ data: Reminder }>('POST', '/reminders', { body: r }).then((x) => x.data)),
 
   updateReminder: (id: number, r: { time: string; days: Day[]; medicine_name?: string; timezone: string }) =>
-    request<{ data: Reminder }>('PUT', `/reminders/${id}`, { body: r }).then((x) => x.data),
+    thenResync(request<{ data: Reminder }>('PUT', `/reminders/${id}`, { body: r }).then((x) => x.data)),
 
-  toggleReminder: (id: number) => request('PUT', `/reminders/${id}/toggle`),
+  toggleReminder: (id: number) => thenResync(request('PUT', `/reminders/${id}/toggle`)),
 
-  deleteReminder: (id: number) => request('DELETE', `/reminders/${id}`),
+  deleteReminder: (id: number) => thenResync(request('DELETE', `/reminders/${id}`)),
 
   orders: (status?: string) =>
     request<{ data: Paginated<Order> }>('GET', '/user/orders', { query: { status } }).then((r) => r.data.data),
@@ -99,6 +131,17 @@ export const api = {
   confirmDelivery: (id: number) => request('POST', `/user/orders/${id}/confirm`),
 
   addresses: () => request<{ data: Address[] }>('GET', '/addresses').then((r) => r.data),
+
+  addAddress: (a: NewAddress) => request<{ data: Address }>('POST', '/addresses', { body: a }).then((r) => r.data),
+
+  deleteAddress: (id: number) => request('DELETE', `/addresses/${id}`),
+
+  setDefaultAddress: (id: number) => request('PUT', `/addresses/${id}/default`),
+
+  /** The API falls back to English for languages it has no FAQ text for. */
+  faqs: () => request<{ data: Faq[] }>('GET', '/faqs/help').then((r) => r.data),
+
+  sendHelp: (subject: string, message: string) => request('POST', '/help', { body: { subject, message } }),
 
   /** Sends prescription photos to every verified pharmacy within 5 km. */
   uploadPrescription: (p: { uris: string[]; latitude: number; longitude: number; addressId?: number; notes?: string }) => {

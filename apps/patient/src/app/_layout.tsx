@@ -40,6 +40,9 @@ function RootStack() {
         <Stack.Screen name="upload" options={{ title: t('uploadTitle') }} />
         <Stack.Screen name="notifications" options={{ title: t('notifications') }} />
         <Stack.Screen name="change-language" options={{ title: t('language') }} />
+        <Stack.Screen name="addresses" options={{ title: t('addresses') }} />
+        <Stack.Screen name="address/new" options={{ title: t('addAddress') }} />
+        <Stack.Screen name="help" options={{ title: t('help') }} />
       </Stack.Protected>
     </Stack>
   );

@@ -13,7 +13,9 @@ export default function ProfileScreen() {
         <T>+91 {user?.mobile_number ?? ''}</T>
       </Card>
       <BigButton label={`${t('language')}: ${lang.name}`} icon="translate" kind="secondary" onPress={() => router.push('/change-language')} />
+      <BigButton label={t('addresses')} icon="map-marker" kind="secondary" onPress={() => router.push('/addresses')} />
       <BigButton label={t('notifications')} icon="bell" kind="secondary" onPress={() => router.push('/notifications')} />
+      <BigButton label={t('help')} icon="help-circle" kind="secondary" onPress={() => router.push('/help')} />
       <BigButton label={t('logout')} icon="logout" kind="danger" onPress={() => signOut().then(() => router.replace('/login'))} />
     </Screen>
   );

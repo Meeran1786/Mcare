@@ -33,7 +33,9 @@
         "CAMERA",
         "RECORD_AUDIO",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "SCHEDULE_EXACT_ALARM",
+        "RECEIVE_BOOT_COMPLETED"
       ],
       "googleServicesFile": "./google-services.json"
     },

@@ -66,6 +66,7 @@ export default function UploadScreen() {
         ))}
       </View>
       <ErrorText>{error}</ErrorText>
+      {!!error && <BigButton label={t('addAddress')} icon="map-marker-plus" kind="secondary" onPress={() => router.push('/address/new')} />}
       {photos.length > 0 && (
         <BigButton label={t('sendToPharmacies')} icon="send" onPress={send} loading={busy} />
       )}

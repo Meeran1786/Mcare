@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 
+import { ApiError } from '@/api/client';
 import { api } from '@/api/mcare';
 import { BigButton, ErrorText, Field, Screen, T } from '@/components/ui';
 import { registerForPush } from '@/push';
@@ -22,8 +23,10 @@ export default function OtpScreen() {
       await signIn(res.token, res.user);
       registerForPush();
       router.replace(res.user.name ? '/home' : '/name');
-    } catch {
-      setError(t('invalidOtp'));
+    } catch (e) {
+      // 429: too many wrong codes, so the server has thrown this code away.
+      setError(e instanceof ApiError && e.status === 429 ? t('tooManyOtp') : t('invalidOtp'));
+      setCode('');
       setBusy(false);
     }
   }
@@ -49,7 +52,16 @@ export default function OtpScreen() {
       />
       <ErrorText>{error}</ErrorText>
       <BigButton label={t('verify')} icon="check-bold" onPress={() => verify()} loading={busy} disabled={code.length !== 4} />
-      <BigButton label={t('resend')} kind="secondary" onPress={() => api.sendOtp(phone).catch(() => undefined)} />
+      <BigButton
+        label={t('resend')}
+        kind="secondary"
+        onPress={() =>
+          api.sendOtp(phone).then(
+            () => setError(''),
+            (e) => setError(e instanceof ApiError && e.status === 429 ? t('tooManyRequests') : t('somethingWrong')),
+          )
+        }
+      />
     </Screen>
   );
 }

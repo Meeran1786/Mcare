@@ -12,6 +12,14 @@ export class ApiError extends Error {
 
 let authToken: string | null = null;
 let onUnauthorized: (() => void) | null = null;
+let appLanguage = 'en';
+
+/** Sent as X-App-Language so the API answers FAQs and pages in the person's language. */
+export function setAppLanguage(code: string) {
+  appLanguage = code;
+}
+
+export const getAppLanguage = () => appLanguage;
 
 export function setAuthToken(token: string | null) {
   authToken = token;
@@ -31,7 +39,7 @@ export async function request<T>(method: string, path: string, { body, form, que
         .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
         .join('&')
     : '';
-  const headers: Record<string, string> = { Accept: 'application/json' };
+  const headers: Record<string, string> = { Accept: 'application/json', 'X-App-Language': appLanguage };
   if (authToken) headers.Authorization = `Bearer ${authToken}`;
   if (body !== undefined) headers['Content-Type'] = 'application/json';
 

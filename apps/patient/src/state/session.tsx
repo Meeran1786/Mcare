@@ -1,7 +1,8 @@
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { setAuthToken, setUnauthorizedHandler } from '@/api/client';
+import { setAppLanguage, setAuthToken, setUnauthorizedHandler } from '@/api/client';
 import { api, type User } from '@/api/mcare';
+import { registerForPush } from '@/push';
 import { deviceLanguage, getLanguage, type LangCode, type Language, translate } from '@/i18n';
 
 import { storage } from './storage';
@@ -60,11 +61,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setAuthToken(savedToken);
         setToken(savedToken);
         api.profile().then(setUser).catch(() => undefined);
+        api.reminders().catch(() => undefined); // reschedules the phone's alarms
+        registerForPush().catch(() => undefined);
       }
       setReady(true);
     })();
     return () => setUnauthorizedHandler(null);
   }, []);
+
+  useEffect(() => setAppLanguage(langCode), [langCode]);
 
   const value = useMemo<Session>(() => {
     const lang = getLanguage(langCode);
@@ -79,7 +84,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setLangCode(code);
         setLanguageChosen(true);
         await storage.set(LANG_KEY, code);
-        if (token) api.setLanguage(code).catch(() => undefined);
+        if (token) {
+          api.setLanguage(code).catch(() => undefined);
+          api.reminders().catch(() => undefined); // alarm text in the new language
+        }
       },
       signIn: async (newToken, newUser) => {
         setAuthToken(newToken);
