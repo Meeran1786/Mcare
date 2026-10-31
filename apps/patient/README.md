@@ -56,7 +56,7 @@ npx expo run:android   # or: npx expo run:ios  (needs Xcode on a Mac)
 - **Push notifications:** put the Firebase `google-services.json` (Android) in this folder. It is git-ignored on purpose. The backend's FCM pushes for orders then reach the app.
 - **Medicine reminders ring as local phone alarms** (`src/reminders/alarms.ts`), so they work offline and survive battery saving. The app re-schedules them whenever the reminder list loads or changes. It tells the backend `local_reminders: true` when it saves the push token, so the server skips its own reminder push for this app and only old app versions get it. The backend side (`ReminderNotificationService`, `users.local_reminders`) is in the same pull request.
 - **iOS** (`com.Mcare`): builds and runs, but push is not wired yet. The backend sends through FCM, so iOS needs the Firebase SDK to exchange the APNs token for an FCM token.
-- Build in the cloud with EAS: `npx eas build --platform all`, after `npx eas init` under your Expo account.
+- Build in the cloud with EAS. Step by step: [../BUILDING.md](../BUILDING.md).
 
 ## Known follow-ups
 

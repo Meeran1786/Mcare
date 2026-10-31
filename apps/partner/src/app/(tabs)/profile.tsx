@@ -67,7 +67,9 @@ export default function ProfileScreen() {
       )}
       <ErrorText>{error}</ErrorText>
       {!!info && <T color={colors.success}>{info}</T>}
+      <BigButton label={t('editDetails')} icon="pencil" kind="secondary" onPress={() => router.push('/edit-pharmacy')} />
       <BigButton label={t('history')} icon="history" kind="secondary" onPress={() => router.push('/history')} />
+      <BigButton label={t('exportTitle')} icon="file-export" kind="secondary" onPress={() => router.push('/export')} />
       <BigButton label={t('notifications')} icon="bell" kind="secondary" onPress={() => router.push('/notifications')} />
       <BigButton label={t('language')} icon="translate" kind="secondary" onPress={() => router.push('/change-language')} />
       <BigButton label={t('help')} icon="lifebuoy" kind="secondary" onPress={() => router.push('/help')} />

@@ -153,13 +153,58 @@ export interface DeliveryUpdate {
   delivery_note?: string;
 }
 
+export interface PharmacyUpdate {
+  name: string;
+  mobile_number: string;
+  email?: string | null;
+  pharmacy_name: string;
+  license_number: string;
+  registration_number?: string;
+  gst_number?: string;
+  address_line: string;
+  area: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
+
+export interface ExportRow {
+  order_id: number;
+  customer_name: string;
+  prescription_count: number;
+  delivered_date: string | null;
+  amount: number;
+  delivery_status: string;
+}
+
+export interface ExportResult {
+  summary: { total_prescriptions_delivered: number; total_earnings: number; orders_count: number };
+  data: ExportRow[];
+}
+
 type Paginated<T> = { data: T[]; current_page: number; last_page: number };
 
+/** A photo or a PDF chosen on the phone. */
+export interface PickedFile {
+  uri: string;
+  name?: string | null;
+  mimeType?: string | null;
+}
+
+/** "application/pdf" etc. from what the picker told us, or from the file name. */
+export function fileType(file: PickedFile): { ext: 'pdf' | 'png' | 'jpg'; type: string } {
+  const source = `${file.mimeType ?? ''} ${file.name ?? ''} ${file.uri.split('?')[0]}`.toLowerCase();
+  if (/pdf/.test(source)) return { ext: 'pdf', type: 'application/pdf' };
+  if (/png/.test(source)) return { ext: 'png', type: 'image/png' };
+  return { ext: 'jpg', type: 'image/jpeg' };
+}
+
 /** React Native's FormData takes { uri, name, type } objects for files. */
-function fileField(uri: string, name: string) {
-  const ext = (uri.split('.').pop() ?? 'jpg').toLowerCase().split('?')[0];
-  const type = ext === 'pdf' ? 'application/pdf' : ext === 'png' ? 'image/png' : 'image/jpeg';
-  return { uri, name: `${name}.${ext === 'pdf' || ext === 'png' ? ext : 'jpg'}`, type } as unknown as Blob;
+function fileField(file: PickedFile | string, name: string) {
+  const f = typeof file === 'string' ? { uri: file } : file;
+  const { ext, type } = fileType(f);
+  return { uri: f.uri, name: `${name}.${ext}`, type } as unknown as Blob;
 }
 
 export const api = {
@@ -197,10 +242,10 @@ export const api = {
     return request<{ data: { pharmacy_id: number } }>('POST', '/vendor/pharmacy', { form });
   },
 
-  uploadDocuments: (licenseUri: string, gstUri?: string) => {
+  uploadDocuments: (license: PickedFile, gst?: PickedFile | null) => {
     const form = new FormData();
-    form.append('license_file', fileField(licenseUri, 'license'));
-    if (gstUri) form.append('gst_file', fileField(gstUri, 'gst'));
+    form.append('license_file', fileField(license, 'license'));
+    if (gst) form.append('gst_file', fileField(gst, 'gst'));
     return request<{ data: { verification_status: string } }>('POST', '/vendor/pharmacy/documents', { form });
   },
 
@@ -209,6 +254,14 @@ export const api = {
     form.append('pharmacy_photo', fileField(uri, 'pharmacy'));
     return request('POST', '/vendor/pharmacy/update-photo', { form });
   },
+
+  /** Saves the owner's and pharmacy's details. The API needs every required field each time. */
+  updatePharmacy: (p: PharmacyUpdate) =>
+    request<{ data: { pharmacy: PharmacyDetails } }>('PUT', '/vendor/pharmacy', { body: p }),
+
+  /** Delivered and completed orders between two dates (YYYY-MM-DD), for the export file. */
+  exportDelivered: (from_date: string, to_date: string) =>
+    request<ExportResult>('GET', '/vendor/orders/export', { query: { from_date, to_date } }),
 
   /** "Receive orders" switch. Offline pharmacies get no new prescriptions. */
   setOnline: (online: boolean) =>

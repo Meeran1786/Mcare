@@ -49,6 +49,8 @@ function RootStack() {
         <Stack.Screen name="order/[id]" options={{ title: '' }} />
         <Stack.Screen name="history" options={{ title: t('history') }} />
         <Stack.Screen name="notifications" options={{ title: t('notifications') }} />
+        <Stack.Screen name="edit-pharmacy" options={{ title: t('editDetails') }} />
+        <Stack.Screen name="export" options={{ title: t('exportTitle') }} />
       </Stack.Protected>
 
       <Stack.Protected guard={signedIn}>
