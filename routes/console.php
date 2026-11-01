@@ -58,3 +58,7 @@ Artisan::command('firebase:check', function () {
         return self::FAILURE;
     }
 })->purpose('Verify Firebase service-account credentials for FCM');
+
+Schedule::command('doses:check-missed --grace=30')
+    ->everyFiveMinutes()
+    ->withoutOverlapping();

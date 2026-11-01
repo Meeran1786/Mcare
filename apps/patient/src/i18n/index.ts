@@ -56,7 +56,7 @@ export function deviceLanguage(): LangCode {
   return getLanguage(tag).code;
 }
 
-type StringKey = { [K in keyof Strings]: Strings[K] extends string ? K : never }[keyof Strings];
+export type StringKey = { [K in keyof Strings]: Strings[K] extends string ? K : never }[keyof Strings];
 
 export function translate(lang: Language, key: StringKey, vars: Record<string, string | number> = {}): string {
   const template = lang.strings[key] ?? en[key];

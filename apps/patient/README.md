@@ -15,6 +15,13 @@ The main new feature is **voice commands** in 12 languages, so older people can 
 ![English and Hindi](docs/screens-en-hi.png)
 ![Tamil, Urdu and Bengali](docs/screens-ta-ur-bn.png)
 
+## Doses and family
+
+- Each medicine alarm has **I took it** and **Snooze 10 min** buttons. "I took it" saves the dose (`POST /api/doses`). Snooze rings the same dose again 10 minutes later.
+- Home shows **Today's medicines**: taken, not marked yet, or later today. A dose not marked yet has a big "I took it" button.
+- **Profile › Family**: the patient taps "Add a family member" and gets a 6-digit code (valid 30 minutes) to share. The family member enters it in their own Mcare+ app. From then on they see the patient's doses for today and the last 7 days.
+- If a dose is not marked within 30 minutes, the server (`php artisan doses:check-missed`, every 5 minutes) records it as missed and sends each family member a push: "Amma has not taken Metformin due at 08:00 AM". Tapping it opens that person's page. Only patients with a linked family member are checked.
+
 ## How voice works
 
 Everything runs on the phone. No AI service and no backend change is involved.

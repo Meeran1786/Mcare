@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\NotificationController;
 
 use App\Http\Controllers\Api\ReminderController;
+use App\Http\Controllers\Api\DoseController;
+use App\Http\Controllers\Api\CaregiverController;
 
 use App\Http\Controllers\Api\HelpController;
 
@@ -142,6 +144,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reminders/{id}/toggle', [ReminderController::class, 'toggle']);
     Route::delete('/reminders/{id}', [ReminderController::class, 'destroy']);
     Route::get('/reminders/{id}', [ReminderController::class, 'show']);
+
+    // Dose history and family (caregiver) links
+    Route::get('/doses', [DoseController::class, 'index']);
+    Route::post('/doses', [DoseController::class, 'store']);
+    Route::get('/caregivers', [CaregiverController::class, 'index']);
+    Route::post('/caregivers/invite', [CaregiverController::class, 'invite']);
+    Route::post('/caregivers/accept', [CaregiverController::class, 'accept'])->middleware('throttle:10,1');
+    Route::delete('/caregivers/{id}', [CaregiverController::class, 'destroy']);
+    Route::get('/caregivers/patients/{id}/summary', [CaregiverController::class, 'summary']);
 
 
     
