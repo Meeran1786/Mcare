@@ -62,3 +62,7 @@ Artisan::command('firebase:check', function () {
 Schedule::command('doses:check-missed --grace=30')
     ->everyFiveMinutes()
     ->withoutOverlapping();
+
+Schedule::command('reminders:check-refills --days=3')
+    ->hourly()
+    ->withoutOverlapping();

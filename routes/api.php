@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\NotificationController;
 
 use App\Http\Controllers\Api\ReminderController;
 use App\Http\Controllers\Api\DoseController;
+use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\CaregiverController;
 
 use App\Http\Controllers\Api\HelpController;
@@ -144,6 +145,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reminders/{id}/toggle', [ReminderController::class, 'toggle']);
     Route::delete('/reminders/{id}', [ReminderController::class, 'destroy']);
     Route::get('/reminders/{id}', [ReminderController::class, 'show']);
+
+    // Price before preparing
+    Route::post('/vendor/orders/{id}/quote', [QuoteController::class, 'send']);
+    Route::post('/user/orders/{id}/quote/approve', [QuoteController::class, 'approve']);
+    Route::post('/user/orders/{id}/quote/decline', [QuoteController::class, 'decline']);
 
     // Dose history and family (caregiver) links
     Route::get('/doses', [DoseController::class, 'index']);

@@ -22,6 +22,21 @@ class ReminderController extends Controller
             : 'Asia/Kolkata';
     }
 
+    /** A new tablet count restarts the estimate and allows a new refill alert. */
+    private function pillFields(Request $request): array
+    {
+        $fields = [];
+        if ($request->has('pills_per_dose') && $request->pills_per_dose !== null) {
+            $fields['pills_per_dose'] = $request->pills_per_dose;
+        }
+        if ($request->has('pills_left')) {
+            $fields['pills_left'] = $request->pills_left;
+            $fields['pills_counted_at'] = $request->pills_left === null ? null : now();
+            $fields['refill_alerted_at'] = null;
+        }
+        return $fields;
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
@@ -40,6 +55,9 @@ class ReminderController extends Controller
                     'medicine_name' => $item->medicine_name,
                     'timezone' => $item->timezone ?: config('app.timezone'),
                     'is_active' => $item->is_active,
+                    'pills_left' => $item->pillsRemaining() === null ? null : (int) floor($item->pillsRemaining()),
+                    'pills_per_dose' => $item->pills_per_dose,
+                    'days_left' => $item->daysLeft(),
                 ];
             });
 
@@ -64,7 +82,9 @@ class ReminderController extends Controller
             'days.*' => 'in:Sun,Mon,Tue,Wed,Thu,Fri,Sat',
             'timezone' => 'nullable|string|max:80',
             'note' => 'nullable|string|max:255',
-            'medicine_name' => 'nullable|string|max:255'
+            'medicine_name' => 'nullable|string|max:255',
+            'pills_left' => 'nullable|integer|min:0|max:10000',
+            'pills_per_dose' => 'nullable|numeric|min:0.25|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -82,7 +102,7 @@ class ReminderController extends Controller
             'note' => $request->note,
             'medicine_name' => $request->medicine_name,
             'is_active' => true
-        ]);
+        ] + $this->pillFields($request));
 
         return response()->json([
             'success' => true,
@@ -104,7 +124,9 @@ class ReminderController extends Controller
             'timezone' => 'nullable|string|max:80',
             'note' => 'nullable|string|max:255',
             'medicine_name' => 'nullable|string|max:255',
-            'is_active' => 'nullable|boolean'
+            'is_active' => 'nullable|boolean',
+            'pills_left' => 'nullable|integer|min:0|max:10000',
+            'pills_per_dose' => 'nullable|numeric|min:0.25|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +148,7 @@ class ReminderController extends Controller
             $data['timezone'] = $this->normalizeTimezone($request->timezone);
         }
 
-        $reminder->update($data);
+        $reminder->update($data + $this->pillFields($request));
 
         return response()->json([
             'success' => true,

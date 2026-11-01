@@ -32,6 +32,16 @@ export interface Reminder {
   medicine_name: string | null;
   timezone: string;
   is_active: boolean;
+  /** Tablets left now, worked out by the server from the count the person entered. */
+  pills_left?: number | null;
+  pills_per_dose?: number;
+  days_left?: number | null;
+}
+
+export interface PillCount {
+  /** null clears the count; leave it out to keep the current count. */
+  pills_left?: number | null;
+  pills_per_dose?: number;
 }
 
 export interface Pharmacy {
@@ -44,6 +54,9 @@ export interface Order {
   status: string;
   created_at: string;
   total_amount?: string | number | null;
+  quote_amount?: string | number | null;
+  quote_note?: string | null;
+  quote_status?: 'pending' | 'approved' | 'declined' | null;
   pharmacy?: Pharmacy | null;
 }
 
@@ -142,10 +155,10 @@ export const api = {
       return r.data;
     }),
 
-  createReminder: (r: { time: string; days: Day[]; medicine_name?: string; note?: string; timezone: string }) =>
+  createReminder: (r: { time: string; days: Day[]; medicine_name?: string; note?: string; timezone: string } & PillCount) =>
     thenResync(request<{ data: Reminder }>('POST', '/reminders', { body: r }).then((x) => x.data)),
 
-  updateReminder: (id: number, r: { time: string; days: Day[]; medicine_name?: string; timezone: string }) =>
+  updateReminder: (id: number, r: { time: string; days: Day[]; medicine_name?: string; timezone: string } & PillCount) =>
     thenResync(request<{ data: Reminder }>('PUT', `/reminders/${id}`, { body: r }).then((x) => x.data)),
 
   toggleReminder: (id: number) => thenResync(request('PUT', `/reminders/${id}/toggle`)),
@@ -156,6 +169,10 @@ export const api = {
     request<{ data: Paginated<Order> }>('GET', '/user/orders', { query: { status } }).then((r) => r.data.data),
 
   reorder: (id: number) => request<{ message: string }>('POST', `/orders/${id}/reorder`),
+
+  approveQuote: (id: number) => request('POST', `/user/orders/${id}/quote/approve`),
+
+  declineQuote: (id: number) => request('POST', `/user/orders/${id}/quote/decline`),
 
   confirmDelivery: (id: number) => request('POST', `/user/orders/${id}/confirm`),
 

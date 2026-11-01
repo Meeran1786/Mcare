@@ -5,6 +5,7 @@ import { api } from '@/api/mcare';
 import { BigButton, Card, Loading, Screen, T } from '@/components/ui';
 import { useLoad } from '@/hooks';
 import { formatDays, formatTime } from '@/i18n';
+import { runningLow } from '@/reminders/doses';
 import { useSession } from '@/state/session';
 import { colors, space } from '@/theme';
 
@@ -33,6 +34,11 @@ export default function RemindersScreen() {
                 <T variant="heading">{formatTime(lang, r.raw_time.slice(0, 5))}</T>
                 <T>{r.medicine_name || t('yourMedicine')}</T>
                 <T variant="small">{formatDays(lang, r.days)}</T>
+                {r.pills_left != null && (
+                  <T variant="small" color={runningLow(r) ? colors.danger : colors.muted}>
+                    {t('pillsStatus', { n: r.pills_left, days: r.days_left ?? 0 })}
+                  </T>
+                )}
               </View>
               <Switch
                 value={!!r.is_active}
@@ -41,6 +47,7 @@ export default function RemindersScreen() {
                 style={{ transform: [{ scale: 1.4 }] }}
               />
             </View>
+            {runningLow(r) && <BigButton label={t('orderMore')} icon="cart" onPress={() => router.push('/orders')} />}
             <BigButton label={t('delete')} icon="trash-can" kind="secondary" onPress={() => remove(r.id)} />
           </Card>
         </Pressable>

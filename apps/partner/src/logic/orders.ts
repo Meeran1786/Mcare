@@ -82,3 +82,11 @@ export function addressLine(a: Order['address'] | null | undefined): string {
   if (!a) return '';
   return [a.address_line, a.city, a.pincode].filter(Boolean).join(', ');
 }
+
+/**
+ * Whether the pharmacy must send a price (or wait for the patient's answer)
+ * before preparing. Orders already past "accepted" carry on as before.
+ */
+export function needsQuote(order: { status: string; quote_status?: string | null }): boolean {
+  return (order.status === 'pending' || order.status === 'accepted') && order.quote_status !== 'approved';
+}

@@ -107,6 +107,10 @@ export interface Order {
   delivery_clock_time: string | null;
   delivery_time: string | null;
   delivery_note: string | null;
+  /** The price sent to the patient, who approves it before preparing. */
+  quote_amount?: string | number | null;
+  quote_note?: string | null;
+  quote_status?: 'pending' | 'approved' | 'declined' | null;
   payment_status?: string;
   payment_method?: string;
   created_at: string;
@@ -285,6 +289,9 @@ export const api = {
     request<{ data: Order }>('PUT', `/vendor/orders/${id}/status`, { body: { status, ...delivery } }).then(
       (r) => r.data,
     ),
+
+  sendQuote: (id: number, amount: number, note?: string) =>
+    request<{ data: Order; auto_approved: boolean }>('POST', `/vendor/orders/${id}/quote`, { body: { amount, note } }),
 
   history: () => request<{ orders: HistoryOrder[] }>('GET', '/order-history').then((r) => r.orders),
 

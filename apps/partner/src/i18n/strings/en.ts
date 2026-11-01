@@ -171,6 +171,15 @@ const en = {
   colAmount: 'Amount',
   colStatus: 'Status',
   colTotal: 'Total',
+  quoteTitle: 'Send the price to the patient',
+  quoteHint: 'Check the prescription and enter the total bill. The patient approves it in their app before you prepare the medicines.',
+  quoteNote: 'Note for the patient (optional), e.g. which brand',
+  sendQuote: 'Send price',
+  quoteWaiting: 'Waiting for the patient to approve {amount}',
+  quoteWaitingHint: 'We will notify you when they answer. If they decline, the order is cancelled.',
+  changeQuote: 'Change the price',
+  quoteApproved: 'The patient approved {amount}.',
+  quoteAutoApproved: 'This patient uses an older Mcare+ app, so the price was saved without approval. You can prepare the order.',
 };
 
 export type Strings = typeof en;

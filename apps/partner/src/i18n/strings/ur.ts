@@ -174,6 +174,15 @@ const ur: Strings = {
   colAmount: 'رقم',
   colStatus: 'صورتحال',
   colTotal: 'کل',
+  quoteTitle: 'مریض کو قیمت بھیجیں',
+  quoteHint: 'نسخہ دیکھ کر کل بل درج کریں۔ دوائیں تیار کرنے سے پہلے مریض اپنی ایپ میں اسے منظور کرے گا۔',
+  quoteNote: 'مریض کے لیے نوٹ (اختیاری)، مثلاً کون سا برانڈ',
+  sendQuote: 'قیمت بھیجیں',
+  quoteWaiting: 'مریض کی منظوری کا انتظار: {amount}',
+  quoteWaitingHint: 'جواب آنے پر ہم آپ کو بتائیں گے۔ انکار پر آرڈر منسوخ ہو جائے گا۔',
+  changeQuote: 'قیمت بدلیں',
+  quoteApproved: 'مریض نے {amount} منظور کیا۔',
+  quoteAutoApproved: 'یہ مریض Mcare+ کی پرانی ایپ استعمال کرتا ہے، اس لیے قیمت بغیر منظوری کے محفوظ ہو گئی۔ آپ آرڈر تیار کر سکتے ہیں۔',
 };
 
 export default ur;

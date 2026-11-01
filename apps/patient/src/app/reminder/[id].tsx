@@ -35,6 +35,10 @@ export default function ReminderForm() {
   const [medicine, setMedicine] = useState('');
   const [time, setTime] = useState('08:00');
   const [days, setDays] = useState<Day[]>([...ALL_DAYS]);
+  // Only sent when changed, because a new count restarts the countdown.
+  const [pills, setPills] = useState('');
+  const [pillsTouched, setPillsTouched] = useState(false);
+  const [perDose, setPerDose] = useState(1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -46,6 +50,8 @@ export default function ReminderForm() {
       setMedicine(r.medicine_name ?? '');
       setTime(r.raw_time.slice(0, 5));
       setDays(r.days);
+      setPills(r.pills_left == null ? '' : String(r.pills_left));
+      setPerDose(r.pills_per_dose ?? 1);
     });
   }, [id, isNew, version]);
 
@@ -57,6 +63,8 @@ export default function ReminderForm() {
       days,
       medicine_name: medicine.trim() || undefined,
       timezone: getCalendars()[0]?.timeZone ?? 'Asia/Kolkata',
+      pills_per_dose: perDose,
+      ...(pillsTouched ? { pills_left: pills.trim() ? Number(pills) : null } : {}),
     };
     try {
       if (isNew) await api.createReminder(body);
@@ -95,6 +103,23 @@ export default function ReminderForm() {
       <View style={styles.wrap}>
         {ALL_DAYS.map((d, i) => (
           <Chip key={d} label={lang.strings.daysShort[i]} on={days.includes(d)} onPress={() => toggle(d)} />
+        ))}
+      </View>
+
+      <Field
+        label={t('pillsLeftLabel')}
+        placeholder={t('pillsLeftHint')}
+        value={pills}
+        onChangeText={(v) => {
+          setPills(v.replace(/\D/g, '').slice(0, 4));
+          setPillsTouched(true);
+        }}
+        keyboardType="number-pad"
+      />
+      <T variant="small">{t('pillsPerDose')}</T>
+      <View style={styles.wrap}>
+        {[0.5, 1, 2, 3].map((n) => (
+          <Chip key={n} label={n === 0.5 ? '½' : String(n)} on={perDose === n} onPress={() => setPerDose(n)} />
         ))}
       </View>
 

@@ -8,7 +8,7 @@ import { DoseList } from '@/components/dose-list';
 import { BigButton, Card, Screen, T } from '@/components/ui';
 import { useLoad } from '@/hooks';
 import { formatTime } from '@/i18n';
-import { dateKey, todaysDoses } from '@/reminders/doses';
+import { dateKey, runningLow, todaysDoses } from '@/reminders/doses';
 import { useSession } from '@/state/session';
 import { colors, space } from '@/theme';
 import { ALL_DAYS } from '@/voice/types';
@@ -44,6 +44,7 @@ export default function HomeScreen() {
   const [busy, setBusy] = useState<string | null>(null);
   const next = reminders ? nextReminder(reminders) : undefined;
   const doses = reminders ? todaysDoses(reminders, logs ?? []) : [];
+  const low = (reminders ?? []).filter(runningLow);
 
   const markTaken = (key: string) => {
     const dose = doses.find((d) => `${d.reminder.id}|${d.scheduledFor}` === key);
@@ -71,6 +72,17 @@ export default function HomeScreen() {
           {t('voiceExample')}
         </T>
       </Pressable>
+
+      {low.map((r) => (
+        <Card key={`low-${r.id}`} style={{ borderColor: colors.danger, borderWidth: 2 }}>
+          <T variant="heading">
+            {r.days_left
+              ? t('runsOutSoon', { medicine: r.medicine_name || t('yourMedicine'), days: r.days_left })
+              : t('runOut', { medicine: r.medicine_name || t('yourMedicine') })}
+          </T>
+          <BigButton label={t('orderMore')} icon="cart" onPress={() => router.push('/orders')} />
+        </Card>
+      ))}
 
       {doses.length > 0 && (
         <DoseList

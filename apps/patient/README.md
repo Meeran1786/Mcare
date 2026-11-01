@@ -22,6 +22,11 @@ The main new feature is **voice commands** in 12 languages, so older people can 
 - **Profile › Family**: the patient taps "Add a family member" and gets a 6-digit code (valid 30 minutes) to share. The family member enters it in their own Mcare+ app. From then on they see the patient's doses for today and the last 7 days.
 - If a dose is not marked within 30 minutes, the server (`php artisan doses:check-missed`, every 5 minutes) records it as missed and sends each family member a push: "Amma has not taken Metformin due at 08:00 AM". Tapping it opens that person's page. Only patients with a linked family member are checked.
 
+## Price before ordering and refills
+
+- When a pharmacy sends a price, the order shows it with **Yes, order at this price** and **No, cancel the order**. The pharmacy can only start preparing after "yes".
+- Each reminder can have a tablet count ("Tablets I have now") and tablets per dose. The server counts down one dose for every scheduled reminder time. Three days before they run out, Home and Reminders show **Order more**, and the patient and their linked family get a push (`php artisan reminders:check-refills`, hourly). Entering a new count after buying more restarts the countdown.
+
 ## How voice works
 
 Everything runs on the phone. No AI service and no backend change is involved.
