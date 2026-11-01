@@ -38,7 +38,7 @@ npx expo run:android  # or: npx expo run:ios (needs Xcode on a Mac)
 
 - **Android package `com.mcarepartner`, versionCode 2.** The live app is versionCode 1, so this installs as an update. You need the original upload key, or ask Google Play to reset it (Play Console › Test and release › App integrity).
 - **Push notifications:** put the Firebase `google-services.json` for `com.mcarepartner` in this folder (git-ignored). New-prescription pushes then arrive on the `admin_channel_v2` channel the backend uses.
-- **iOS** (`com.mcarepartner`): builds and runs, but push needs the Firebase SDK, as in the patient app.
+- **iOS** (`com.mcarepartner`): pushes go straight from the server to Apple using an APNs key, so iPhones need no Firebase file. See [../BUILDING.md](../BUILDING.md#iphone-builds).
 - Build in the cloud with EAS. Step by step: [../BUILDING.md](../BUILDING.md).
 
 ## Known follow-ups

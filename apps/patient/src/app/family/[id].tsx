@@ -1,32 +1,23 @@
-import { Stack, useLocalSearchParams } from "expo-router";
-import { Linking } from "react-native";
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { Linking } from 'react-native';
 
-import { api } from "@/api/mcare";
-import { DoseList } from "@/components/dose-list";
-import {
-    BigButton,
-    Card,
-    ErrorText,
-    Loading,
-    Screen,
-    T,
-} from "@/components/ui";
-import { useLoad } from "@/hooks";
-import { useSession } from "@/state/session";
+import { api } from '@/api/mcare';
+import { DoseList } from '@/components/dose-list';
+import { BigButton, Card, ErrorText, Loading, Screen, T } from '@/components/ui';
+import { useLoad } from '@/hooks';
+import { useSession } from '@/state/session';
 
 /** A family member's view of the person they look after. */
 export default function FamilyPersonScreen() {
     const { t } = useSession();
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { data, error, reload } = useLoad(() =>
-        api.familySummary(Number(id)),
-    );
+    const { data, error, reload } = useLoad(() => api.familySummary(Number(id)));
 
     if (error)
         return (
             <Screen>
-                <ErrorText>{t("somethingWrong")}</ErrorText>
-                <BigButton label={t("retry")} onPress={reload} />
+                <ErrorText>{t('somethingWrong')}</ErrorText>
+                <BigButton label={t('retry')} onPress={reload} />
             </Screen>
         );
     if (!data) return <Loading />;
@@ -47,12 +38,12 @@ export default function FamilyPersonScreen() {
                     }))}
                 />
             ) : (
-                <T>{t("familyNoDosesToday")}</T>
+                <T>{t('familyNoDosesToday')}</T>
             )}
             <Card>
-                <T variant="heading">{t("familyLast7Days")}</T>
+                <T variant="heading">{t('familyLast7Days')}</T>
                 <T>
-                    {t("familyWeek", {
+                    {t('familyWeek', {
                         taken: week.taken,
                         missed: week.missed,
                         skipped: week.skipped,
@@ -60,18 +51,11 @@ export default function FamilyPersonScreen() {
                 </T>
             </Card>
             <BigButton
-                label={t("familyCall", { name })}
+                label={t('familyCall', { name })}
                 icon="phone"
-                onPress={() =>
-                    Linking.openURL(`tel:+91${data.patient.mobile_number}`)
-                }
+                onPress={() => Linking.openURL(`tel:+91${data.patient.mobile_number}`)}
             />
-            <BigButton
-                label={t("refresh")}
-                icon="refresh"
-                kind="secondary"
-                onPress={reload}
-            />
+            <BigButton label={t('refresh')} icon="refresh" kind="secondary" onPress={reload} />
         </Screen>
     );
 }

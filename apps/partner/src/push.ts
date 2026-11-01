@@ -14,23 +14,25 @@ Notifications.setNotificationHandler({
 });
 
 /**
- * Registers for the backend's Firebase pushes ("new prescription", "patient
- * confirmed delivery"). On Android the device token from expo-notifications is
- * the FCM token. iOS needs the Firebase SDK to swap its APNs token for an FCM
- * token, which is a follow-up.
+ * Registers for the backend's pushes ("new prescription", "patient confirmed
+ * delivery"). On Android the device token from expo-notifications is the FCM
+ * token. On iOS it is Apple's own push token, which the backend recognises and
+ * sends straight to Apple (app/Services/ApnsService.php).
  */
 export async function registerForPush(): Promise<void> {
   if (Platform.OS === 'web') return;
   const { granted } = await Notifications.requestPermissionsAsync();
-  if (!granted || Platform.OS !== 'android') return;
+  if (!granted) return;
   // The backend sends new-prescription pushes to pharmacies on admin_channel_v2.
-  for (const id of ['default', 'admin_channel_v2']) {
-    await Notifications.setNotificationChannelAsync(id, {
-      name: id === 'default' ? 'Mcare+ Partner' : 'New orders',
-      importance: AndroidImportance.MAX,
-      sound: 'default',
-      vibrationPattern: [0, 500, 250, 500],
-    });
+  if (Platform.OS === 'android') {
+    for (const id of ['default', 'admin_channel_v2']) {
+      await Notifications.setNotificationChannelAsync(id, {
+        name: id === 'default' ? 'Mcare+ Partner' : 'New orders',
+        importance: AndroidImportance.MAX,
+        sound: 'default',
+        vibrationPattern: [0, 500, 250, 500],
+      });
+    }
   }
   try {
     const token = await Notifications.getDevicePushTokenAsync();

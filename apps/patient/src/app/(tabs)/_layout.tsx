@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Redirect, usePathname } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { IconName } from '@/components/ui';
 import { useSession } from '@/state/session';
@@ -18,6 +19,9 @@ export default function TabLayout() {
   const { t, user } = useSession();
   // Home already has a large speak button, so the floating one would only cover content.
   const onHome = usePathname() === '/home';
+  // Leave room for the iPhone home indicator below the tabs.
+  const bottomInset = useSafeAreaInsets().bottom;
+  const tabHeight = 84 + bottomInset;
   if (user && !user.name) return <Redirect href="/name" />;
 
   return (
@@ -27,7 +31,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.muted,
-          tabBarStyle: { height: 84, paddingTop: 8, paddingBottom: 12 },
+          tabBarStyle: { height: tabHeight, paddingTop: 8, paddingBottom: 12 + bottomInset },
           tabBarLabelStyle: { fontSize: 15, fontWeight: '600' },
         }}>
         <Tabs.Screen name="home" options={{ title: t('tabHome'), tabBarIcon: icon('home-heart') }} />
@@ -36,7 +40,7 @@ export default function TabLayout() {
         <Tabs.Screen name="profile" options={{ title: t('tabProfile'), tabBarIcon: icon('account-circle') }} />
       </Tabs>
       {!onHome && (
-        <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: 84, top: 0 }}>
+        <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: tabHeight, top: 0 }}>
           <MicButton />
         </View>
       )}

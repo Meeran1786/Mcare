@@ -20,7 +20,11 @@ export type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 export function Screen({ children, scroll = true }: { children: ReactNode; scroll?: boolean }) {
   const body = scroll ? (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
+      // iOS does not move the screen up for the keyboard by itself.
+      automaticallyAdjustKeyboardInsets>
       {children}
     </ScrollView>
   ) : (

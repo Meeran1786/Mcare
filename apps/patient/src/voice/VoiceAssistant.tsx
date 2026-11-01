@@ -42,6 +42,9 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   const [micOn, setMicOn] = useState(false);
   const pending = useRef<Prepared | null>(null);
   const listeningFor = useRef<'command' | 'confirm' | 'time'>('command');
+  // Some phones (often iPhones) have no recogniser for a language such as Odia.
+  // Then we listen in Indian English, which the merged phrase lists still understand.
+  const fallback = useRef<{ for: string; lang: string } | null>(null);
 
   const ctx: Ctx = useMemo(
     () => ({ lang, api, timezone: getCalendars()[0]?.timeZone ?? 'Asia/Kolkata' }),
@@ -63,7 +66,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
         setPhase({ name: 'listening', for: purpose });
       }
       ExpoSpeechRecognitionModule.start({
-        lang: lang.speech,
+        lang: fallback.current?.for === lang.speech ? fallback.current.lang : lang.speech,
         interimResults: true,
         continuous: false,
         // Older people pause mid-sentence; wait a little longer before stopping.
@@ -170,6 +173,9 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
       // We stopped it ourselves.
     } else if (event.error === 'not-allowed') {
       setPhase({ name: 'message', text: t('micDenied') });
+    } else if (event.error === 'language-not-supported' && fallback.current?.for !== lang.speech) {
+      fallback.current = { for: lang.speech, lang: 'en-IN' };
+      listen(listeningFor.current);
     } else {
       setPhase({ name: 'message', text: t('voiceUnavailable') });
     }

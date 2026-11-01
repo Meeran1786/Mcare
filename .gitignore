@@ -25,6 +25,8 @@ Thumbs.db
 
 # Never commit secrets, data dumps or user uploads
 /storage/app/firebase.json
+/storage/app/apns.p8
+*.p8
 *.sql
 *.sql~
 scheduler-output.txt

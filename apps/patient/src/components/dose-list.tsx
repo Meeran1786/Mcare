@@ -1,77 +1,61 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Card, type IconName, T } from "@/components/ui";
-import type { StringKey } from "@/i18n";
-import { formatTime } from "@/i18n";
-import { useSession } from "@/state/session";
-import { colors, space, TOUCH } from "@/theme";
+import { Card, type IconName, T } from '@/components/ui';
+import type { StringKey } from '@/i18n';
+import { formatTime } from '@/i18n';
+import { useSession } from '@/state/session';
+import { colors, space, TOUCH } from '@/theme';
 
 export type DoseRow = {
     key: string;
     medicine: string | null;
     hhmm: string;
-    state: "taken" | "skipped" | "missed" | "due" | "upcoming";
+    state: 'taken' | 'skipped' | 'missed' | 'due' | 'upcoming';
 };
 
-const LOOK: Record<
-    DoseRow["state"],
-    { icon: IconName; color: string; label: StringKey }
-> = {
+const LOOK: Record<DoseRow['state'], { icon: IconName; color: string; label: StringKey }> = {
     taken: {
-        icon: "check-circle",
+        icon: 'check-circle',
         color: colors.success,
-        label: "doseStateTaken",
+        label: 'doseStateTaken',
     },
     skipped: {
-        icon: "close-circle-outline",
+        icon: 'close-circle-outline',
         color: colors.muted,
-        label: "doseStateSkipped",
+        label: 'doseStateSkipped',
     },
     missed: {
-        icon: "alert-circle",
+        icon: 'alert-circle',
         color: colors.danger,
-        label: "doseStateMissed",
+        label: 'doseStateMissed',
     },
     due: {
-        icon: "clock-alert-outline",
+        icon: 'clock-alert-outline',
         color: colors.accent,
-        label: "doseStateDue",
+        label: 'doseStateDue',
     },
     upcoming: {
-        icon: "clock-outline",
+        icon: 'clock-outline',
         color: colors.muted,
-        label: "doseStateUpcoming",
+        label: 'doseStateUpcoming',
     },
 };
 
 /** Today's doses. With onTaken, doses not yet marked get a big "I took it" button. */
-export function DoseList({
-    rows,
-    onTaken,
-    busy,
-}: {
-    rows: DoseRow[];
-    onTaken?: (key: string) => void;
-    busy?: string | null;
-}) {
+export function DoseList({ rows, onTaken, busy }: { rows: DoseRow[]; onTaken?: (key: string) => void; busy?: string | null }) {
     const { t, lang } = useSession();
     return (
         <Card>
-            <T variant="heading">{t("todaysMedicines")}</T>
+            <T variant="heading">{t('todaysMedicines')}</T>
             {rows.map((d) => {
                 const look = LOOK[d.state];
-                const canMark =
-                    onTaken && (d.state === "due" || d.state === "missed");
+                const canMark = onTaken && (d.state === 'due' || d.state === 'missed');
                 return (
                     <View key={d.key} style={styles.row}>
-                        <MaterialCommunityIcons
-                            name={look.icon}
-                            size={36}
-                            color={look.color}
-                        />
+                        <MaterialCommunityIcons name={look.icon} size={36} color={look.color} />
                         <View style={{ flex: 1 }}>
-                            <T>{d.medicine || t("yourMedicine")}</T>
+                            <T>{d.medicine || t('yourMedicine')}</T>
                             <T variant="small">
                                 {formatTime(lang, d.hhmm)} · {t(look.label)}
                             </T>
@@ -86,9 +70,8 @@ export function DoseList({
                                     (pressed || busy === d.key) && {
                                         opacity: 0.7,
                                     },
-                                ]}
-                            >
-                                <T color={colors.onPrimary}>{t("doseTaken")}</T>
+                                ]}>
+                                <T color={colors.onPrimary}>{t('doseTaken')}</T>
                             </Pressable>
                         )}
                     </View>
@@ -100,8 +83,8 @@ export function DoseList({
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: space.md,
         paddingVertical: space.sm,
     },
@@ -110,6 +93,6 @@ const styles = StyleSheet.create({
         minHeight: TOUCH,
         paddingHorizontal: space.md,
         borderRadius: 14,
-        justifyContent: "center",
+        justifyContent: 'center',
     },
 });
