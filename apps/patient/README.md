@@ -22,6 +22,11 @@ The main new feature is **voice commands** in 12 languages, so older people can 
 - **Profile › Family**: the patient taps "Add a family member" and gets a 6-digit code (valid 30 minutes) to share. The family member enters it in their own Mcare+ app. From then on they see the patient's doses for today and the last 7 days.
 - If a dose is not marked within 30 minutes, the server (`php artisan doses:check-missed`, every 5 minutes) records it as missed and sends each family member a push: "Amma has not taken Metformin due at 08:00 AM". Tapping it opens that person's page. Only patients with a linked family member are checked.
 
+## Price before ordering and refills
+
+- When a pharmacy sends a price, the order shows it with **Yes, order at this price** and **No, cancel the order**. The pharmacy can only start preparing after "yes".
+- Each reminder can have a tablet count ("Tablets I have now") and tablets per dose. The server counts down one dose for every scheduled reminder time. Three days before they run out, Home and Reminders show **Order more**, and the patient and their linked family get a push (`php artisan reminders:check-refills`, hourly). Entering a new count after buying more restarts the countdown.
+
 ## How voice works
 
 Everything runs on the phone. No AI service and no backend change is involved.
@@ -62,7 +67,7 @@ npx expo run:android   # or: npx expo run:ios  (needs Xcode on a Mac)
 - **Android package `com.Mcare`, versionCode 5.** This matches the live Play Store app (versionCode 4), so the new app installs as an update. You need the original upload key, or ask Google Play to reset the upload key (Play Console › Test and release › App integrity).
 - **Push notifications:** put the Firebase `google-services.json` (Android) in this folder. It is git-ignored on purpose. The backend's FCM pushes for orders then reach the app.
 - **Medicine reminders ring as local phone alarms** (`src/reminders/alarms.ts`), so they work offline and survive battery saving. The app re-schedules them whenever the reminder list loads or changes. It tells the backend `local_reminders: true` when it saves the push token, so the server skips its own reminder push for this app and only old app versions get it. The backend side (`ReminderNotificationService`, `users.local_reminders`) is in the same pull request.
-- **iOS** (`com.Mcare`): builds and runs, but push is not wired yet. The backend sends through FCM, so iOS needs the Firebase SDK to exchange the APNs token for an FCM token.
+- **iOS** (`com.Mcare`): pushes go straight from the server to Apple using an APNs key, so iPhones need no Firebase file. See [../BUILDING.md](../BUILDING.md#iphone-builds).
 - Build in the cloud with EAS. Step by step: [../BUILDING.md](../BUILDING.md).
 
 ## Known follow-ups

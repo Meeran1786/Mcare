@@ -38,6 +38,16 @@ return [
     'firebase' => [
         'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
+
+    // iPhone pushes go straight to Apple. The .p8 key is a secret: keep it in
+    // storage/app/apns.p8 (git-ignored), never in the repository.
+    'apns' => [
+        'key_path' => env('APNS_KEY_PATH', storage_path('app/apns.p8')),
+        'key_id' => env('APNS_KEY_ID'),
+        'team_id' => env('APNS_TEAM_ID'),
+        'patient_bundle' => env('APNS_PATIENT_BUNDLE', 'com.Mcare'),
+        'partner_bundle' => env('APNS_PARTNER_BUNDLE', 'com.mcarepartner'),
+    ],
     
     'two_factor' => [
         'api_key' => env('TWO_FACTOR_API_KEY'),

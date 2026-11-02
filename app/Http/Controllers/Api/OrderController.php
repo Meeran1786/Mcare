@@ -408,6 +408,16 @@ class OrderController extends Controller
             ], 400);
         }
 
+        // A price sent with the 2.0 Partner app must be approved before preparing.
+        $beforePreparing = ['pending', 'accepted'];
+        if ($order->quote_status === 'pending' && !in_array($request->status, $beforePreparing, true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please wait until the patient approves the price.',
+                'waiting_for_quote' => true,
+            ], 422);
+        }
+
         $hasDeliveryDate = $request->filled('delivery_date') || $order->delivery_date;
         $hasDeliveryTime = $request->filled('delivery_clock_time') || $request->filled('delivery_time') || $order->delivery_clock_time || $order->delivery_time;
         $hasAmount = $request->filled('amount') || $order->total_amount;

@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router/tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { IconName } from '@/components/ui';
 import { useSession } from '@/state/session';
@@ -13,13 +14,15 @@ function icon(name: IconName) {
 
 export default function TabLayout() {
   const { t } = useSession();
+  // Leave room for the iPhone home indicator below the tabs.
+  const bottomInset = useSafeAreaInsets().bottom;
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.muted,
-        tabBarStyle: { height: 76, paddingTop: 6, paddingBottom: 10 },
+        tabBarStyle: { height: 76 + bottomInset, paddingTop: 6, paddingBottom: 10 + bottomInset },
         tabBarLabelStyle: { fontSize: 14, fontWeight: '600' },
       }}>
       <Tabs.Screen name="requests" options={{ title: t('tabRequests'), tabBarIcon: icon('file-document-multiple') }} />

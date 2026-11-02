@@ -15,6 +15,7 @@ import {
   missingForDispatch,
   money,
   needsDeliveryDetails,
+  needsQuote,
   nextDays,
   nextStatus,
   parseAmount,
@@ -59,7 +60,7 @@ export default function OrderScreen() {
       </Card>
       <CallButton phone={order.user?.mobile_number} />
 
-      <Steps order={order} onChange={setOrder} />
+      {needsQuote(order) ? <Quote order={order} onChange={setOrder} reload={reload} /> : <Steps order={order} onChange={setOrder} />}
 
       <T variant="heading">{t('prescriptionImage')}</T>
       <PrescriptionImages urls={(p?.files ?? []).map((f) => f.url).filter((u): u is string => !!u)} />
@@ -67,6 +68,58 @@ export default function OrderScreen() {
         <T variant="small">{`${t('deliveryDate')}: ${formatDate(lang, order.delivery_date)} ${formatClock(lang, order.delivery_clock_time)}`}</T>
       )}
     </Screen>
+  );
+}
+
+/** Step 1 for a new order: send the price, then wait for the patient to approve it. */
+function Quote({ order, onChange, reload }: { order: Order; onChange: (o: Order) => void; reload: () => void }) {
+  const { t } = useSession();
+  const waiting = order.quote_status === 'pending';
+  const [editing, setEditing] = useState(!waiting);
+  const [amount, setAmount] = useState(order.quote_amount ? String(Number(order.quote_amount)) : '');
+  const [note, setNote] = useState(order.quote_note ?? '');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
+
+  async function send() {
+    const parsed = parseAmount(amount);
+    if (parsed === null) return setError(t('invalidAmount'));
+    setError('');
+    setBusy(true);
+    try {
+      const r = await api.sendQuote(order.id, parsed, note.trim() || undefined);
+      onChange({ ...order, ...r.data });
+      setInfo(r.auto_approved ? t('quoteAutoApproved') : '');
+      setEditing(false);
+    } catch {
+      setError(t('somethingWrong'));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (waiting && !editing)
+    return (
+      <Card>
+        <T variant="heading">{t('quoteWaiting', { amount: money(order.quote_amount) })}</T>
+        <T variant="small">{t('quoteWaitingHint')}</T>
+        <BigButton label={t('refresh')} icon="refresh" onPress={reload} />
+        <BigButton label={t('changeQuote')} icon="pencil" kind="secondary" onPress={() => setEditing(true)} />
+      </Card>
+    );
+
+  return (
+    <Card>
+      <T variant="heading">{t('quoteTitle')}</T>
+      <T variant="small">{t('quoteHint')}</T>
+      <Field label={t('amount')} placeholder={t('amountHint')} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" />
+      {!!amount && parseAmount(amount) !== null && <T variant="small">{money(parseAmount(amount))}</T>}
+      <Field label={t('quoteNote')} value={note} onChangeText={setNote} multiline />
+      <ErrorText>{error}</ErrorText>
+      {!!info && <T color={colors.success}>{info}</T>}
+      <BigButton label={t('sendQuote')} icon="send" onPress={send} loading={busy} disabled={busy} />
+    </Card>
   );
 }
 
@@ -118,6 +171,9 @@ function Steps({ order, onChange }: { order: Order; onChange: (o: Order) => void
 
   return (
     <Card>
+      {order.quote_status === 'approved' && order.quote_amount != null && (
+        <T color={colors.success}>{t('quoteApproved', { amount: money(order.quote_amount) })}</T>
+      )}
       <Field label={t('amount')} placeholder={t('amountHint')} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" />
       {!!amount && parseAmount(amount) !== null && <T variant="small">{money(parseAmount(amount))}</T>}
 

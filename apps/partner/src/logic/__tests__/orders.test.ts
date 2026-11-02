@@ -84,3 +84,16 @@ describe('delivery address', () => {
     expect(addressLine(a)).toBe('1 Main Rd, Hyderabad, 500001');
   });
 });
+
+describe('price before preparing', () => {
+  const { needsQuote } = jest.requireActual('../orders') as typeof import('../orders');
+  test('new orders need an approved price first', () => {
+    expect(needsQuote({ status: 'pending', quote_status: null })).toBe(true);
+    expect(needsQuote({ status: 'accepted', quote_status: 'pending' })).toBe(true);
+    expect(needsQuote({ status: 'accepted', quote_status: 'approved' })).toBe(false);
+  });
+  test('orders already being prepared carry on', () => {
+    expect(needsQuote({ status: 'preparing' })).toBe(false);
+    expect(needsQuote({ status: 'cancelled', quote_status: 'declined' })).toBe(false);
+  });
+});

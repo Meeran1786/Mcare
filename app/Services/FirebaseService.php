@@ -15,6 +15,12 @@ class FirebaseService
             return false;
         }
 
+        // iPhones running the 2.0 apps register their Apple push token, which
+        // FCM cannot deliver to. Those go straight to Apple instead.
+        if (ApnsService::isApnsToken($fcmToken)) {
+            return app(ApnsService::class)->send($fcmToken, $title, $message, $extraData);
+        }
+
         $credentialsPath = storage_path('app/firebase.json');
         $projectId = config('services.firebase.project_id');
 

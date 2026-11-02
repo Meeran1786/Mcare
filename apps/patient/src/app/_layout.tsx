@@ -1,111 +1,71 @@
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 
-import { useDoseResponses } from "@/reminders/responses";
-import { SessionProvider, useSession } from "@/state/session";
-import { colors, font } from "@/theme";
-import { VoiceProvider } from "@/voice/VoiceAssistant";
+import { useDoseResponses } from '@/reminders/responses';
+import { SessionProvider, useSession } from '@/state/session';
+import { colors, font } from '@/theme';
+import { VoiceProvider } from '@/voice/VoiceAssistant';
 
 SplashScreen.preventAutoHideAsync();
 
 function DoseResponses() {
-    useDoseResponses();
-    return null;
+  useDoseResponses();
+  return null;
 }
 
 function RootStack() {
-    const { ready, token, languageChosen, t } = useSession();
+  const { ready, token, languageChosen, t } = useSession();
 
-    useEffect(() => {
-        if (ready) SplashScreen.hideAsync();
-    }, [ready]);
-    if (!ready) return null;
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync();
+  }, [ready]);
+  if (!ready) return null;
 
-    return (
-        <>
-            {token && <DoseResponses />}
-            <Stack
-                screenOptions={{
-                    headerStyle: { backgroundColor: colors.background },
-                    headerTitleStyle: {
-                        fontSize: font.heading,
-                        fontWeight: "700",
-                    },
-                    headerTintColor: colors.primaryDark,
-                    contentStyle: { backgroundColor: colors.background },
-                }}
-            >
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-                <Stack.Protected guard={!languageChosen}>
-                    <Stack.Screen
-                        name="language"
-                        options={{ headerShown: false }}
-                    />
-                </Stack.Protected>
-                <Stack.Protected guard={languageChosen && !token}>
-                    <Stack.Screen
-                        name="login"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen name="otp" options={{ title: "" }} />
-                </Stack.Protected>
-                <Stack.Protected guard={!!token}>
-                    <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="name"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="reminder/[id]"
-                        options={{ title: t("addReminder") }}
-                    />
-                    <Stack.Screen
-                        name="upload"
-                        options={{ title: t("uploadTitle") }}
-                    />
-                    <Stack.Screen
-                        name="notifications"
-                        options={{ title: t("notifications") }}
-                    />
-                    <Stack.Screen
-                        name="change-language"
-                        options={{ title: t("language") }}
-                    />
-                    <Stack.Screen
-                        name="addresses"
-                        options={{ title: t("addresses") }}
-                    />
-                    <Stack.Screen
-                        name="address/new"
-                        options={{ title: t("addAddress") }}
-                    />
-                    <Stack.Screen name="help" options={{ title: t("help") }} />
-                    <Stack.Screen
-                        name="family/index"
-                        options={{ title: t("family") }}
-                    />
-                    <Stack.Screen
-                        name="family/[id]"
-                        options={{ title: t("family") }}
-                    />
-                </Stack.Protected>
-            </Stack>
-        </>
-    );
+  return (
+    <>
+      {token && <DoseResponses />}
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.background },
+          headerTitleStyle: { fontSize: font.heading, fontWeight: '700' },
+          headerTintColor: colors.primaryDark,
+          contentStyle: { backgroundColor: colors.background },
+        }}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Protected guard={!languageChosen}>
+          <Stack.Screen name="language" options={{ headerShown: false }} />
+        </Stack.Protected>
+        <Stack.Protected guard={languageChosen && !token}>
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="otp" options={{ title: '' }} />
+        </Stack.Protected>
+        <Stack.Protected guard={!!token}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="name" options={{ headerShown: false }} />
+          <Stack.Screen name="reminder/[id]" options={{ title: t('addReminder') }} />
+          <Stack.Screen name="upload" options={{ title: t('uploadTitle') }} />
+          <Stack.Screen name="notifications" options={{ title: t('notifications') }} />
+          <Stack.Screen name="change-language" options={{ title: t('language') }} />
+          <Stack.Screen name="addresses" options={{ title: t('addresses') }} />
+          <Stack.Screen name="address/new" options={{ title: t('addAddress') }} />
+          <Stack.Screen name="help" options={{ title: t('help') }} />
+          <Stack.Screen name="family/index" options={{ title: t('family') }} />
+          <Stack.Screen name="family/[id]" options={{ title: t('family') }} />
+        </Stack.Protected>
+      </Stack>
+    </>
+  );
 }
 
 export default function RootLayout() {
-    return (
-        <SessionProvider>
-            <VoiceProvider>
-                <StatusBar style="dark" />
-                <RootStack />
-            </VoiceProvider>
-        </SessionProvider>
-    );
+  return (
+    <SessionProvider>
+      <VoiceProvider>
+        <StatusBar style="dark" />
+        <RootStack />
+      </VoiceProvider>
+    </SessionProvider>
+  );
 }

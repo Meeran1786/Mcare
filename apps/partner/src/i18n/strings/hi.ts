@@ -174,6 +174,15 @@ const hi: Strings = {
   colAmount: 'रकम',
   colStatus: 'स्थिति',
   colTotal: 'कुल',
+  quoteTitle: 'मरीज़ को कीमत भेजें',
+  quoteHint: 'पर्चा देखकर कुल बिल डालें। दवा तैयार करने से पहले मरीज़ अपने ऐप में इसे मंज़ूर करेगा।',
+  quoteNote: 'मरीज़ के लिए नोट (वैकल्पिक), जैसे कौन सा ब्रांड',
+  sendQuote: 'कीमत भेजें',
+  quoteWaiting: 'मरीज़ की मंज़ूरी का इंतज़ार: {amount}',
+  quoteWaitingHint: 'जवाब आने पर हम आपको बताएँगे। मना करने पर ऑर्डर रद्द हो जाएगा।',
+  changeQuote: 'कीमत बदलें',
+  quoteApproved: 'मरीज़ ने {amount} मंज़ूर किया।',
+  quoteAutoApproved: 'यह मरीज़ Mcare+ का पुराना ऐप इस्तेमाल करता है, इसलिए कीमत बिना मंज़ूरी के सेव हो गई। आप ऑर्डर तैयार कर सकते हैं।',
 };
 
 export default hi;

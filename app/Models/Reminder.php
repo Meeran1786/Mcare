@@ -22,6 +22,10 @@ class Reminder extends Model
         'timezone',
         'last_sent_at',
         'last_sent_key',
+        'pills_left',
+        'pills_per_dose',
+        'pills_counted_at',
+        'refill_alerted_at',
     ];
 
     /* =========================================
@@ -37,6 +41,10 @@ class Reminder extends Model
         'days' => 'array',
         'is_active' => 'boolean',
         'last_sent_at' => 'datetime',
+        'pills_left' => 'integer',
+        'pills_per_dose' => 'float',
+        'pills_counted_at' => 'datetime',
+        'refill_alerted_at' => 'datetime',
     ];
 
     /* =========================================
@@ -73,6 +81,53 @@ class Reminder extends Model
     public function getFormattedTimeAttribute()
     {
         return \Carbon\Carbon::parse($this->time)->format('h:i A');
+    }
+
+    /* =========================================
+    | REFILL ESTIMATE
+    ==========================================*/
+
+    /**
+     * Tablets left now: the count the patient entered, minus one dose for every
+     * scheduled reminder time since then. Null when no count was entered.
+     */
+    public function pillsRemaining(?\Carbon\Carbon $now = null): ?float
+    {
+        if ($this->pills_left === null || !$this->pills_counted_at) {
+            return null;
+        }
+
+        $tz = $this->timezone ?: config('app.timezone');
+        $now = ($now ?? \Carbon\Carbon::now())->copy()->setTimezone($tz);
+        $from = $this->pills_counted_at->copy()->setTimezone($tz);
+        $days = $this->days ?? [];
+        $doses = 0;
+
+        // Walk day by day (at most a year) and count dose times in (from, now].
+        $day = $from->copy()->startOfDay();
+        for ($i = 0; $i < 400 && $day->lessThanOrEqualTo($now); $i++, $day->addDay()) {
+            if (!in_array($day->format('D'), $days, true)) {
+                continue;
+            }
+            $at = $day->copy()->setTimeFromTimeString($this->time);
+            if ($at->greaterThan($from) && $at->lessThanOrEqualTo($now)) {
+                $doses++;
+            }
+        }
+
+        return max(0, $this->pills_left - $doses * ($this->pills_per_dose ?: 1));
+    }
+
+    /** Whole days until the tablets run out, from the weekly schedule. */
+    public function daysLeft(?\Carbon\Carbon $now = null): ?int
+    {
+        $left = $this->pillsRemaining($now);
+        $perWeek = count($this->days ?? []) * ($this->pills_per_dose ?: 1);
+        if ($left === null || $perWeek <= 0) {
+            return null;
+        }
+
+        return (int) floor($left / ($perWeek / 7));
     }
 
     // Short days (for UI)

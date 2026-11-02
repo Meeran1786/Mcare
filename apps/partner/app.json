@@ -14,7 +14,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Mcare+ Partner uses the camera to photograph your pharmacy, licence and GST documents.",
         "NSPhotoLibraryUsageDescription": "Mcare+ Partner lets you upload your pharmacy photo and documents from your gallery.",
-        "NSLocationWhenInUseUsageDescription": "Mcare+ Partner uses your location to place your pharmacy on the map so nearby patients can reach you."
+        "NSLocationWhenInUseUsageDescription": "Mcare+ Partner uses your location to place your pharmacy on the map so nearby patients can reach you.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

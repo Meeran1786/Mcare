@@ -22,25 +22,26 @@ Notifications.setNotificationHandler({
  * skips this phone.
  *
  * Android: the device token from expo-notifications is the FCM token.
- * iOS: the backend sends through FCM, so iOS needs the Firebase SDK to swap the
- * APNs token for an FCM token. Until that is added, iOS gets alarms but no
- * order pushes.
+ * iOS: the device token is Apple's own push token. The backend recognises it
+ * and sends straight to Apple (app/Services/ApnsService.php).
  */
 export async function registerForPush(): Promise<void> {
   if (Platform.OS === 'web') return;
   await setupReminderChannel();
   const { granted } = await Notifications.requestPermissionsAsync();
-  if (!granted || Platform.OS !== 'android') return;
-  await Notifications.setNotificationChannelAsync('default', {
-    name: 'Mcare',
-    importance: AndroidImportance.MAX,
-    sound: 'default',
-    vibrationPattern: [0, 400, 200, 400],
-  });
+  if (!granted) return;
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'Mcare',
+      importance: AndroidImportance.MAX,
+      sound: 'default',
+      vibrationPattern: [0, 400, 200, 400],
+    });
+  }
   try {
     const token = await Notifications.getDevicePushTokenAsync();
     await api.saveFcmToken(String(token.data), Platform.OS);
   } catch {
-    // No google-services.json in this build, or no network: try again next launch.
+    // No push set up in this build (Firebase file or Apple push key), or no network: try again next launch.
   }
 }

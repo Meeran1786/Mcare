@@ -16,7 +16,8 @@
         "NSPhotoLibraryUsageDescription": "Mcare+ lets you upload prescription photos from your gallery.",
         "NSLocationWhenInUseUsageDescription": "Mcare+ uses your location to find pharmacies that deliver to you.",
         "NSMicrophoneUsageDescription": "Mcare+ listens when you tap the microphone so you can set reminders and order medicines by voice.",
-        "NSSpeechRecognitionUsageDescription": "Mcare+ turns your voice into text so you can set reminders and order medicines by speaking."
+        "NSSpeechRecognitionUsageDescription": "Mcare+ turns your voice into text so you can set reminders and order medicines by speaking.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
