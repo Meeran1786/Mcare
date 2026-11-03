@@ -211,6 +211,15 @@ function fileField(file: PickedFile | string, name: string) {
   return { uri: f.uri, name: `${name}.${ext}`, type } as unknown as Blob;
 }
 
+/** The pharmacy's plan. Plans are sold only on the website, so no price here. */
+export interface PlanStatus {
+  plan: string;
+  plan_name: string;
+  is_trial: boolean;
+  ends_at: string | null;
+  days_left: number | null;
+}
+
 export const api = {
   sendOtp: (mobile: string) =>
     request<{ success: boolean }>('POST', '/auth/send-otp', { body: { mobile_number: mobile, role: 'vendor' } }),
@@ -297,6 +306,7 @@ export const api = {
 
   analytics: () => request<{ data: Analytics }>('GET', '/vendor/analytics').then((r) => r.data),
 
+  plan: () => request<{ data: PlanStatus }>('GET', '/plan').then((r) => r.data),
   faqs: () => request<{ data: Faq[] }>('GET', '/faqs/help').then((r) => r.data),
 
   sendHelp: (subject: string, message: string) => request('POST', '/help', { body: { subject, message } }),

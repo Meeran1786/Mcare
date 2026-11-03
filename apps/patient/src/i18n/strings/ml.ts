@@ -165,6 +165,10 @@ const ml: Strings = {
   runsOutSoon: '{medicine} ഏകദേശം {days} ദിവസത്തിനുള്ളിൽ തീരും',
   runOut: '{medicine} തീർന്നു',
   orderMore: 'കൂടുതൽ ഓർഡർ ചെയ്യുക',
+  planFree: 'പ്ലാൻ: സൗജന്യം',
+  planTrial: 'പ്ലാൻ: {name}, സൗജന്യ ട്രയൽ, {days} ദിവസം ബാക്കി',
+  planPaid: 'പ്ലാൻ: {name}, {date} വരെ',
+  familyLimitReached: 'ഈ കുടുംബത്തിൽ പ്ലാൻ അനുവദിക്കുന്നത്ര അംഗങ്ങൾ ഇതിനകം ഉണ്ട്.',
 };
 
 export default ml;

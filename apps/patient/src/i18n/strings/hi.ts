@@ -165,6 +165,10 @@ const hi: Strings = {
   runsOutSoon: '{medicine} लगभग {days} दिन में खत्म हो जाएगी',
   runOut: '{medicine} खत्म हो गई है',
   orderMore: 'और मँगवाएँ',
+  planFree: 'प्लान: फ़्री',
+  planTrial: 'प्लान: {name}, फ़्री ट्रायल, {days} दिन बाकी',
+  planPaid: 'प्लान: {name}, {date} तक',
+  familyLimitReached: 'इस परिवार में प्लान के हिसाब से जितने सदस्य हो सकते हैं, उतने पहले से हैं।',
 };
 
 export default hi;

@@ -49,6 +49,14 @@ return [
         'partner_bundle' => env('APNS_PARTNER_BUNDLE', 'com.mcarepartner'),
     ],
     
+    // Website payments for plans. The key secret and webhook secret live only
+    // in the server .env, never in the repository or in chat.
+    'razorpay' => [
+        'key_id' => env('RAZORPAY_KEY_ID'),
+        'key_secret' => env('RAZORPAY_KEY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+    ],
+
     'two_factor' => [
         'api_key' => env('TWO_FACTOR_API_KEY'),
         'otp_template' => env('TWO_FACTOR_OTP_TEMPLATE', 'OTP1'),

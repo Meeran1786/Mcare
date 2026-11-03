@@ -165,6 +165,10 @@ const ta: Strings = {
   runsOutSoon: '{medicine} சுமார் {days} நாட்களில் தீர்ந்துவிடும்',
   runOut: '{medicine} தீர்ந்துவிட்டது',
   orderMore: 'மேலும் ஆர்டர் செய்யவும்',
+  planFree: 'திட்டம்: இலவசம்',
+  planTrial: 'திட்டம்: {name}, இலவச சோதனை, இன்னும் {days} நாட்கள்',
+  planPaid: 'திட்டம்: {name}, {date} வரை',
+  familyLimitReached: 'இந்தக் குடும்பத்தில் திட்டம் அனுமதிக்கும் அதிகபட்ச உறுப்பினர்கள் ஏற்கனவே உள்ளனர்.',
 };
 
 export default ta;

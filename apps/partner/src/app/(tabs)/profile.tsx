@@ -6,11 +6,14 @@ import { Image, StyleSheet, View } from 'react-native';
 import { api } from '@/api/partner';
 import { PhotoSlot } from '@/components/bits';
 import { BigButton, Card, ErrorText, Screen, T } from '@/components/ui';
+import { useLoad } from '@/hooks';
+import { planLine } from '@/plan';
 import { useSession } from '@/state/session';
 import { colors, space } from '@/theme';
 
 export default function ProfileScreen() {
-  const { t, pharmacy, owner, refreshPharmacy, signOut } = useSession();
+  const { t, lang, pharmacy, owner, refreshPharmacy, signOut } = useSession();
+  const { data: plan } = useLoad(api.plan);
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
@@ -49,6 +52,7 @@ export default function ProfileScreen() {
           <T color={colors.success}>{t('verified')}</T>
         </View>
       )}
+      {plan ? <T variant="small">{planLine(t, plan, lang.locale)}</T> : null}
       <Card>
         <T variant="heading">{t('pharmacyDetails')}</T>
         {rows

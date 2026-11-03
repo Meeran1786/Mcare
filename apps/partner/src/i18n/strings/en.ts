@@ -180,6 +180,9 @@ const en = {
   changeQuote: 'Change the price',
   quoteApproved: 'The patient approved {amount}.',
   quoteAutoApproved: 'This patient uses an older Mcare+ app, so the price was saved without approval. You can prepare the order.',
+  planFree: 'Plan: Free',
+  planTrial: 'Plan: {name}, free trial, {days} days left',
+  planPaid: 'Plan: {name}, until {date}',
 };
 
 export type Strings = typeof en;

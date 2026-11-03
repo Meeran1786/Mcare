@@ -165,6 +165,10 @@ const mr: Strings = {
   runsOutSoon: '{medicine} सुमारे {days} दिवसांत संपेल',
   runOut: '{medicine} संपली आहे',
   orderMore: 'आणखी मागवा',
+  planFree: 'प्लॅन: मोफत',
+  planTrial: 'प्लॅन: {name}, मोफत ट्रायल, {days} दिवस बाकी',
+  planPaid: 'प्लॅन: {name}, {date} पर्यंत',
+  familyLimitReached: 'या कुटुंबात प्लॅननुसार जास्तीत जास्त सदस्य आधीच आहेत.',
 };
 
 export default mr;

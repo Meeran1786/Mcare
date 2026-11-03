@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Models\User;
+use App\Services\OtpService;
 use Carbon\Carbon;
 
 class AuthController extends Controller
@@ -59,69 +60,16 @@ class AuthController extends Controller
 
         }
 
-        $demoNumbers = config('services.otp.demo_numbers', []);
-        $otp = in_array($request->mobile_number, $demoNumbers, true)
-            ? 1234
-            : random_int(1000, 9999);
+        $error = app(OtpService::class)->send($request->mobile_number);
 
-        DB::table('otps')->updateOrInsert(
-            ['mobile_number' => $request->mobile_number],
-            [
-                'otp' => $otp,
-                'expires_at' => now()->addMinutes(5),
-                'updated_at' => now(),
-                'created_at' => now(),
-            ]
-        );
+        if ($error) {
+            [$message, $key, $status] = $error;
 
-        // A fresh code gets a fresh set of verify attempts. Never log the code itself.
-        RateLimiter::clear($this->verifyAttemptsKey($request->mobile_number));
-
-        if (!in_array($request->mobile_number, $demoNumbers, true)) {
-            $apiKey = config('services.two_factor.api_key');
-            $templateName = config('services.two_factor.otp_template');
-
-            if (!$apiKey || !$templateName) {
-                logger()->error('2Factor SMS configuration is missing.');
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'OTP SMS service is not configured',
-                    'message_key' => 'otpSmsNotConfigured'
-                ], 500);
-            }
-
-            try {
-                $response = Http::timeout(10)->post(
-                    "https://2factor.in/API/V1/{$apiKey}/SMS/{$request->mobile_number}/{$otp}/{$templateName}"
-                );
-            } catch (\Throwable $e) {
-                // The exception message contains the request URL, which holds the
-                // API key and the OTP, so only the exception type is logged.
-                logger()->error('2Factor OTP SMS request failed.', [
-                    'exception' => get_class($e),
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to send OTP SMS',
-                    'message_key' => 'otpSmsFailed'
-                ], 502);
-            }
-
-            if (!$response->successful() || data_get($response->json(), 'Status') !== 'Success') {
-                logger()->error('2Factor OTP SMS failed.', [
-                    'mobile_number' => $request->mobile_number,
-                    'status' => $response->status(),
-                    'response' => $response->json(),
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to send OTP SMS',
-                    'message_key' => 'otpSmsFailed'
-                ], 502);
-            }
+            return response()->json([
+                'success' => false,
+                'message' => $message,
+                'message_key' => $key
+            ], $status);
         }
 
         return response()->json([
@@ -139,24 +87,17 @@ class AuthController extends Controller
             'role' => 'required|in:user,vendor'
         ]);
 
-        $attemptsKey = $this->verifyAttemptsKey($request->mobile_number);
-        $maxAttempts = max(1, (int) config('services.otp.max_verify_attempts', 5));
+        $result = app(OtpService::class)->check($request->mobile_number, (string) $request->otp);
 
-        if (RateLimiter::tooManyAttempts($attemptsKey, $maxAttempts)) {
-            return $this->tooManyVerifyAttempts($request->mobile_number);
+        if ($result === 'locked') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Too many wrong attempts. Please request a new OTP.',
+                'message_key' => 'tooManyOtpAttempts'
+            ], 429);
         }
 
-        $storedOtp = DB::table('otps')
-            ->where('mobile_number', $request->mobile_number)
-            ->first();
-
-        if (!$storedOtp || !hash_equals((string) $storedOtp->otp, (string) $request->otp)) {
-            RateLimiter::hit($attemptsKey, 900);
-
-            if ($storedOtp && RateLimiter::tooManyAttempts($attemptsKey, $maxAttempts)) {
-                return $this->tooManyVerifyAttempts($request->mobile_number);
-            }
-
+        if ($result === 'invalid') {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid OTP',
@@ -164,9 +105,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $otpRecord = $storedOtp;
-
-        if (Carbon::now()->greaterThan($otpRecord->expires_at)) {
+        if ($result === 'expired') {
             return response()->json([
                 'success' => false,
                 'message' => 'OTP expired',
@@ -190,12 +129,6 @@ class AuthController extends Controller
 
         }
 
-        DB::table('otps')
-            ->where('mobile_number', $request->mobile_number)
-            ->delete();
-
-        RateLimiter::clear($attemptsKey);
-
         $token = $user->createToken('otp-login')->plainTextToken;
 
         return response()->json([
@@ -211,26 +144,6 @@ class AuthController extends Controller
             ],
         ]);
     }
-    private function verifyAttemptsKey(string $mobileNumber): string
-    {
-        return 'otp-verify-attempts:'.$mobileNumber;
-    }
-
-    /**
-     * Too many wrong codes: throw the OTP away so it cannot be guessed,
-     * and make the user request a new one.
-     */
-    private function tooManyVerifyAttempts(string $mobileNumber)
-    {
-        DB::table('otps')->where('mobile_number', $mobileNumber)->delete();
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Too many wrong attempts. Please request a new OTP.',
-            'message_key' => 'tooManyOtpAttempts'
-        ], 429);
-    }
-
    public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

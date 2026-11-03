@@ -7,6 +7,7 @@ use App\Models\CaregiverLink;
 use App\Models\DoseLog;
 use App\Models\Reminder;
 use App\Models\User;
+use App\Services\PlanService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -75,6 +76,25 @@ class CaregiverController extends Controller
         }
 
         $existing = CaregiverLink::where('patient_id', $link->patient_id)->where('caregiver_id', $me->id)->first();
+
+        // Free accounts have one family member; the Family plan allows more.
+        // People already linked stay linked if the plan ends.
+        if (!$existing || $existing->status !== 'active') {
+            $patient = User::find($link->patient_id);
+            $plans = app(PlanService::class);
+            $plans->startTrialIfNew($patient);
+            $max = $plans->limit($patient, 'family_members');
+            $count = CaregiverLink::active()->where('patient_id', $patient->id)->count();
+
+            if ($max !== null && $count >= $max) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This family already has the most members their plan allows.',
+                    'message_key' => 'familyLimitReached',
+                ], 422);
+            }
+        }
+
         if ($existing) {
             $link->delete();
             $existing->update(['status' => 'active']);

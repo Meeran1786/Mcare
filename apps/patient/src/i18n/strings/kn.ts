@@ -165,6 +165,10 @@ const kn: Strings = {
   runsOutSoon: '{medicine} ಸುಮಾರು {days} ದಿನಗಳಲ್ಲಿ ಮುಗಿಯುತ್ತದೆ',
   runOut: '{medicine} ಮುಗಿದಿದೆ',
   orderMore: 'ಇನ್ನಷ್ಟು ಆರ್ಡರ್ ಮಾಡಿ',
+  planFree: 'ಪ್ಲಾನ್: ಉಚಿತ',
+  planTrial: 'ಪ್ಲಾನ್: {name}, ಉಚಿತ ಟ್ರಯಲ್, ಇನ್ನೂ {days} ದಿನ',
+  planPaid: 'ಪ್ಲಾನ್: {name}, {date} ವರೆಗೆ',
+  familyLimitReached: 'ಈ ಕುಟುಂಬದಲ್ಲಿ ಪ್ಲಾನ್ ಅನುಮತಿಸುವಷ್ಟು ಸದಸ್ಯರು ಈಗಾಗಲೇ ಇದ್ದಾರೆ.',
 };
 
 export default kn;

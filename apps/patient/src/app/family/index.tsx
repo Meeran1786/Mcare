@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Share, View } from 'react-native';
 
+import { ApiError } from '@/api/client';
 import { api, type FamilyPerson } from '@/api/mcare';
 import { BigButton, Card, ErrorText, Field, Screen, T } from '@/components/ui';
 import { useLoad } from '@/hooks';
@@ -53,7 +54,13 @@ export default function FamilyScreen() {
         reload();
         router.push(`/family/${r.patient_id}`);
       })
-      .catch(() => setCodeError(t('familyCodeInvalid')))
+      .catch((e) =>
+        setCodeError(
+          e instanceof ApiError && (e.body as { message_key?: string })?.message_key === 'familyLimitReached'
+            ? t('familyLimitReached')
+            : t('familyCodeInvalid'),
+        ),
+      )
       .finally(() => setBusy(false));
   };
 

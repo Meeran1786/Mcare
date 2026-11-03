@@ -1,16 +1,21 @@
 import { router } from 'expo-router';
 
+import { api } from '@/api/mcare';
 import { BigButton, Card, Screen, T } from '@/components/ui';
+import { useLoad } from '@/hooks';
+import { planLine } from '@/plan';
 import { useSession } from '@/state/session';
 
 export default function ProfileScreen() {
   const { t, user, lang, signOut } = useSession();
+  const { data: plan } = useLoad(api.plan);
   return (
     <Screen>
       <T variant="title">{t('tabProfile')}</T>
       <Card>
         <T variant="heading">{user?.name ?? ''}</T>
         <T>+91 {user?.mobile_number ?? ''}</T>
+        {plan ? <T variant="small">{planLine(t, plan, lang.speech)}</T> : null}
       </Card>
       <BigButton label={`${t('language')}: ${lang.name}`} icon="translate" kind="secondary" onPress={() => router.push('/change-language')} />
       <BigButton label={t('family')} icon="account-heart" kind="secondary" onPress={() => router.push('/family')} />

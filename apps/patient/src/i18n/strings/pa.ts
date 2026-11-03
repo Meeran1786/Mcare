@@ -165,6 +165,10 @@ const pa: Strings = {
   runsOutSoon: '{medicine} ਲਗਭਗ {days} ਦਿਨਾਂ ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗੀ',
   runOut: '{medicine} ਖਤਮ ਹੋ ਗਈ ਹੈ',
   orderMore: 'ਹੋਰ ਮੰਗਵਾਓ',
+  planFree: 'ਪਲਾਨ: ਮੁਫ਼ਤ',
+  planTrial: 'ਪਲਾਨ: {name}, ਮੁਫ਼ਤ ਟ੍ਰਾਇਲ, {days} ਦਿਨ ਬਾਕੀ',
+  planPaid: 'ਪਲਾਨ: {name}, {date} ਤੱਕ',
+  familyLimitReached: 'ਇਸ ਪਰਿਵਾਰ ਵਿੱਚ ਪਲਾਨ ਮੁਤਾਬਕ ਵੱਧ ਤੋਂ ਵੱਧ ਮੈਂਬਰ ਪਹਿਲਾਂ ਹੀ ਹਨ।',
 };
 
 export default pa;
