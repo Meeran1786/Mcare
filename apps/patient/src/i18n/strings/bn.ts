@@ -165,6 +165,10 @@ const bn: Strings = {
   runsOutSoon: '{medicine} প্রায় {days} দিনে শেষ হয়ে যাবে',
   runOut: '{medicine} শেষ হয়ে গেছে',
   orderMore: 'আরও অর্ডার করুন',
+  planFree: 'প্ল্যান: ফ্রি',
+  planTrial: 'প্ল্যান: {name}, ফ্রি ট্রায়াল, আর {days} দিন',
+  planPaid: 'প্ল্যান: {name}, {date} পর্যন্ত',
+  familyLimitReached: 'এই পরিবারে প্ল্যান অনুযায়ী সর্বোচ্চ সদস্য আগেই আছেন।',
 };
 
 export default bn;

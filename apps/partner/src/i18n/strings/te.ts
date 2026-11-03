@@ -183,6 +183,9 @@ const te: Strings = {
   changeQuote: 'ధర మార్చండి',
   quoteApproved: 'రోగి {amount} ఆమోదించారు.',
   quoteAutoApproved: 'ఈ రోగి పాత Mcare+ యాప్ వాడుతున్నారు, కాబట్టి ధర ఆమోదం లేకుండా సేవ్ అయ్యింది. మీరు ఆర్డర్ సిద్ధం చేయవచ్చు.',
+  planFree: 'ప్లాన్: ఉచితం',
+  planTrial: 'ప్లాన్: {name}, ఉచిత ట్రయల్, {days} రోజులు మిగిలి ఉన్నాయి',
+  planPaid: 'ప్లాన్: {name}, {date} వరకు',
 };
 
 export default te;

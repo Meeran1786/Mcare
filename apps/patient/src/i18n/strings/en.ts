@@ -164,6 +164,10 @@ const en = {
   runsOutSoon: '{medicine} will run out in about {days} days',
   runOut: '{medicine} has run out',
   orderMore: 'Order more',
+  planFree: 'Plan: Free',
+  planTrial: 'Plan: {name}, free trial, {days} days left',
+  planPaid: 'Plan: {name}, until {date}',
+  familyLimitReached: 'This family already has the most members its plan allows.',
 };
 
 export type Strings = typeof en;

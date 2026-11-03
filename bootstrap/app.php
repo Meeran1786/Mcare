@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ]);
 
+        // Razorpay signs its webhook itself; it cannot send a CSRF token.
+        $middleware->validateCsrfTokens(except: ['razorpay/webhook']);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

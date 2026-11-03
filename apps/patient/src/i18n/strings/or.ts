@@ -165,6 +165,10 @@ const or: Strings = {
   runsOutSoon: '{medicine} ପ୍ରାୟ {days} ଦିନରେ ସରିଯିବ',
   runOut: '{medicine} ସରିଗଲା',
   orderMore: 'ଅଧିକ ଅର୍ଡର କରନ୍ତୁ',
+  planFree: 'ପ୍ଲାନ: ମାଗଣା',
+  planTrial: 'ପ୍ଲାନ: {name}, ମାଗଣା ଟ୍ରାଏଲ, ଆଉ {days} ଦିନ',
+  planPaid: 'ପ୍ଲାନ: {name}, {date} ପର୍ଯ୍ୟନ୍ତ',
+  familyLimitReached: 'ଏହି ପରିବାରରେ ପ୍ଲାନ ଅନୁଯାୟୀ ସର୍ବାଧିକ ସଦସ୍ୟ ପୂର୍ବରୁ ଅଛନ୍ତି।',
 };
 
 export default or;

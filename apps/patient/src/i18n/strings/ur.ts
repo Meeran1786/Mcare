@@ -165,6 +165,10 @@ const ur: Strings = {
   runsOutSoon: '{medicine} تقریباً {days} دن میں ختم ہو جائے گی',
   runOut: '{medicine} ختم ہو گئی ہے',
   orderMore: 'اور منگوائیں',
+  planFree: 'پلان: مفت',
+  planTrial: 'پلان: {name}، مفت ٹرائل، {days} دن باقی',
+  planPaid: 'پلان: {name}، {date} تک',
+  familyLimitReached: 'اس خاندان میں پلان کے مطابق جتنے ممبر ہو سکتے ہیں، اتنے پہلے سے ہیں۔',
 };
 
 export default ur;

@@ -165,6 +165,10 @@ const gu: Strings = {
   runsOutSoon: '{medicine} લગભગ {days} દિવસમાં ખૂટી જશે',
   runOut: '{medicine} ખૂટી ગઈ છે',
   orderMore: 'વધુ મંગાવો',
+  planFree: 'પ્લાન: મફત',
+  planTrial: 'પ્લાન: {name}, મફત ટ્રાયલ, {days} દિવસ બાકી',
+  planPaid: 'પ્લાન: {name}, {date} સુધી',
+  familyLimitReached: 'આ પરિવારમાં પ્લાન મુજબ મહત્તમ સભ્યો પહેલેથી છે.',
 };
 
 export default gu;

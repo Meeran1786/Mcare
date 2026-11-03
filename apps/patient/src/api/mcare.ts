@@ -123,6 +123,16 @@ export interface FamilySummary {
   last_7_days: { taken: number; skipped: number; missed: number };
 }
 
+/** The account's plan. Plans are sold only on the website, so no price here. */
+export interface PlanStatus {
+  plan: string;
+  plan_name: string;
+  is_trial: boolean;
+  ends_at: string | null;
+  days_left: number | null;
+  family_members: number | null;
+}
+
 type Paginated<T> = { data: T[]; current_page: number; last_page: number };
 
 export const api = {
@@ -219,6 +229,8 @@ export const api = {
     request<{ data: { id: number; patient_id: number; name: string | null } }>('POST', '/caregivers/accept', {
       body: { code },
     }).then((r) => r.data),
+
+  plan: () => request<{ data: PlanStatus }>('GET', '/plan').then((r) => r.data),
 
   familyRemove: (id: number) => request('DELETE', `/caregivers/${id}`),
 

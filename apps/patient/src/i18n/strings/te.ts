@@ -165,6 +165,10 @@ const te: Strings = {
   runsOutSoon: '{medicine} సుమారు {days} రోజుల్లో అయిపోతుంది',
   runOut: '{medicine} అయిపోయింది',
   orderMore: 'మరిన్ని ఆర్డర్ చేయండి',
+  planFree: 'ప్లాన్: ఉచితం',
+  planTrial: 'ప్లాన్: {name}, ఉచిత ట్రయల్, {days} రోజులు మిగిలి ఉన్నాయి',
+  planPaid: 'ప్లాన్: {name}, {date} వరకు',
+  familyLimitReached: 'ఈ కుటుంబంలో ప్లాన్ అనుమతించినంత మంది సభ్యులు ఇప్పటికే ఉన్నారు.',
 };
 
 export default te;

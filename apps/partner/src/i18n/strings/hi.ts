@@ -183,6 +183,9 @@ const hi: Strings = {
   changeQuote: 'कीमत बदलें',
   quoteApproved: 'मरीज़ ने {amount} मंज़ूर किया।',
   quoteAutoApproved: 'यह मरीज़ Mcare+ का पुराना ऐप इस्तेमाल करता है, इसलिए कीमत बिना मंज़ूरी के सेव हो गई। आप ऑर्डर तैयार कर सकते हैं।',
+  planFree: 'प्लान: फ़्री',
+  planTrial: 'प्लान: {name}, फ़्री ट्रायल, {days} दिन बाकी',
+  planPaid: 'प्लान: {name}, {date} तक',
 };
 
 export default hi;

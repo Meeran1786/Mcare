@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/complete', [ProfileController::class, 'completeProfile']);
     Route::post('/update-profile', [ProfileController::class, 'setupProfile']);
     Route::get('/profile', [ProfileController::class, 'getProfile']);
+    Route::get('/plan', [\App\Http\Controllers\Api\PlanController::class, 'show']);
 
     // Vendor pharmacy
     Route::get('/vendor/pharmacy', [PharmacyController::class, 'show']);

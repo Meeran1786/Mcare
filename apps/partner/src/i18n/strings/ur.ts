@@ -183,6 +183,9 @@ const ur: Strings = {
   changeQuote: 'قیمت بدلیں',
   quoteApproved: 'مریض نے {amount} منظور کیا۔',
   quoteAutoApproved: 'یہ مریض Mcare+ کی پرانی ایپ استعمال کرتا ہے، اس لیے قیمت بغیر منظوری کے محفوظ ہو گئی۔ آپ آرڈر تیار کر سکتے ہیں۔',
+  planFree: 'پلان: مفت',
+  planTrial: 'پلان: {name}، مفت ٹرائل، {days} دن باقی',
+  planPaid: 'پلان: {name}، {date} تک',
 };
 
 export default ur;

@@ -284,6 +284,27 @@ Route::post('/social-links/{id}/delete', [SocialLinkController::class, 'destroy'
 
 Route::view('/account-deletion', 'account-deletion')->name('account-deletion');
 
+/*
+|--------------------------------------------------------------------------
+| Plans and policy pages (website only: the apps never show prices)
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\Web\PlansController;
+
+Route::get('/plans', [PlansController::class, 'index'])->name('plans');
+Route::redirect('/pricing', '/plans');
+Route::post('/plans/send-otp', [PlansController::class, 'sendOtp'])->middleware('throttle:otp-send');
+Route::post('/plans/verify-otp', [PlansController::class, 'verifyOtp'])->middleware('throttle:otp-verify');
+Route::post('/plans/sign-out', [PlansController::class, 'signOut']);
+Route::post('/plans/order', [PlansController::class, 'createOrder'])->middleware('throttle:20,1');
+Route::post('/plans/confirm', [PlansController::class, 'confirm'])->middleware('throttle:20,1');
+Route::post('/razorpay/webhook', [PlansController::class, 'webhook']);
+
+Route::view('/refund-policy', 'site.refund')->name('refund-policy');
+Route::view('/shipping-policy', 'site.shipping')->name('shipping-policy');
+Route::view('/contact-us', 'site.contact')->name('contact-us');
+
 // React Landing Page (Fallback Route)
     Route::get('/{any}', function () {
         return file_get_contents(public_path('index.html'));
