@@ -169,6 +169,17 @@ const or: Strings = {
   planTrial: 'ପ୍ଲାନ: {name}, ମାଗଣା ଟ୍ରାଏଲ, ଆଉ {days} ଦିନ',
   planPaid: 'ପ୍ଲାନ: {name}, {date} ପର୍ଯ୍ୟନ୍ତ',
   familyLimitReached: 'ଏହି ପରିବାରରେ ପ୍ଲାନ ଅନୁଯାୟୀ ସର୍ବାଧିକ ସଦସ୍ୟ ପୂର୍ବରୁ ଅଛନ୍ତି।',
+  doseSkip: 'ଏଥର ନୁହେଁ',
+  sendTo: 'କାହାକୁ ପଠାଇବେ',
+  allNearby: 'ମୋ ପାଖର ସବୁ ଫାର୍ମାସି',
+  choosePharmacy: 'ନାମରେ ଫାର୍ମାସି ବାଛନ୍ତୁ',
+  changePharmacy: 'ଅନ୍ୟ ଫାର୍ମାସି ବାଛନ୍ତୁ',
+  pharmacyName: 'ଫାର୍ମାସିର ନାମ',
+  search: 'ଖୋଜନ୍ତୁ',
+  noPharmacyFound: 'ଏହି ନାମରେ କୌଣସି ଖୋଲା ଫାର୍ମାସି ମିଳିଲା ନାହିଁ।',
+  kmAway: '{km} କିମି ଦୂର',
+  tooFarToDeliver: 'ଡେଲିଭରି ପାଇଁ ବହୁତ ଦୂର',
+  sendToPharmacy: '{name}କୁ ପଠାନ୍ତୁ',
 };
 
 export default or;

@@ -10,7 +10,7 @@ import { Platform } from 'react-native';
 
 import { api } from '@/api/mcare';
 
-import { ACTION_SNOOZE, ACTION_TAKEN, snoozeDose } from './alarms';
+import { ACTION_SNOOZE, ACTION_TAKEN, isDoseAlarm, snoozeDose } from './alarms';
 import { doseKey } from './doses';
 
 const handled = new Set<string>();
@@ -41,10 +41,30 @@ async function handle(response: Notifications.NotificationResponse) {
     await snoozeDose(n.request.content, scheduledFor);
   } else if (response.actionIdentifier === ACTION_TAKEN) {
     await api.logDose(reminderId, scheduledFor, 'taken').catch(() => undefined);
+  } else {
+    // Tapping the alarm itself opens the big alarm page.
+    openAlarmPage(n, scheduledFor);
+    return;
   }
   await Notifications.dismissNotificationAsync(n.request.identifier).catch(() => undefined);
   router.navigate('/home');
 }
+
+function openAlarmPage(n: Notifications.Notification, scheduledFor: string) {
+  const data = (n.request.content.data ?? {}) as Record<string, unknown>;
+  router.push({
+    pathname: '/alarm',
+    params: {
+      notificationId: n.request.identifier,
+      reminderId: String(data.reminderId),
+      rawTime: String(data.rawTime),
+      medicine: typeof data.medicine === 'string' ? data.medicine : '',
+      scheduledFor,
+    },
+  });
+}
+
+const shownAlarms = new Set<string>();
 
 /** Mount once, after sign-in. */
 export function useDoseResponses() {
@@ -55,7 +75,20 @@ export function useDoseResponses() {
     const sub = Notifications.addNotificationResponseReceivedListener((r) => {
       handle(r).catch(() => undefined);
     });
-    return () => sub.remove();
+    // The app is open when the medicine time comes: show the alarm page at once.
+    const received = Notifications.addNotificationReceivedListener((n) => {
+      const data = (n.request.content.data ?? {}) as Record<string, unknown>;
+      const key = `${n.request.identifier}|${n.date}`;
+      if (!isDoseAlarm(data) || !data.reminderId || !data.rawTime || shownAlarms.has(key)) return;
+      shownAlarms.add(key);
+      const scheduledFor =
+        typeof data.scheduledFor === 'string' ? data.scheduledFor : doseKey(new Date(n.date), String(data.rawTime));
+      openAlarmPage(n, scheduledFor);
+    });
+    return () => {
+      sub.remove();
+      received.remove();
+    };
   }, []);
 
   useEffect(() => {

@@ -169,6 +169,17 @@ const gu: Strings = {
   planTrial: 'પ્લાન: {name}, મફત ટ્રાયલ, {days} દિવસ બાકી',
   planPaid: 'પ્લાન: {name}, {date} સુધી',
   familyLimitReached: 'આ પરિવારમાં પ્લાન મુજબ મહત્તમ સભ્યો પહેલેથી છે.',
+  doseSkip: 'આ વખતે નહીં',
+  sendTo: 'કોને મોકલવું',
+  allNearby: 'મારી નજીકની બધી ફાર્મસી',
+  choosePharmacy: 'નામથી ફાર્મસી પસંદ કરો',
+  changePharmacy: 'બીજી ફાર્મસી પસંદ કરો',
+  pharmacyName: 'ફાર્મસીનું નામ',
+  search: 'શોધો',
+  noPharmacyFound: 'આ નામની કોઈ ખુલ્લી ફાર્મસી મળી નથી.',
+  kmAway: '{km} કિમી દૂર',
+  tooFarToDeliver: 'ડિલિવરી માટે ખૂબ દૂર',
+  sendToPharmacy: '{name} ને મોકલો',
 };
 
 export default gu;

@@ -169,6 +169,17 @@ const mr: Strings = {
   planTrial: 'प्लॅन: {name}, मोफत ट्रायल, {days} दिवस बाकी',
   planPaid: 'प्लॅन: {name}, {date} पर्यंत',
   familyLimitReached: 'या कुटुंबात प्लॅननुसार जास्तीत जास्त सदस्य आधीच आहेत.',
+  doseSkip: 'या वेळी नको',
+  sendTo: 'कोणाला पाठवायचे',
+  allNearby: 'माझ्या जवळच्या सर्व फार्मसी',
+  choosePharmacy: 'नावाने फार्मसी निवडा',
+  changePharmacy: 'दुसरी फार्मसी निवडा',
+  pharmacyName: 'फार्मसीचे नाव',
+  search: 'शोधा',
+  noPharmacyFound: 'या नावाची कोणतीही उघडी फार्मसी सापडली नाही.',
+  kmAway: '{km} किमी दूर',
+  tooFarToDeliver: 'डिलिव्हरीसाठी खूप दूर',
+  sendToPharmacy: '{name} ला पाठवा',
 };
 
 export default mr;

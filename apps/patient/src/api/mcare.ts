@@ -49,6 +49,16 @@ export interface Pharmacy {
   pharmacy_name: string;
 }
 
+/** A pharmacy found by name. is_deliverable: within 5 km of the delivery point. */
+export interface PharmacyResult {
+  id: number;
+  pharmacy_name: string;
+  area: string | null;
+  city: string | null;
+  distance_km?: number | string | null;
+  is_deliverable?: number | boolean;
+}
+
 export interface Order {
   id: number;
   status: string;
@@ -199,14 +209,31 @@ export const api = {
 
   sendHelp: (subject: string, message: string) => request('POST', '/help', { body: { subject, message } }),
 
-  /** Sends prescription photos to every verified pharmacy within 5 km. */
-  uploadPrescription: (p: { uris: string[]; latitude: number; longitude: number; addressId?: number; notes?: string }) => {
+  /** Open pharmacies whose name matches, nearest first, including ones too far to deliver. */
+  searchPharmacies: (search: string, latitude: number, longitude: number) =>
+    request<{ data: { data: PharmacyResult[] } }>('GET', '/pharmacies', {
+      query: { search, lat: latitude, lng: longitude, radius: 5, limit: 20 },
+    }).then((r) => r.data.data),
+
+  /**
+   * Sends prescription photos to every verified pharmacy within 5 km, or only
+   * to the pharmacy the person chose.
+   */
+  uploadPrescription: (p: {
+    uris: string[];
+    latitude: number;
+    longitude: number;
+    addressId?: number;
+    notes?: string;
+    pharmacyId?: number;
+  }) => {
     const form = new FormData();
     p.uris.forEach((uri, i) => {
       // React Native's FormData accepts { uri, name, type } for files.
       form.append('files[]', { uri, name: `prescription-${i + 1}.jpg`, type: 'image/jpeg' } as unknown as Blob);
     });
-    form.append('mode', 'nearby');
+    form.append('mode', p.pharmacyId ? 'single' : 'nearby');
+    if (p.pharmacyId) form.append('pharmacy_id', String(p.pharmacyId));
     form.append('latitude', String(p.latitude));
     form.append('longitude', String(p.longitude));
     if (p.addressId) form.append('address_id', String(p.addressId));

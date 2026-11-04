@@ -41,6 +41,8 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   const [version, setVersion] = useState(0);
   const [micOn, setMicOn] = useState(false);
   const pending = useRef<Prepared | null>(null);
+  // The latest words heard in this listening turn, and whether they were acted on.
+  const latest = useRef({ text: '', acted: false });
   const listeningFor = useRef<'command' | 'confirm' | 'time'>('command');
   // Some phones (often iPhones) have no recogniser for a language such as Odia.
   // Then we listen in Indian English, which the merged phrase lists still understand.
@@ -79,13 +81,27 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   const say = useCallback(
     (text: string, then?: () => void) => {
       Speech.stop();
-      Speech.speak(text, { language: lang.speech, rate: 0.9, onDone: then });
+      // Some phones never report that speaking finished (for example when the
+      // voice for that language is not installed). Then the assistant used to
+      // wait forever and never heard "yes". Continue on whichever comes first:
+      // done, error, stopped, or a timer based on the length of the text.
+      let continued = false;
+      const next = () => {
+        if (continued) return;
+        continued = true;
+        clearTimeout(timer);
+        then?.();
+      };
+      const timer = setTimeout(next, 1500 + text.length * 90);
+      Speech.speak(text, { language: lang.speech, rate: 0.9, onDone: next, onError: next, onStopped: next });
     },
     [lang.speech],
   );
 
   const finish = useCallback(
     (out: Outcome) => {
+      latest.current.acted = true;
+      ExpoSpeechRecognitionModule.abort();
       pending.current = null;
       setPhase({ name: 'message', text: out.say });
       say(out.say);
@@ -113,6 +129,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   const confirm = useCallback(async () => {
     const p = pending.current;
     if (p?.kind !== 'confirm') return;
+    latest.current.acted = true;
     ExpoSpeechRecognitionModule.abort();
     setPhase({ name: 'working' });
     try {
@@ -123,6 +140,7 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
   }, [finish, t]);
 
   const cancel = useCallback(() => {
+    latest.current.acted = true;
     ExpoSpeechRecognitionModule.abort();
     Speech.stop();
     pending.current = null;
@@ -156,13 +174,30 @@ export function VoiceProvider({ children }: { children: ReactNode }) {
     [confirm, ctx, finish, listen, present, say, t],
   );
 
+  useSpeechRecognitionEvent('start', () => {
+    latest.current = { text: '', acted: false };
+  });
+
   useSpeechRecognitionEvent('result', (event) => {
     const transcript = event.results[0]?.transcript ?? '';
     setHeard(transcript);
-    if (event.isFinal && transcript) handle(transcript);
+    latest.current.text = transcript;
+    if (event.isFinal && transcript && !latest.current.acted) {
+      latest.current.acted = true;
+      handle(transcript);
+    }
   });
 
-  useSpeechRecognitionEvent('end', () => setMicOn(false));
+  useSpeechRecognitionEvent('end', () => {
+    setMicOn(false);
+    // Some Android phones stop listening without ever sending a "final"
+    // result. Act on the last words heard instead of waiting forever.
+    const { text, acted } = latest.current;
+    if (text && !acted) {
+      latest.current.acted = true;
+      handle(text);
+    }
+  });
 
   useSpeechRecognitionEvent('error', (event) => {
     if (listeningFor.current === 'confirm') {

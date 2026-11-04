@@ -169,6 +169,17 @@ const ml: Strings = {
   planTrial: 'പ്ലാൻ: {name}, സൗജന്യ ട്രയൽ, {days} ദിവസം ബാക്കി',
   planPaid: 'പ്ലാൻ: {name}, {date} വരെ',
   familyLimitReached: 'ഈ കുടുംബത്തിൽ പ്ലാൻ അനുവദിക്കുന്നത്ര അംഗങ്ങൾ ഇതിനകം ഉണ്ട്.',
+  doseSkip: 'ഇത്തവണ വേണ്ട',
+  sendTo: 'ആർക്ക് അയയ്ക്കണം',
+  allNearby: 'എന്റെ അടുത്തുള്ള എല്ലാ ഫാർമസികളും',
+  choosePharmacy: 'പേര് നൽകി ഫാർമസി തിരഞ്ഞെടുക്കുക',
+  changePharmacy: 'മറ്റൊരു ഫാർമസി തിരഞ്ഞെടുക്കുക',
+  pharmacyName: 'ഫാർമസിയുടെ പേര്',
+  search: 'തിരയുക',
+  noPharmacyFound: 'ഈ പേരിൽ തുറന്ന ഫാർമസി കണ്ടെത്തിയില്ല.',
+  kmAway: '{km} കി.മീ. അകലെ',
+  tooFarToDeliver: 'ഡെലിവറിക്ക് വളരെ ദൂരെ',
+  sendToPharmacy: '{name}-ന് അയയ്ക്കുക',
 };
 
 export default ml;

@@ -169,6 +169,17 @@ const ta: Strings = {
   planTrial: 'திட்டம்: {name}, இலவச சோதனை, இன்னும் {days} நாட்கள்',
   planPaid: 'திட்டம்: {name}, {date} வரை',
   familyLimitReached: 'இந்தக் குடும்பத்தில் திட்டம் அனுமதிக்கும் அதிகபட்ச உறுப்பினர்கள் ஏற்கனவே உள்ளனர்.',
+  doseSkip: 'இந்த முறை வேண்டாம்',
+  sendTo: 'யாருக்கு அனுப்ப',
+  allNearby: 'எனக்கு அருகிலுள்ள எல்லா மருந்தகங்களும்',
+  choosePharmacy: 'பெயரால் மருந்தகத்தைத் தேர்வு செய்யவும்',
+  changePharmacy: 'வேறு மருந்தகத்தைத் தேர்வு செய்யவும்',
+  pharmacyName: 'மருந்தகத்தின் பெயர்',
+  search: 'தேடு',
+  noPharmacyFound: 'இந்தப் பெயரில் திறந்த மருந்தகம் இல்லை.',
+  kmAway: '{km} கி.மீ. தொலைவில்',
+  tooFarToDeliver: 'டெலிவரிக்கு மிகத் தொலைவு',
+  sendToPharmacy: '{name}க்கு அனுப்பு',
 };
 
 export default ta;

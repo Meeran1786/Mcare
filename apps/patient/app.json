@@ -60,7 +60,10 @@
       [
         "expo-notifications",
         {
-          "color": "#1E63D6"
+          "color": "#1E63D6",
+          "sounds": [
+            "./assets/sounds/medicine_alarm.wav"
+          ]
         }
       ],
       [

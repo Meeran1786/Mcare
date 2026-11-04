@@ -169,6 +169,17 @@ const te: Strings = {
   planTrial: 'ప్లాన్: {name}, ఉచిత ట్రయల్, {days} రోజులు మిగిలి ఉన్నాయి',
   planPaid: 'ప్లాన్: {name}, {date} వరకు',
   familyLimitReached: 'ఈ కుటుంబంలో ప్లాన్ అనుమతించినంత మంది సభ్యులు ఇప్పటికే ఉన్నారు.',
+  doseSkip: 'ఈసారి వద్దు',
+  sendTo: 'ఎవరికి పంపాలి',
+  allNearby: 'నా దగ్గర ఉన్న అన్ని ఫార్మసీలు',
+  choosePharmacy: 'పేరుతో ఫార్మసీని ఎంచుకోండి',
+  changePharmacy: 'వేరే ఫార్మసీని ఎంచుకోండి',
+  pharmacyName: 'ఫార్మసీ పేరు',
+  search: 'వెతకండి',
+  noPharmacyFound: 'ఈ పేరుతో తెరిచి ఉన్న ఫార్మసీ ఏదీ లేదు.',
+  kmAway: '{km} కి.మీ. దూరం',
+  tooFarToDeliver: 'డెలివరీకి చాలా దూరం',
+  sendToPharmacy: '{name}కి పంపండి',
 };
 
 export default te;

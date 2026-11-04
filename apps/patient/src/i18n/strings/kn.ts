@@ -169,6 +169,17 @@ const kn: Strings = {
   planTrial: 'ಪ್ಲಾನ್: {name}, ಉಚಿತ ಟ್ರಯಲ್, ಇನ್ನೂ {days} ದಿನ',
   planPaid: 'ಪ್ಲಾನ್: {name}, {date} ವರೆಗೆ',
   familyLimitReached: 'ಈ ಕುಟುಂಬದಲ್ಲಿ ಪ್ಲಾನ್ ಅನುಮತಿಸುವಷ್ಟು ಸದಸ್ಯರು ಈಗಾಗಲೇ ಇದ್ದಾರೆ.',
+  doseSkip: 'ಈ ಬಾರಿ ಬೇಡ',
+  sendTo: 'ಯಾರಿಗೆ ಕಳುಹಿಸಬೇಕು',
+  allNearby: 'ನನ್ನ ಹತ್ತಿರದ ಎಲ್ಲಾ ಫಾರ್ಮಸಿಗಳು',
+  choosePharmacy: 'ಹೆಸರಿನಿಂದ ಫಾರ್ಮಸಿ ಆಯ್ಕೆಮಾಡಿ',
+  changePharmacy: 'ಬೇರೆ ಫಾರ್ಮಸಿ ಆಯ್ಕೆಮಾಡಿ',
+  pharmacyName: 'ಫಾರ್ಮಸಿಯ ಹೆಸರು',
+  search: 'ಹುಡುಕಿ',
+  noPharmacyFound: 'ಈ ಹೆಸರಿನ ತೆರೆದ ಫಾರ್ಮಸಿ ಸಿಗಲಿಲ್ಲ.',
+  kmAway: '{km} ಕಿ.ಮೀ. ದೂರ',
+  tooFarToDeliver: 'ಡೆಲಿವರಿಗೆ ತುಂಬಾ ದೂರ',
+  sendToPharmacy: '{name}ಗೆ ಕಳುಹಿಸಿ',
 };
 
 export default kn;

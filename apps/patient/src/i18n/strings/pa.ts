@@ -169,6 +169,17 @@ const pa: Strings = {
   planTrial: 'ਪਲਾਨ: {name}, ਮੁਫ਼ਤ ਟ੍ਰਾਇਲ, {days} ਦਿਨ ਬਾਕੀ',
   planPaid: 'ਪਲਾਨ: {name}, {date} ਤੱਕ',
   familyLimitReached: 'ਇਸ ਪਰਿਵਾਰ ਵਿੱਚ ਪਲਾਨ ਮੁਤਾਬਕ ਵੱਧ ਤੋਂ ਵੱਧ ਮੈਂਬਰ ਪਹਿਲਾਂ ਹੀ ਹਨ।',
+  doseSkip: 'ਇਸ ਵਾਰ ਨਹੀਂ',
+  sendTo: 'ਕਿਸ ਨੂੰ ਭੇਜਣਾ ਹੈ',
+  allNearby: 'ਮੇਰੇ ਨੇੜੇ ਦੀਆਂ ਸਾਰੀਆਂ ਫਾਰਮੇਸੀਆਂ',
+  choosePharmacy: 'ਨਾਮ ਨਾਲ ਫਾਰਮੇਸੀ ਚੁਣੋ',
+  changePharmacy: 'ਕੋਈ ਹੋਰ ਫਾਰਮੇਸੀ ਚੁਣੋ',
+  pharmacyName: 'ਫਾਰਮੇਸੀ ਦਾ ਨਾਮ',
+  search: 'ਖੋਜੋ',
+  noPharmacyFound: 'ਇਸ ਨਾਮ ਦੀ ਕੋਈ ਖੁੱਲ੍ਹੀ ਫਾਰਮੇਸੀ ਨਹੀਂ ਮਿਲੀ।',
+  kmAway: '{km} ਕਿਲੋਮੀਟਰ ਦੂਰ',
+  tooFarToDeliver: 'ਡਿਲੀਵਰੀ ਲਈ ਬਹੁਤ ਦੂਰ',
+  sendToPharmacy: '{name} ਨੂੰ ਭੇਜੋ',
 };
 
 export default pa;

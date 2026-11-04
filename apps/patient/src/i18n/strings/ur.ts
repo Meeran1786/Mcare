@@ -169,6 +169,17 @@ const ur: Strings = {
   planTrial: 'پلان: {name}، مفت ٹرائل، {days} دن باقی',
   planPaid: 'پلان: {name}، {date} تک',
   familyLimitReached: 'اس خاندان میں پلان کے مطابق جتنے ممبر ہو سکتے ہیں، اتنے پہلے سے ہیں۔',
+  doseSkip: 'اس بار چھوڑیں',
+  sendTo: 'کسے بھیجیں',
+  allNearby: 'میرے قریب کی سبھی فارمیسیاں',
+  choosePharmacy: 'نام سے فارمیسی چنیں',
+  changePharmacy: 'دوسری فارمیسی چنیں',
+  pharmacyName: 'فارمیسی کا نام',
+  search: 'تلاش کریں',
+  noPharmacyFound: 'اس نام کی کوئی کھلی فارمیسی نہیں ملی۔',
+  kmAway: '{km} کلومیٹر دور',
+  tooFarToDeliver: 'ڈلیوری کے لیے بہت دور',
+  sendToPharmacy: '{name} کو بھیجیں',
 };
 
 export default ur;

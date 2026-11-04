@@ -181,3 +181,13 @@ describe('confirmation', () => {
     expect(isAffirmative(s)).toBe(false);
   });
 });
+
+describe('medicine names heard in phone testing', () => {
+  it.each([
+    ['add reminder Glycomet at 11', 'glycomet', '11:00'],
+    ['Telma at 3 pm daily', 'telma', '15:00'],
+    ['set reminder for metformin 8 am', 'metformin', '08:00'],
+  ])('%s', (spoken, medicine, time) => {
+    expect(parseCommand(spoken)).toMatchObject({ type: 'create_reminder', medicine, time });
+  });
+});
