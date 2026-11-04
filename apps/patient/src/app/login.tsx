@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image } from 'react-native';
 
-import { ApiError } from '@/api/client';
+import { otpSendError } from '@/api/otp-error';
 import { api } from '@/api/mcare';
 import { BigButton, ErrorText, Field, Screen, T } from '@/components/ui';
 import { useSession } from '@/state/session';
@@ -22,7 +22,7 @@ export default function LoginScreen() {
       await api.sendOtp(digits);
       router.push({ pathname: '/otp', params: { phone: digits } });
     } catch (e) {
-      setError(e instanceof ApiError && e.status === 429 ? t('tooManyRequests') : t('somethingWrong'));
+      setError(otpSendError(e, t));
     } finally {
       setBusy(false);
     }

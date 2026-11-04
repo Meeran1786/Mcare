@@ -180,6 +180,9 @@ const kn: Strings = {
   kmAway: '{km} ಕಿ.ಮೀ. ದೂರ',
   tooFarToDeliver: 'ಡೆಲಿವರಿಗೆ ತುಂಬಾ ದೂರ',
   sendToPharmacy: '{name}ಗೆ ಕಳುಹಿಸಿ',
+  numberIsPharmacy: 'ಈ ಸಂಖ್ಯೆಯನ್ನು Mcare+ Partner ನಲ್ಲಿ ಒಂದು ಫಾರ್ಮಸಿಗೆ ಬಳಸಲಾಗುತ್ತಿದೆ. ಬೇರೆ ಸಂಖ್ಯೆ ಬಳಸಿ.',
+  smsFailed: 'SMS ಕಳುಹಿಸಲಾಗಲಿಲ್ಲ. ಕೆಲವು ನಿಮಿಷಗಳ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+  noInternet: 'ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ. ಸಂಪರ್ಕ ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
 };
 
 export default kn;

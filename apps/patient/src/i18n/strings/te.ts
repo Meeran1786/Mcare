@@ -180,6 +180,9 @@ const te: Strings = {
   kmAway: '{km} కి.మీ. దూరం',
   tooFarToDeliver: 'డెలివరీకి చాలా దూరం',
   sendToPharmacy: '{name}కి పంపండి',
+  numberIsPharmacy: 'ఈ నంబర్ Mcare+ Partnerలో ఒక ఫార్మసీకి వాడుతున్నారు. దయచేసి వేరే నంబర్ వాడండి.',
+  smsFailed: 'SMS పంపలేకపోయాము. దయచేసి కొన్ని నిమిషాల తర్వాత మళ్ళీ ప్రయత్నించండి.',
+  noInternet: 'ఇంటర్నెట్ లేదు. దయచేసి కనెక్షన్ చూసి మళ్ళీ ప్రయత్నించండి.',
 };
 
 export default te;

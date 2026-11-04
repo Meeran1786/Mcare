@@ -180,6 +180,9 @@ const gu: Strings = {
   kmAway: '{km} કિમી દૂર',
   tooFarToDeliver: 'ડિલિવરી માટે ખૂબ દૂર',
   sendToPharmacy: '{name} ને મોકલો',
+  numberIsPharmacy: 'આ નંબર Mcare+ Partner માં એક ફાર્મસી માટે વપરાય છે. કૃપા કરીને બીજો નંબર વાપરો.',
+  smsFailed: 'SMS મોકલી શકાયો નહીં. થોડી મિનિટ પછી ફરી પ્રયાસ કરો.',
+  noInternet: 'ઇન્ટરનેટ નથી. કનેક્શન તપાસીને ફરી પ્રયાસ કરો.',
 };
 
 export default gu;

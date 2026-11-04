@@ -180,6 +180,9 @@ const ml: Strings = {
   kmAway: '{km} കി.മീ. അകലെ',
   tooFarToDeliver: 'ഡെലിവറിക്ക് വളരെ ദൂരെ',
   sendToPharmacy: '{name}-ന് അയയ്ക്കുക',
+  numberIsPharmacy: 'ഈ നമ്പർ Mcare+ Partner-ൽ ഒരു ഫാർമസിക്കായി ഉപയോഗിക്കുന്നു. മറ്റൊരു നമ്പർ ഉപയോഗിക്കുക.',
+  smsFailed: 'SMS അയയ്ക്കാൻ കഴിഞ്ഞില്ല. കുറച്ച് മിനിറ്റുകൾക്ക് ശേഷം വീണ്ടും ശ്രമിക്കുക.',
+  noInternet: 'ഇന്റർനെറ്റ് ഇല്ല. കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.',
 };
 
 export default ml;

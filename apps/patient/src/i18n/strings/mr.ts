@@ -180,6 +180,9 @@ const mr: Strings = {
   kmAway: '{km} किमी दूर',
   tooFarToDeliver: 'डिलिव्हरीसाठी खूप दूर',
   sendToPharmacy: '{name} ला पाठवा',
+  numberIsPharmacy: 'हा नंबर Mcare+ Partner मध्ये एका फार्मसीसाठी वापरला जात आहे. कृपया दुसरा नंबर वापरा.',
+  smsFailed: 'SMS पाठवता आला नाही. कृपया काही मिनिटांनी पुन्हा प्रयत्न करा.',
+  noInternet: 'इंटरनेट नाही. कृपया कनेक्शन तपासून पुन्हा प्रयत्न करा.',
 };
 
 export default mr;
