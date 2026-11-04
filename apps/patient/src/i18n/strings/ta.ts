@@ -189,6 +189,7 @@ const ta: Strings = {
   clearAll: 'அனைத்தையும் நீக்கு',
   clearAllQ: 'எல்லா அறிவிப்புகளையும் நீக்கவா?',
   removeNotification: 'அறிவிப்பை நீக்கு',
+  removePhoto: 'புகைப்படத்தை நீக்கு',
   noNotifications: 'இன்னும் அறிவிப்புகள் இல்லை.',
 };
 

@@ -189,6 +189,7 @@ const gu: Strings = {
   clearAll: 'બધું દૂર કરો',
   clearAllQ: 'બધી સૂચનાઓ દૂર કરવી છે?',
   removeNotification: 'સૂચના દૂર કરો',
+  removePhoto: 'ફોટો દૂર કરો',
   noNotifications: 'હજી કોઈ સૂચના નથી.',
 };
 

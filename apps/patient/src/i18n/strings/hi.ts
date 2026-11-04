@@ -189,6 +189,7 @@ const hi: Strings = {
   clearAll: 'सब हटाएँ',
   clearAllQ: 'सभी सूचनाएँ हटाएँ?',
   removeNotification: 'सूचना हटाएँ',
+  removePhoto: 'फ़ोटो हटाएँ',
   noNotifications: 'अभी कोई सूचना नहीं है।',
 };
 

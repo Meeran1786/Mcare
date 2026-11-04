@@ -189,6 +189,7 @@ const kn: Strings = {
   clearAll: 'ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ',
   clearAllQ: 'ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕೇ?',
   removeNotification: 'ಅಧಿಸೂಚನೆ ತೆಗೆದುಹಾಕಿ',
+  removePhoto: 'ಫೋಟೋ ತೆಗೆದುಹಾಕಿ',
   noNotifications: 'ಇನ್ನೂ ಅಧಿಸೂಚನೆಗಳಿಲ್ಲ.',
 };
 

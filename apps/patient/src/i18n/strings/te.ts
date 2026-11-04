@@ -189,6 +189,7 @@ const te: Strings = {
   clearAll: 'అన్నీ తొలగించు',
   clearAllQ: 'అన్ని నోటిఫికేషన్లు తొలగించాలా?',
   removeNotification: 'నోటిఫికేషన్ తొలగించు',
+  removePhoto: 'ఫోటో తొలగించు',
   noNotifications: 'ఇంకా నోటిఫికేషన్లు లేవు.',
 };
 

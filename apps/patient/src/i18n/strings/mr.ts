@@ -189,6 +189,7 @@ const mr: Strings = {
   clearAll: 'सर्व काढा',
   clearAllQ: 'सर्व सूचना काढायच्या?',
   removeNotification: 'सूचना काढा',
+  removePhoto: 'फोटो काढा',
   noNotifications: 'अजून कोणत्याही सूचना नाहीत.',
 };
 

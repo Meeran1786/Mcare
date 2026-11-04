@@ -189,6 +189,7 @@ const ml: Strings = {
   clearAll: 'എല്ലാം നീക്കുക',
   clearAllQ: 'എല്ലാ അറിയിപ്പുകളും നീക്കണോ?',
   removeNotification: 'അറിയിപ്പ് നീക്കുക',
+  removePhoto: 'ഫോട്ടോ നീക്കുക',
   noNotifications: 'ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.',
 };
 
