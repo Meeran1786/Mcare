@@ -57,6 +57,10 @@ export interface PharmacyResult {
   city: string | null;
   distance_km?: number | string | null;
   is_deliverable?: number | boolean;
+  /** Main shop photo first. */
+  photo_urls?: string[];
+  /** Joined Mcare in the last 30 days. */
+  is_new?: boolean;
 }
 
 export interface Order {
@@ -215,6 +219,12 @@ export const api = {
       query: { search, lat: latitude, lng: longitude, radius: 5, limit: 20 },
     }).then((r) => r.data.data),
 
+  /** Open pharmacies that deliver to this point (within 5 km), nearest first. */
+  nearbyPharmacies: (latitude: number, longitude: number) =>
+    request<{ data: { data: PharmacyResult[] } }>('GET', '/pharmacies', {
+      query: { lat: latitude, lng: longitude, radius: 5, limit: 30 },
+    }).then((r) => r.data.data),
+
   /**
    * Sends prescription photos to every verified pharmacy within 5 km, or only
    * to the pharmacy the person chose.
@@ -263,6 +273,9 @@ export const api = {
 
   familySummary: (patientId: number) =>
     request<{ data: FamilySummary }>('GET', `/caregivers/patients/${patientId}/summary`).then((r) => r.data),
+
+  clearNotification: (id: number) => request('DELETE', `/notifications/${id}`),
+  clearAllNotifications: () => request('DELETE', '/notifications'),
 
   notifications: () =>
     request<{ data: Paginated<AppNotification> }>('GET', '/notifications').then((r) => r.data.data),

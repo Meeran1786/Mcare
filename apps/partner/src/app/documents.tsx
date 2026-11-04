@@ -7,15 +7,18 @@ import { DocumentSlot } from '@/components/bits';
 import { BigButton, ErrorText, Screen, T } from '@/components/ui';
 import { useSession } from '@/state/session';
 
+/** The server takes up to 5 pages per document. */
+const MAX_PAGES = 5;
+
 export default function DocumentsScreen() {
   const { t, refreshPharmacy } = useSession();
-  const [license, setLicense] = useState<PickedFile | null>(null);
-  const [gst, setGst] = useState<PickedFile | null>(null);
+  const [license, setLicense] = useState<PickedFile[]>([]);
+  const [gst, setGst] = useState<PickedFile[]>([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
   async function submit() {
-    if (!license) return setError(t('licenseRequired'));
+    if (!license.length) return setError(t('licenseRequired'));
     setBusy(true);
     setError('');
     try {
@@ -32,8 +35,8 @@ export default function DocumentsScreen() {
   return (
     <Screen>
       <T>{t('documentsHint')}</T>
-      <DocumentSlot label={t('licenseFile')} file={license} onPicked={setLicense} />
-      <DocumentSlot label={t('gstFile')} file={gst} onPicked={setGst} />
+      <DocumentSlot label={t('licenseFile')} files={license} max={MAX_PAGES} onChange={setLicense} />
+      <DocumentSlot label={t('gstFile')} files={gst} max={MAX_PAGES} onChange={setGst} />
       <ErrorText>{error}</ErrorText>
       <BigButton label={t('submitDocuments')} icon="send" onPress={submit} loading={busy} />
     </Screen>

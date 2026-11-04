@@ -74,6 +74,41 @@ class Pharmacy extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** Extra shop photos and document pages. */
+    public function files()
+    {
+        return $this->hasMany(PharmacyFile::class)->orderBy('id');
+    }
+
+    /** Signed or public links for one kind of file: photo, license or gst. */
+    public function fileUrls(string $kind): array
+    {
+        return $this->files->where('kind', $kind)->map(fn ($f) => $f->url())->filter()->values()->all();
+    }
+
+    /** Cover photo first, then the extra shop photos. */
+    public function photoUrls(): array
+    {
+        $cover = $this->pharmacy_photo ? [\Illuminate\Support\Facades\Storage::disk('public')->url($this->pharmacy_photo)] : [];
+
+        return array_merge($cover, $this->fileUrls('photo'));
+    }
+
+    /**
+     * Every page of a document. Pharmacies that uploaded before multi-page
+     * support have only the single file in the old column.
+     */
+    public function documentPageUrls(string $kind): array
+    {
+        $pages = $this->fileUrls($kind);
+        if ($pages) {
+            return $pages;
+        }
+        $single = $this->documentUrl($kind.'_file');
+
+        return $single ? [$single] : [];
+    }
+
     public function orders()
     {
         return $this->hasMany(

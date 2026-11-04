@@ -16,6 +16,80 @@ class PharmacyController extends Controller
     /**
      * Ensure storage directory exists
      */
+    /** Most pages per document, and most extra shop photos besides the cover. */
+    private const MAX_PAGES = 5;
+    private const MAX_EXTRA_PHOTOS = 4;
+
+    /**
+     * Replaces every page of the licence or GST document. The first page also
+     * goes in the old column, which the old apps and admin pages read.
+     */
+    private function replaceDocument(Pharmacy $pharmacy, string $kind, string $folder, array $uploads): void
+    {
+        $pharmacy->files()->where('kind', $kind)->get()->each->deleteWithFile();
+        PrivateFiles::delete($pharmacy->{$kind.'_file'});
+
+        $base = $pharmacy->user_id.'-'.Str::slug($pharmacy->pharmacy_name).'-'.$kind;
+        $paths = [];
+        foreach ($uploads as $i => $file) {
+            $name = $base.'-'.($i + 1).'-'.Str::lower(Str::random(6)).'.'.$file->getClientOriginalExtension();
+            $paths[] = $file->storeAs($folder, $name, PrivateFiles::DISK);
+        }
+
+        foreach ($paths as $path) {
+            $pharmacy->files()->create(['kind' => $kind, 'path' => $path]);
+        }
+        $pharmacy->{$kind.'_file'} = $paths[0];
+    }
+
+    /** Adds shop photos. The first becomes the cover if there is none yet. */
+    public function addPhotos(Request $request)
+    {
+        $pharmacy = Pharmacy::where('user_id', $request->user()->id)->first();
+        if (!$pharmacy) {
+            return response()->json(['success' => false, 'message' => 'Pharmacy not found.'], 404);
+        }
+
+        $request->validate([
+            'photos' => 'required|array|min:1|max:'.(self::MAX_EXTRA_PHOTOS + 1),
+            'photos.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+        ]);
+
+        $photos = $request->file('photos');
+        $extras = count($photos) - ($pharmacy->pharmacy_photo ? 0 : 1);
+        if ($pharmacy->files()->where('kind', 'photo')->count() + $extras > self::MAX_EXTRA_PHOTOS) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A pharmacy can have up to '.(self::MAX_EXTRA_PHOTOS + 1).' photos. Please remove some first.',
+            ], 422);
+        }
+
+        if (!$pharmacy->pharmacy_photo) {
+            $pharmacy->update(['pharmacy_photo' => array_shift($photos)->store('pharmacies/photos', 'public')]);
+        }
+
+        foreach ($photos as $photo) {
+            $pharmacy->files()->create(['kind' => 'photo', 'path' => $photo->store('pharmacies/photos', 'public')]);
+        }
+
+        return response()->json(['success' => true, 'data' => ['photos' => $this->photoList($pharmacy->fresh())]]);
+    }
+
+    public function deletePhoto(Request $request, $id)
+    {
+        $pharmacy = Pharmacy::where('user_id', $request->user()->id)->firstOrFail();
+        $pharmacy->files()->where('kind', 'photo')->findOrFail($id)->deleteWithFile();
+
+        return response()->json(['success' => true, 'data' => ['photos' => $this->photoList($pharmacy->fresh())]]);
+    }
+
+    /** Extra shop photos with ids, so the app can remove one. */
+    private function photoList(Pharmacy $pharmacy): array
+    {
+        return $pharmacy->files->where('kind', 'photo')
+            ->map(fn ($f) => ['id' => $f->id, 'url' => $f->url()])->values()->all();
+    }
+
     private function ensureDirectory($path)
     {
         if (!Storage::disk('public')->exists($path)) {
@@ -196,39 +270,21 @@ class PharmacyController extends Controller
             ], 403);
         }
 
+        // One file per document (old apps), or several pages (new app).
         $request->validate([
-            'license_file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'license_file' => 'required_without:license_files|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'license_files' => 'required_without:license_file|array|min:1|max:'.self::MAX_PAGES,
+            'license_files.*' => 'file|mimes:jpg,jpeg,png,pdf|max:5120',
             'gst_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'gst_files' => 'nullable|array|max:'.self::MAX_PAGES,
+            'gst_files.*' => 'file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
-        /**
-         * Upload License File
-         */
-        if ($request->hasFile('license_file')) {
-
-            PrivateFiles::delete($pharmacy->license_file);
-
-            $ext = $request->file('license_file')->getClientOriginalExtension();
-
-            $filename = $user->id . '-' . Str::slug($pharmacy->pharmacy_name) . '-license.' . $ext;
-
-            $pharmacy->license_file = $request->file('license_file')
-                ->storeAs('pharmacies/licenses', $filename, PrivateFiles::DISK);
-        }
-
-        /**
-         * Upload GST File
-         */
-        if ($request->hasFile('gst_file')) {
-
-            PrivateFiles::delete($pharmacy->gst_file);
-
-            $ext = $request->file('gst_file')->getClientOriginalExtension();
-
-            $filename = $user->id . '-' . Str::slug($pharmacy->pharmacy_name) . '-gst.' . $ext;
-
-            $pharmacy->gst_file = $request->file('gst_file')
-                ->storeAs('pharmacies/gst', $filename, PrivateFiles::DISK);
+        foreach (['license' => 'pharmacies/licenses', 'gst' => 'pharmacies/gst'] as $kind => $folder) {
+            $uploads = $request->file($kind.'_files') ?: array_filter([$request->file($kind.'_file')]);
+            if ($uploads) {
+                $this->replaceDocument($pharmacy, $kind, $folder, array_values($uploads));
+            }
         }
 
         $pharmacy->verification_status = 'pending';
@@ -306,6 +362,10 @@ class PharmacyController extends Controller
                     'license_file_url' => PrivateFiles::url($pharmacy->license_file),
 
                     'gst_file_url' => PrivateFiles::url($pharmacy->gst_file),
+
+                    'photos' => $this->photoList($pharmacy),
+                    'license_pages' => $pharmacy->documentPageUrls('license'),
+                    'gst_pages' => $pharmacy->documentPageUrls('gst'),
 
                     'verification_status' => $pharmacy->verification_status,
                     'is_verified' => $pharmacy->is_verified,

@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { ApiError, apiErrorText } from '@/api/client';
 import { api, type NewPharmacy } from '@/api/partner';
-import { PhotoSlot } from '@/components/bits';
+import { PhotosSlot } from '@/components/bits';
 import { BigButton, ErrorText, Field, Screen, T } from '@/components/ui';
 import { useSession } from '@/state/session';
 import { colors } from '@/theme';
@@ -27,7 +27,7 @@ export default function RegisterScreen() {
     pincode: '',
   });
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<string[]>([]);
   const [locating, setLocating] = useState(false);
   const [note, setNote] = useState('');
   const [error, setError] = useState('');
@@ -72,7 +72,10 @@ export default function RegisterScreen() {
     setError('');
     try {
       const trimmed = Object.fromEntries(Object.entries(form).map(([k, v]) => [k, v?.trim()])) as Form;
-      await api.registerPharmacy({ ...trimmed, ...coords }, photo ?? undefined);
+      await api.registerPharmacy({ ...trimmed, ...coords }, photos[0]);
+      // The first photo is the main one; the rest are added after. A failure
+      // here should not block registration: photos can be added from Profile.
+      if (photos.length > 1) await api.addPhotos(photos.slice(1)).catch(() => undefined);
       await refreshPharmacy(); // moves on to the documents step
     } catch (e) {
       // Saved on an earlier try (for example the network dropped after the
@@ -114,7 +117,7 @@ export default function RegisterScreen() {
       {field('state', t('state'))}
       {field('pincode', t('pincode'), { keyboardType: 'number-pad', maxLength: 6 })}
 
-      <PhotoSlot label={t('pharmacyPhoto')} uri={photo} onPicked={setPhoto} />
+      <PhotosSlot label={t('shopPhotos')} uris={photos} max={5} onChange={setPhotos} />
 
       <ErrorText>{error}</ErrorText>
       <BigButton label={t('continue')} icon="arrow-right" onPress={submit} loading={busy} />

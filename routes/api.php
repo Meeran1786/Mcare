@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/vendor/pharmacy/details', [PharmacyController::class, 'details']);
     Route::post('/vendor/pharmacy/update-photo', [PharmacyController::class, 'updatePhoto']);
+    Route::post('/vendor/pharmacy/photos', [PharmacyController::class, 'addPhotos']);
+    Route::delete('/vendor/pharmacy/photos/{id}', [PharmacyController::class, 'deletePhoto']);
 
      Route::get('/vendor/profile', [PharmacyController::class, 'getProfile']);
 
@@ -116,6 +118,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications/{id}/read', [NotificationController::class, 'markRead']);
     Route::put('/notifications/read-all', [NotificationController::class, 'markAllRead']);
     Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::delete('/notifications', [NotificationController::class, 'destroyAll']);
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 
 

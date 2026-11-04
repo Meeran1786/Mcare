@@ -160,4 +160,16 @@ class NotificationController extends Controller
             'message' => 'Notification cleared.'
         ]);
     }
+
+    /** "Clear all": removes every notification of the signed-in account. */
+    public function destroyAll(Request $request)
+    {
+        $count = Notification::where('user_id', $request->user()->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notifications cleared.',
+            'data' => ['cleared' => $count],
+        ]);
+    }
 }

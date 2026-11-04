@@ -7,7 +7,7 @@ import { statusLabel } from '@/i18n';
 import { useSession } from '@/state/session';
 import { colors, space } from '@/theme';
 
-import { pickImage } from './pick-image';
+import { pickImage, pickImages } from './pick-image';
 import { BigButton, Card, T } from './ui';
 
 const STATUS_COLOR: Record<string, string> = {
@@ -81,34 +81,89 @@ export function PhotoSlot({ label, uri, onPicked }: { label: string; uri: string
   );
 }
 
-/** A licence or GST slot: photo from camera or gallery, or a PDF file. */
-export function DocumentSlot({ label, file, onPicked }: { label: string; file: PickedFile | null; onPicked: (f: PickedFile) => void }) {
+/** Small previews, each with a remove button. */
+function Thumbs({ items, onRemove }: { items: { key: string; uri: string | null; pdfName?: string }[]; onRemove: (i: number) => void }) {
   const { t } = useSession();
-  const photo = async (source: 'camera' | 'library') => {
-    const uri = await pickImage(source);
-    if (uri) onPicked({ uri });
+  if (!items.length) return null;
+  return (
+    <View style={styles.thumbs}>
+      {items.map((it, i) => (
+        <View key={it.key} style={styles.thumbBox}>
+          {it.uri ? (
+            <Image source={{ uri: it.uri }} style={styles.thumb} resizeMode="cover" />
+          ) : (
+            <View style={[styles.thumb, styles.pdfThumb]}>
+              <MaterialCommunityIcons name="file-pdf-box" size={40} color={colors.danger} />
+              <T variant="small" center>
+                {it.pdfName ?? 'PDF'}
+              </T>
+            </View>
+          )}
+          <Pressable accessibilityRole="button" accessibilityLabel={t('removePhoto')} onPress={() => onRemove(i)} style={styles.remove} hitSlop={8}>
+            <MaterialCommunityIcons name="close" size={20} color={colors.onPrimary} />
+          </Pressable>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Several shop photos. The first is the main photo patients see. */
+export function PhotosSlot({ label, uris, max, onChange }: { label: string; uris: string[]; max: number; onChange: (uris: string[]) => void }) {
+  const { t } = useSession();
+  const room = max - uris.length;
+  const add = async (source: 'camera' | 'library') => {
+    const picked = await pickImages(source, room);
+    if (picked.length) onChange([...uris, ...picked].slice(0, max));
+  };
+  return (
+    <Card>
+      <T variant="heading">{label}</T>
+      <T variant="small">{t('photosHint', { max })}</T>
+      <Thumbs items={uris.map((u) => ({ key: u, uri: u }))} onRemove={(i) => onChange(uris.filter((_, j) => j !== i))} />
+      {room > 0 && (
+        <View style={styles.row}>
+          <BigButton label={t('takePhoto')} icon="camera" kind="secondary" onPress={() => add('camera')} style={{ flex: 1 }} />
+          <BigButton label={t('chooseFromGallery')} icon="image-multiple" kind="secondary" onPress={() => add('library')} style={{ flex: 1 }} />
+        </View>
+      )}
+    </Card>
+  );
+}
+
+/** A licence or GST document: several page photos (camera or gallery), or PDF files. */
+export function DocumentSlot({ label, files, max, onChange }: { label: string; files: PickedFile[]; max: number; onChange: (f: PickedFile[]) => void }) {
+  const { t } = useSession();
+  const room = max - files.length;
+  const photos = async (source: 'camera' | 'library') => {
+    const uris = await pickImages(source, room);
+    if (uris.length) onChange([...files, ...uris.map((uri) => ({ uri }))].slice(0, max));
   };
   const pdf = async () => {
     const res = await DocumentPicker.getDocumentAsync({ type: 'application/pdf', copyToCacheDirectory: true });
     const asset = res.canceled ? null : res.assets[0];
-    if (asset) onPicked({ uri: asset.uri, name: asset.name, mimeType: asset.mimeType ?? 'application/pdf' });
+    if (asset) onChange([...files, { uri: asset.uri, name: asset.name, mimeType: asset.mimeType ?? 'application/pdf' }].slice(0, max));
   };
-  const isPdf = !!file && fileType(file).ext === 'pdf';
   return (
     <Card>
       <T variant="heading">{label}</T>
-      {file && !isPdf && <Image source={{ uri: file.uri }} style={styles.preview} resizeMode="cover" accessibilityLabel={label} />}
-      {file && isPdf && (
-        <View style={styles.row}>
-          <MaterialCommunityIcons name="file-pdf-box" size={36} color={colors.danger} />
-          <T>{t('pdfSelected', { name: file.name ?? 'PDF' })}</T>
-        </View>
+      <T variant="small">{t('pagesHint', { max })}</T>
+      <Thumbs
+        items={files.map((f) => {
+          const isPdf = fileType(f).ext === 'pdf';
+          return { key: f.uri, uri: isPdf ? null : f.uri, pdfName: f.name ?? undefined };
+        })}
+        onRemove={(i) => onChange(files.filter((_, j) => j !== i))}
+      />
+      {room > 0 && (
+        <>
+          <View style={styles.row}>
+            <BigButton label={t('takePhoto')} icon="camera" kind="secondary" onPress={() => photos('camera')} style={{ flex: 1 }} />
+            <BigButton label={t('chooseFromGallery')} icon="image-multiple" kind="secondary" onPress={() => photos('library')} style={{ flex: 1 }} />
+          </View>
+          <BigButton label={t('choosePdf')} icon="file-pdf-box" kind="secondary" onPress={pdf} />
+        </>
       )}
-      <View style={styles.row}>
-        <BigButton label={t('takePhoto')} icon="camera" kind="secondary" onPress={() => photo('camera')} style={{ flex: 1 }} />
-        <BigButton label={t('chooseFromGallery')} icon="image" kind="secondary" onPress={() => photo('library')} style={{ flex: 1 }} />
-      </View>
-      <BigButton label={t('choosePdf')} icon="file-pdf-box" kind="secondary" onPress={pdf} />
     </Card>
   );
 }
@@ -139,5 +194,20 @@ const styles = StyleSheet.create({
   pill: { borderWidth: 1.5, borderRadius: 999, paddingHorizontal: space.sm, paddingVertical: 2, alignSelf: 'flex-start' },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   preview: { width: '100%', height: 180, borderRadius: 12, backgroundColor: colors.border },
+  thumbs: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  thumbBox: { position: 'relative' },
+  thumb: { width: 96, height: 96, borderRadius: 10, backgroundColor: colors.border },
+  pdfThumb: { alignItems: 'center', justifyContent: 'center', padding: 4 },
+  remove: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: colors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   prescription: { width: '100%', height: 360, borderRadius: 12, backgroundColor: '#EEF2F1' },
 });

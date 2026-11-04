@@ -183,6 +183,13 @@ const ml: Strings = {
   numberIsPharmacy: 'ഈ നമ്പർ Mcare+ Partner-ൽ ഒരു ഫാർമസിക്കായി ഉപയോഗിക്കുന്നു. മറ്റൊരു നമ്പർ ഉപയോഗിക്കുക.',
   smsFailed: 'SMS അയയ്ക്കാൻ കഴിഞ്ഞില്ല. കുറച്ച് മിനിറ്റുകൾക്ക് ശേഷം വീണ്ടും ശ്രമിക്കുക.',
   noInternet: 'ഇന്റർനെറ്റ് ഇല്ല. കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.',
+  pharmaciesNearMe: 'എന്റെ അടുത്തുള്ള ഫാർമസികൾ',
+  newPharmacy: 'Mcare-ൽ പുതിയത്',
+  noPharmacyNearby: '5 കി.മീ.ക്കുള്ളിൽ ഇതുവരെ തുറന്ന ഫാർമസി ഇല്ല.',
+  clearAll: 'എല്ലാം നീക്കുക',
+  clearAllQ: 'എല്ലാ അറിയിപ്പുകളും നീക്കണോ?',
+  removeNotification: 'അറിയിപ്പ് നീക്കുക',
+  noNotifications: 'ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.',
 };
 
 export default ml;

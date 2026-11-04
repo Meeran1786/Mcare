@@ -183,6 +183,13 @@ const te: Strings = {
   numberIsPharmacy: 'ఈ నంబర్ Mcare+ Partnerలో ఒక ఫార్మసీకి వాడుతున్నారు. దయచేసి వేరే నంబర్ వాడండి.',
   smsFailed: 'SMS పంపలేకపోయాము. దయచేసి కొన్ని నిమిషాల తర్వాత మళ్ళీ ప్రయత్నించండి.',
   noInternet: 'ఇంటర్నెట్ లేదు. దయచేసి కనెక్షన్ చూసి మళ్ళీ ప్రయత్నించండి.',
+  pharmaciesNearMe: 'నా దగ్గర ఉన్న ఫార్మసీలు',
+  newPharmacy: 'Mcareలో కొత్తది',
+  noPharmacyNearby: '5 కి.మీ.లోపు ఇంకా తెరిచి ఉన్న ఫార్మసీ లేదు.',
+  clearAll: 'అన్నీ తొలగించు',
+  clearAllQ: 'అన్ని నోటిఫికేషన్లు తొలగించాలా?',
+  removeNotification: 'నోటిఫికేషన్ తొలగించు',
+  noNotifications: 'ఇంకా నోటిఫికేషన్లు లేవు.',
 };
 
 export default te;

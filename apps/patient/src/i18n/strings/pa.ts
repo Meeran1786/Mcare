@@ -183,6 +183,13 @@ const pa: Strings = {
   numberIsPharmacy: 'ਇਹ ਨੰਬਰ Mcare+ Partner ਵਿੱਚ ਇੱਕ ਫਾਰਮੇਸੀ ਲਈ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਹੋਰ ਨੰਬਰ ਵਰਤੋ।',
   smsFailed: 'SMS ਨਹੀਂ ਭੇਜਿਆ ਜਾ ਸਕਿਆ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
   noInternet: 'ਇੰਟਰਨੈੱਟ ਨਹੀਂ ਹੈ। ਕਨੈਕਸ਼ਨ ਦੇਖ ਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+  pharmaciesNearMe: 'ਮੇਰੇ ਨੇੜੇ ਦੀਆਂ ਫਾਰਮੇਸੀਆਂ',
+  newPharmacy: 'Mcare \'ਤੇ ਨਵੀਂ',
+  noPharmacyNearby: '5 ਕਿਲੋਮੀਟਰ ਅੰਦਰ ਹਾਲੇ ਕੋਈ ਖੁੱਲ੍ਹੀ ਫਾਰਮੇਸੀ ਨਹੀਂ।',
+  clearAll: 'ਸਭ ਹਟਾਓ',
+  clearAllQ: 'ਸਾਰੀਆਂ ਸੂਚਨਾਵਾਂ ਹਟਾਉਣੀਆਂ ਹਨ?',
+  removeNotification: 'ਸੂਚਨਾ ਹਟਾਓ',
+  noNotifications: 'ਹਾਲੇ ਕੋਈ ਸੂਚਨਾ ਨਹੀਂ।',
 };
 
 export default pa;

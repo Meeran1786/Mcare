@@ -69,10 +69,10 @@
                     <div class="col-md-6">
 
                         <!-- PHOTO -->
-                        @if($pharmacy->pharmacy_photo)
-                            <img src="{{ asset('storage/'.$pharmacy->pharmacy_photo) }}"
-                                 style="width:120px;height:120px;border-radius:10px;object-fit:cover;margin-bottom:10px;">
-                        @endif
+                        @foreach($pharmacy->photoUrls() as $photoUrl)
+                            <img src="{{ $photoUrl }}"
+                                 style="width:120px;height:120px;border-radius:10px;object-fit:cover;margin:0 6px 10px 0;">
+                        @endforeach
 
                         <p><b>Name:</b> {{ $pharmacy->pharmacy_name }}</p>
 
@@ -192,11 +192,13 @@
                     <div class="col-md-4">
                         <b>License</b><br>
                         @if($pharmacy->license_file)
-                            <a href="{{ $pharmacy->documentUrl('license_file') }}"
+                            @foreach($pharmacy->documentPageUrls('license') as $i => $pageUrl)
+                            <a href="{{ $pageUrl }}"
                                target="_blank"
                                class="btn btn-outline-primary btn-sm mt-2">
-                                View
+                                View{{ count($pharmacy->documentPageUrls('license')) > 1 ? ' page '.($i + 1) : '' }}
                             </a>
+                            @endforeach
                         @else
                             <p class="text-danger mt-2">Not Uploaded</p>
                         @endif
@@ -206,11 +208,13 @@
                     <div class="col-md-4">
                         <b>GST Proof</b><br>
                         @if($pharmacy->gst_file)
-                            <a href="{{ $pharmacy->documentUrl('gst_file') }}"
+                            @foreach($pharmacy->documentPageUrls('gst') as $i => $pageUrl)
+                            <a href="{{ $pageUrl }}"
                                target="_blank"
                                class="btn btn-outline-primary btn-sm mt-2">
-                                View
+                                View{{ count($pharmacy->documentPageUrls('gst')) > 1 ? ' page '.($i + 1) : '' }}
                             </a>
+                            @endforeach
                         @else
                             <p class="text-danger mt-2">Not Uploaded</p>
                         @endif
