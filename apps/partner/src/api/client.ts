@@ -71,6 +71,9 @@ export function apiErrorText(e: unknown, fallback: string): string {
     const errors = (e.body as { errors?: Record<string, string[]> } | null)?.errors;
     const first = errors && Object.values(errors)[0]?.[0];
     if (first) return first;
+    // A refusal the server explains (for example "Pharmacy already exists"). Server errors (5xx) stay generic.
+    const message = (e.body as { message?: string } | null)?.message;
+    if (e.status < 500 && message) return message;
   }
   return fallback;
 }

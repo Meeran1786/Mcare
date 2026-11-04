@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 import { useState } from 'react';
 
-import { apiErrorText } from '@/api/client';
+import { ApiError, apiErrorText } from '@/api/client';
 import { api, type NewPharmacy } from '@/api/partner';
 import { PhotoSlot } from '@/components/bits';
 import { BigButton, ErrorText, Field, Screen, T } from '@/components/ui';
@@ -75,7 +75,13 @@ export default function RegisterScreen() {
       await api.registerPharmacy({ ...trimmed, ...coords }, photo ?? undefined);
       await refreshPharmacy(); // moves on to the documents step
     } catch (e) {
-      setError(apiErrorText(e, t('somethingWrong')));
+      // Saved on an earlier try (for example the network dropped after the
+      // server saved it): carry on to the documents step instead of failing.
+      if (e instanceof ApiError && e.status === 409) {
+        await refreshPharmacy().catch(() => undefined);
+      } else {
+        setError(apiErrorText(e, t('somethingWrong')));
+      }
       setBusy(false);
     }
   }

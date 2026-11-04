@@ -131,7 +131,7 @@ class PharmacyController extends Controller
             //'closing_time' => 'nullable',
             //'is_delivery_available' => 'nullable|boolean',
 
-            'pharmacy_photo' => 'nullable|file|mimes:jpg,jpeg,png|max:2048'
+            'pharmacy_photo' => 'nullable|file|mimes:jpg,jpeg,png|max:5120'
         ]);
 
         $data['user_id'] = $user->id;
@@ -474,7 +474,7 @@ class PharmacyController extends Controller
         }
 
         $request->validate([
-            'pharmacy_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+            'pharmacy_photo' => 'required|image|mimes:jpg,jpeg,png|max:5120'
         ]);
 
         // delete old
