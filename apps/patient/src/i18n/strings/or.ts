@@ -180,6 +180,9 @@ const or: Strings = {
   kmAway: '{km} କିମି ଦୂର',
   tooFarToDeliver: 'ଡେଲିଭରି ପାଇଁ ବହୁତ ଦୂର',
   sendToPharmacy: '{name}କୁ ପଠାନ୍ତୁ',
+  numberIsPharmacy: 'ଏହି ନମ୍ବର Mcare+ Partnerରେ ଗୋଟିଏ ଫାର୍ମାସି ପାଇଁ ବ୍ୟବହାର ହେଉଛି। ଦୟାକରି ଅନ୍ୟ ନମ୍ବର ବ୍ୟବହାର କରନ୍ତୁ।',
+  smsFailed: 'SMS ପଠାଇ ହେଲା ନାହିଁ। କିଛି ମିନିଟ ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।',
+  noInternet: 'ଇଣ୍ଟରନେଟ ନାହିଁ। ସଂଯୋଗ ଦେଖି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।',
 };
 
 export default or;

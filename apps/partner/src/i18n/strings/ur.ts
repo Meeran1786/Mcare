@@ -186,6 +186,9 @@ const ur: Strings = {
   planFree: 'پلان: مفت',
   planTrial: 'پلان: {name}، مفت ٹرائل، {days} دن باقی',
   planPaid: 'پلان: {name}، {date} تک',
+  numberIsPatient: 'یہ نمبر پہلے سے Mcare+ مریض ایپ میں رجسٹر ہے۔ براہ کرم فارمیسی کے لیے دوسرا نمبر استعمال کریں۔',
+  smsFailed: 'SMS نہیں بھیجا جا سکا۔ براہ کرم چند منٹ بعد دوبارہ کوشش کریں۔',
+  noInternet: 'انٹرنیٹ نہیں ہے۔ براہ کرم کنکشن دیکھ کر دوبارہ کوشش کریں۔',
 };
 
 export default ur;

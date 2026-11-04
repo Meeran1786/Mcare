@@ -180,6 +180,9 @@ const pa: Strings = {
   kmAway: '{km} ਕਿਲੋਮੀਟਰ ਦੂਰ',
   tooFarToDeliver: 'ਡਿਲੀਵਰੀ ਲਈ ਬਹੁਤ ਦੂਰ',
   sendToPharmacy: '{name} ਨੂੰ ਭੇਜੋ',
+  numberIsPharmacy: 'ਇਹ ਨੰਬਰ Mcare+ Partner ਵਿੱਚ ਇੱਕ ਫਾਰਮੇਸੀ ਲਈ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਹੋਰ ਨੰਬਰ ਵਰਤੋ।',
+  smsFailed: 'SMS ਨਹੀਂ ਭੇਜਿਆ ਜਾ ਸਕਿਆ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+  noInternet: 'ਇੰਟਰਨੈੱਟ ਨਹੀਂ ਹੈ। ਕਨੈਕਸ਼ਨ ਦੇਖ ਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
 };
 
 export default pa;

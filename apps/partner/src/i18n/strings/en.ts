@@ -183,6 +183,9 @@ const en = {
   planFree: 'Plan: Free',
   planTrial: 'Plan: {name}, free trial, {days} days left',
   planPaid: 'Plan: {name}, until {date}',
+  numberIsPatient: 'This number is already signed up in the Mcare+ patient app. Please use a different number for your pharmacy.',
+  smsFailed: 'We could not send the SMS. Please try again in a few minutes.',
+  noInternet: 'No internet connection. Please check your connection and try again.',
 };
 
 export type Strings = typeof en;

@@ -179,6 +179,9 @@ const en = {
   kmAway: '{km} km away',
   tooFarToDeliver: 'Too far to deliver',
   sendToPharmacy: 'Send to {name}',
+  numberIsPharmacy: 'This number is already used by a pharmacy in Mcare+ Partner. Please use a different number.',
+  smsFailed: 'We could not send the SMS. Please try again in a few minutes.',
+  noInternet: 'No internet connection. Please check your connection and try again.',
 };
 
 export type Strings = typeof en;

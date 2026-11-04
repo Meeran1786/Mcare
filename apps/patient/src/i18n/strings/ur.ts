@@ -180,6 +180,9 @@ const ur: Strings = {
   kmAway: '{km} کلومیٹر دور',
   tooFarToDeliver: 'ڈلیوری کے لیے بہت دور',
   sendToPharmacy: '{name} کو بھیجیں',
+  numberIsPharmacy: 'یہ نمبر Mcare+ Partner میں ایک فارمیسی کے لیے استعمال ہو رہا ہے۔ براہ کرم دوسرا نمبر استعمال کریں۔',
+  smsFailed: 'SMS نہیں بھیجا جا سکا۔ براہ کرم چند منٹ بعد دوبارہ کوشش کریں۔',
+  noInternet: 'انٹرنیٹ نہیں ہے۔ براہ کرم کنکشن دیکھ کر دوبارہ کوشش کریں۔',
 };
 
 export default ur;
