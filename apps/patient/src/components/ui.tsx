@@ -9,6 +9,7 @@ import {
   TextInput,
   type TextInputProps,
   View,
+  type TextStyle,
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -43,11 +44,13 @@ export function T({
   variant = 'body',
   color,
   center,
+  style,
 }: {
   children: ReactNode;
   variant?: 'title' | 'heading' | 'body' | 'small';
   color?: string;
   center?: boolean;
+  style?: TextStyle;
 }) {
   const { lang } = useSession();
   return (
@@ -56,6 +59,7 @@ export function T({
         styles[variant],
         { color: color ?? (variant === 'small' ? colors.muted : colors.text) },
         { writingDirection: lang.rtl ? 'rtl' : 'ltr', textAlign: center ? 'center' : lang.rtl ? 'right' : 'left' },
+        style,
       ]}>
       {children}
     </Text>

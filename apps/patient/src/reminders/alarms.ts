@@ -5,20 +5,38 @@
  * not get each reminder twice.
  */
 import * as Notifications from 'expo-notifications';
-import { AndroidImportance, AndroidNotificationPriority, SchedulableTriggerInputTypes } from 'expo-notifications';
+import {
+  AndroidAudioContentType,
+  AndroidAudioUsage,
+  AndroidImportance,
+  AndroidNotificationPriority,
+  AndroidNotificationVisibility,
+  SchedulableTriggerInputTypes,
+} from 'expo-notifications';
 import { Platform } from 'react-native';
 
 import type { Reminder } from '@/api/mcare';
 import { type Language, translate } from '@/i18n';
 import { ALL_DAYS, type Day } from '@/voice/types';
 
-export const REMINDER_CHANNEL = 'medicine-reminders';
+/**
+ * Android fixes a channel's sound once it exists, so the alarm sound needs a
+ * new channel id. The old one ('medicine-reminders') only gave a short chime.
+ */
+export const REMINDER_CHANNEL = 'medicine-alarm';
+const OLD_CHANNEL = 'medicine-reminders';
+/** A 28-second alarm tone, bundled through the expo-notifications plugin. */
+export const ALARM_SOUND = 'medicine_alarm.wav';
 export const DOSE_CATEGORY = 'medicine-dose';
 export const ACTION_TAKEN = 'taken';
 export const ACTION_SNOOZE = 'snooze';
 export const SNOOZE_MINUTES = 10;
 const KIND = 'mcare-medicine-reminder';
 const SNOOZE_KIND = 'mcare-medicine-snooze';
+
+/** True for a medicine alarm or its snooze (not order updates or family alerts). */
+export const isDoseAlarm = (data: Record<string, unknown> | undefined) =>
+  data?.kind === KIND || data?.kind === SNOOZE_KIND;
 
 /**
  * iPhones keep at most 64 scheduled notifications per app, so a reminder for
@@ -30,11 +48,17 @@ export const MAX_ALARMS = 60;
 export async function setupReminderChannel() {
   if (Platform.OS !== 'android') return;
   await Notifications.setNotificationChannelAsync(REMINDER_CHANNEL, {
-    name: 'Medicine reminders',
+    name: 'Medicine alarms',
     importance: AndroidImportance.MAX,
-    sound: 'default',
-    vibrationPattern: [0, 600, 300, 600, 300, 600],
+    sound: ALARM_SOUND,
+    // Plays on the alarm volume like a clock alarm, so it rings even when
+    // the phone is on silent or vibrate for calls and messages.
+    audioAttributes: { usage: AndroidAudioUsage.ALARM, contentType: AndroidAudioContentType.SONIFICATION },
+    bypassDnd: true,
+    lockscreenVisibility: AndroidNotificationVisibility.PUBLIC,
+    vibrationPattern: [0, 800, 400, 800, 400, 800, 400, 800],
   });
+  await Notifications.deleteNotificationChannelAsync(OLD_CHANNEL).catch(() => undefined);
 }
 
 /** The "I took it" and "Snooze 10 min" buttons on the alarm, in the person's language. */
@@ -50,13 +74,16 @@ async function setupDoseCategory(lang: Language) {
 }
 
 /** Rings the same dose again in 10 minutes, keeping the original dose time. */
-export async function snoozeDose(content: Notifications.NotificationContent, scheduledFor: string) {
+export async function snoozeDose(
+  content: Pick<Notifications.NotificationContent, 'title' | 'body' | 'data'>,
+  scheduledFor: string,
+) {
   if (Platform.OS === 'web') return;
   await Notifications.scheduleNotificationAsync({
     content: {
       title: content.title,
       body: content.body,
-      sound: 'default',
+      sound: ALARM_SOUND,
       priority: AndroidNotificationPriority.MAX,
       categoryIdentifier: DOSE_CATEGORY,
       data: { ...content.data, kind: SNOOZE_KIND, scheduledFor },
@@ -106,10 +133,10 @@ async function doSync(reminders: Reminder[], lang: Language) {
       content: {
         title: translate(lang, 'medicineTime'),
         body: translate(lang, 'medicineTimeBody', { medicine }),
-        sound: 'default',
+        sound: ALARM_SOUND,
         priority: AndroidNotificationPriority.MAX,
         categoryIdentifier: DOSE_CATEGORY,
-        data: { kind: KIND, reminderId: r.id, rawTime: r.raw_time.slice(0, 5) },
+        data: { kind: KIND, medicine, reminderId: r.id, rawTime: r.raw_time.slice(0, 5) },
       },
       trigger: day
         ? {

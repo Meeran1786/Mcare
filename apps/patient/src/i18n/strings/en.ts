@@ -168,6 +168,17 @@ const en = {
   planTrial: 'Plan: {name}, free trial, {days} days left',
   planPaid: 'Plan: {name}, until {date}',
   familyLimitReached: 'This family already has the most members its plan allows.',
+  doseSkip: 'I\'ll skip it',
+  sendTo: 'Send to',
+  allNearby: 'All pharmacies near me',
+  choosePharmacy: 'Choose a pharmacy by name',
+  changePharmacy: 'Choose a different pharmacy',
+  pharmacyName: 'Pharmacy name',
+  search: 'Search',
+  noPharmacyFound: 'No open pharmacy found with that name.',
+  kmAway: '{km} km away',
+  tooFarToDeliver: 'Too far to deliver',
+  sendToPharmacy: 'Send to {name}',
 };
 
 export type Strings = typeof en;

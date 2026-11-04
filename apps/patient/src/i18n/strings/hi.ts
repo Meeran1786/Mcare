@@ -169,6 +169,17 @@ const hi: Strings = {
   planTrial: 'प्लान: {name}, फ़्री ट्रायल, {days} दिन बाकी',
   planPaid: 'प्लान: {name}, {date} तक',
   familyLimitReached: 'इस परिवार में प्लान के हिसाब से जितने सदस्य हो सकते हैं, उतने पहले से हैं।',
+  doseSkip: 'इस बार छोड़ें',
+  sendTo: 'किसे भेजें',
+  allNearby: 'मेरे पास की सभी फ़ार्मेसी',
+  choosePharmacy: 'नाम से फ़ार्मेसी चुनें',
+  changePharmacy: 'दूसरी फ़ार्मेसी चुनें',
+  pharmacyName: 'फ़ार्मेसी का नाम',
+  search: 'खोजें',
+  noPharmacyFound: 'इस नाम की कोई खुली फ़ार्मेसी नहीं मिली।',
+  kmAway: '{km} किमी दूर',
+  tooFarToDeliver: 'डिलीवरी के लिए बहुत दूर',
+  sendToPharmacy: '{name} को भेजें',
 };
 
 export default hi;

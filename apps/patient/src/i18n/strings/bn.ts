@@ -169,6 +169,17 @@ const bn: Strings = {
   planTrial: 'প্ল্যান: {name}, ফ্রি ট্রায়াল, আর {days} দিন',
   planPaid: 'প্ল্যান: {name}, {date} পর্যন্ত',
   familyLimitReached: 'এই পরিবারে প্ল্যান অনুযায়ী সর্বোচ্চ সদস্য আগেই আছেন।',
+  doseSkip: 'এবার বাদ দিন',
+  sendTo: 'কাকে পাঠাবেন',
+  allNearby: 'আমার কাছের সব ফার্মেসি',
+  choosePharmacy: 'নাম দিয়ে ফার্মেসি বেছে নিন',
+  changePharmacy: 'অন্য ফার্মেসি বেছে নিন',
+  pharmacyName: 'ফার্মেসির নাম',
+  search: 'খুঁজুন',
+  noPharmacyFound: 'এই নামে কোনো খোলা ফার্মেসি পাওয়া যায়নি।',
+  kmAway: '{km} কিমি দূরে',
+  tooFarToDeliver: 'ডেলিভারির জন্য অনেক দূরে',
+  sendToPharmacy: '{name}-কে পাঠান',
 };
 
 export default bn;

@@ -266,7 +266,7 @@ const ENGLISH_STOP = new Set([
   'at', 'every', 'daily', 'each', 'in', 'on', 'tomorrow', 'tonight', 'today', 'before', 'after',
   'with', 'and', 'everyday', 'please', 'reminder', 'remind', 'am', 'pm', 'oclock',
 ]);
-const ENGLISH_SKIP = new Set(['my', 'the', 'a', 'an', 'me', 'to', 'take']);
+const ENGLISH_SKIP = new Set(['my', 'the', 'a', 'an', 'me', 'to', 'take', 'for', 'add', 'set', 'create', 'new', 'put', 'make']);
 
 /** The name just before position `end` ("metformin 500" ← ki goli), or undefined. */
 function nameBefore(toks: string[], end: number): string | undefined {
@@ -286,7 +286,9 @@ export function parseMedicine(text: string): string | undefined {
 
   // English: "take metformin 500 at 8", "for my bp tablet", "about vitamin d"
   for (let i = 0; i < toks.length; i++) {
-    if (!isAny(toks[i], L.takeBefore)) continue;
+    // "add reminder glycomet at 11" names the medicine right after "reminder".
+    const afterReminder = isAny(toks[i], L.reminderNoun) && /^[a-z]/.test(toks[i]);
+    if (!isAny(toks[i], L.takeBefore) && !afterReminder) continue;
     const words: string[] = [];
     for (let j = i + 1; j < toks.length && words.length < 4; j++) {
       const w = toks[j];
@@ -297,6 +299,13 @@ export function parseMedicine(text: string): string | undefined {
       words.push(w);
     }
     if (words.length) return words.join(' ');
+  }
+
+  // English, name first: "telma at 3 pm daily"
+  const at = toks.indexOf('at');
+  if (at > 0) {
+    const name = nameBefore(toks, at);
+    if (name && /^[a-z]/.test(name)) return name;
   }
 
   // Before a medicine word ("metformin ki goli", "মেটফরমিন ওষুধ", "மெட்ஃபார்மின் மாத்திரை")

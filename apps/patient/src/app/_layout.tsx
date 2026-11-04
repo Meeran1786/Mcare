@@ -53,6 +53,7 @@ function RootStack() {
           <Stack.Screen name="help" options={{ title: t('help') }} />
           <Stack.Screen name="family/index" options={{ title: t('family') }} />
           <Stack.Screen name="family/[id]" options={{ title: t('family') }} />
+          <Stack.Screen name="alarm" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         </Stack.Protected>
       </Stack>
     </>
