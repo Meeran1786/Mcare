@@ -156,14 +156,18 @@
 
 <div class="col-md-6">
     <label>License File</label>
-    <img src="{{ $pharmacy->documentUrl('license_file') }}"
-         style="width:100%;border-radius:8px;">
+    @foreach($pharmacy->documentPageUrls('license') as $pageUrl)
+    <img src="{{ $pageUrl }}"
+         style="width:100%;border-radius:8px;margin-bottom:8px;">
+    @endforeach
 </div>
 
 <div class="col-md-6">
     <label>GST File</label>
-    <img src="{{ $pharmacy->documentUrl('gst_file') }}"
-         style="width:100%;border-radius:8px;">
+    @foreach($pharmacy->documentPageUrls('gst') as $pageUrl)
+    <img src="{{ $pageUrl }}"
+         style="width:100%;border-radius:8px;margin-bottom:8px;">
+    @endforeach
 </div>
 
 </div>

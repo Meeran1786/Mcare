@@ -183,6 +183,13 @@ const kn: Strings = {
   numberIsPharmacy: 'ಈ ಸಂಖ್ಯೆಯನ್ನು Mcare+ Partner ನಲ್ಲಿ ಒಂದು ಫಾರ್ಮಸಿಗೆ ಬಳಸಲಾಗುತ್ತಿದೆ. ಬೇರೆ ಸಂಖ್ಯೆ ಬಳಸಿ.',
   smsFailed: 'SMS ಕಳುಹಿಸಲಾಗಲಿಲ್ಲ. ಕೆಲವು ನಿಮಿಷಗಳ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
   noInternet: 'ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ. ಸಂಪರ್ಕ ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+  pharmaciesNearMe: 'ನನ್ನ ಹತ್ತಿರದ ಫಾರ್ಮಸಿಗಳು',
+  newPharmacy: 'Mcareನಲ್ಲಿ ಹೊಸದು',
+  noPharmacyNearby: '5 ಕಿ.ಮೀ. ಒಳಗೆ ಇನ್ನೂ ತೆರೆದ ಫಾರ್ಮಸಿ ಇಲ್ಲ.',
+  clearAll: 'ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ',
+  clearAllQ: 'ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕೇ?',
+  removeNotification: 'ಅಧಿಸೂಚನೆ ತೆಗೆದುಹಾಕಿ',
+  noNotifications: 'ಇನ್ನೂ ಅಧಿಸೂಚನೆಗಳಿಲ್ಲ.',
 };
 
 export default kn;

@@ -36,6 +36,7 @@ export default function UploadScreen() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PharmacyResult[] | null>(null);
   const [looking, setLooking] = useState(false);
+  const [nearbyMode, setNearbyMode] = useState(false);
   const point = useRef<Point | null>(null);
 
   async function getPoint() {
@@ -53,17 +54,22 @@ export default function UploadScreen() {
     if (!res.canceled) setPhotos((p) => [...p, ...res.assets.map((a) => a.uri)].slice(0, 5));
   }
 
-  async function search() {
-    if (query.trim().length < 2) return;
+  async function search(nearby = false) {
+    if (!nearby && query.trim().length < 2) return;
     setLooking(true);
     setError('');
+    setNearbyMode(nearby);
     try {
       const at = await getPoint();
       if (!at) {
         setError(t('needLocation'));
         return;
       }
-      setResults(await api.searchPharmacies(query.trim(), at.latitude, at.longitude));
+      setResults(
+        nearby
+          ? await api.nearbyPharmacies(at.latitude, at.longitude)
+          : await api.searchPharmacies(query.trim(), at.latitude, at.longitude),
+      );
     } catch {
       setError(t('somethingWrong'));
     } finally {
@@ -124,9 +130,10 @@ export default function UploadScreen() {
         )}
         {searching && (
           <>
-            <Field label={t('pharmacyName')} value={query} onChangeText={setQuery} onSubmitEditing={search} returnKeyType="search" autoFocus />
-            <BigButton label={t('search')} icon="magnify" onPress={search} loading={looking} disabled={query.trim().length < 2} />
-            {results?.length === 0 && <T variant="small">{t('noPharmacyFound')}</T>}
+            <BigButton label={t('pharmaciesNearMe')} icon="map-marker-radius" kind="secondary" onPress={() => search(true)} loading={looking} />
+            <Field label={t('pharmacyName')} value={query} onChangeText={setQuery} onSubmitEditing={() => search()} returnKeyType="search" />
+            <BigButton label={t('search')} icon="magnify" onPress={() => search()} loading={looking} disabled={query.trim().length < 2} />
+            {results?.length === 0 && <T variant="small">{t(nearbyMode ? 'noPharmacyNearby' : 'noPharmacyFound')}</T>}
             {results?.map((p) => {
               const ok = canDeliver(p);
               const km = p.distance_km != null ? Number(p.distance_km).toFixed(1) : null;
@@ -137,9 +144,18 @@ export default function UploadScreen() {
                   disabled={!ok}
                   onPress={() => choose(p)}
                   style={({ pressed }) => [styles.result, !ok && styles.far, pressed && { opacity: 0.8 }]}>
-                  <MaterialCommunityIcons name="store" size={28} color={ok ? colors.primary : colors.muted} />
+                  {p.photo_urls?.[0] ? (
+                    <Image source={{ uri: p.photo_urls[0] }} style={styles.shop} />
+                  ) : (
+                    <MaterialCommunityIcons name="store" size={28} color={ok ? colors.primary : colors.muted} />
+                  )}
                   <View style={{ flex: 1 }}>
                     <T>{p.pharmacy_name}</T>
+                    {p.is_new && (
+                      <T variant="small" color={colors.success}>
+                        {t('newPharmacy')}
+                      </T>
+                    )}
                     <T variant="small">
                       {[p.area, p.city].filter(Boolean).join(', ')}
                       {km ? ` · ${t('kmAway', { km })}` : ''}
@@ -181,4 +197,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   far: { opacity: 0.55 },
+  shop: { width: 56, height: 56, borderRadius: 10 },
 });

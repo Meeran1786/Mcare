@@ -189,6 +189,13 @@ const hi: Strings = {
   numberIsPatient: 'यह नंबर पहले से Mcare+ मरीज़ ऐप में रजिस्टर है। कृपया फ़ार्मेसी के लिए दूसरा नंबर इस्तेमाल करें।',
   smsFailed: 'SMS नहीं भेजा जा सका। कृपया कुछ मिनट बाद फिर कोशिश करें।',
   noInternet: 'इंटरनेट नहीं है। कृपया कनेक्शन देखकर फिर कोशिश करें।',
+  shopPhotos: 'दुकान की फ़ोटो',
+  photosHint: '{max} फ़ोटो तक। पहली फ़ोटो मुख्य फ़ोटो है जो मरीज़ देखते हैं।',
+  pagesHint: 'हर पेज जोड़ें। {max} पेज तक।',
+  removePhoto: 'हटाएँ',
+  clearAll: 'सब हटाएँ',
+  clearAllQ: 'सभी सूचनाएँ हटाएँ?',
+  removeNotification: 'सूचना हटाएँ',
 };
 
 export default hi;

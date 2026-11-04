@@ -31,6 +31,10 @@ export interface PharmacyDetails {
   pharmacy_photo_url: string | null;
   license_file_url: string | null;
   gst_file_url: string | null;
+  /** Extra shop photos (the cover is pharmacy_photo_url). Older servers leave these out. */
+  photos?: { id: number; url: string }[];
+  license_pages?: string[];
+  gst_pages?: string[];
   verification_status: VerificationStatus;
   is_verified: boolean;
 }
@@ -255,12 +259,22 @@ export const api = {
     return request<{ data: { pharmacy_id: number } }>('POST', '/vendor/pharmacy', { form });
   },
 
-  uploadDocuments: (license: PickedFile, gst?: PickedFile | null) => {
+  /** Every page of the licence (required) and of the GST certificate (optional). */
+  uploadDocuments: (license: PickedFile[], gst: PickedFile[] = []) => {
     const form = new FormData();
-    form.append('license_file', fileField(license, 'license'));
-    if (gst) form.append('gst_file', fileField(gst, 'gst'));
+    license.forEach((f, i) => form.append('license_files[]', fileField(f, `license-${i + 1}`)));
+    gst.forEach((f, i) => form.append('gst_files[]', fileField(f, `gst-${i + 1}`)));
     return request<{ data: { verification_status: string } }>('POST', '/vendor/pharmacy/documents', { form });
   },
+
+  /** Adds shop photos; the first becomes the main photo when there is none. */
+  addPhotos: (uris: string[]) => {
+    const form = new FormData();
+    uris.forEach((uri, i) => form.append('photos[]', fileField(uri, `photo-${i + 1}`)));
+    return request<{ data: { photos: { id: number; url: string }[] } }>('POST', '/vendor/pharmacy/photos', { form });
+  },
+
+  deletePhoto: (id: number) => request('DELETE', `/vendor/pharmacy/photos/${id}`),
 
   updatePhoto: (uri: string) => {
     const form = new FormData();
@@ -310,6 +324,9 @@ export const api = {
   faqs: () => request<{ data: Faq[] }>('GET', '/faqs/help').then((r) => r.data),
 
   sendHelp: (subject: string, message: string) => request('POST', '/help', { body: { subject, message } }),
+
+  clearNotification: (id: number) => request('DELETE', `/notifications/${id}`),
+  clearAllNotifications: () => request('DELETE', '/notifications'),
 
   notifications: () =>
     request<{ data: Paginated<AppNotification> }>('GET', '/notifications').then((r) => r.data.data),

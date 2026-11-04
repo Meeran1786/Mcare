@@ -19,6 +19,25 @@ export async function pickImage(source: 'camera' | 'library'): Promise<string | 
   return shrink(asset.uri, asset.width);
 }
 
+/** Several photos from the gallery (or one from the camera), each shrunk like pickImage's. */
+export async function pickImages(source: 'camera' | 'library', max: number): Promise<string[]> {
+  if (max <= 0) return [];
+  if (source === 'camera') {
+    const one = await pickImage('camera');
+    return one ? [one] : [];
+  }
+  const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (!perm.granted) return [];
+  const res = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    quality: 0.6,
+    allowsMultipleSelection: max > 1,
+    selectionLimit: max,
+  });
+  if (res.canceled) return [];
+  return Promise.all(res.assets.slice(0, max).map((a) => shrink(a.uri, a.width)));
+}
+
 /** A JPEG no wider than MAX_WIDTH, well under the 2 MB upload limit. */
 async function shrink(uri: string, width: number): Promise<string> {
   try {

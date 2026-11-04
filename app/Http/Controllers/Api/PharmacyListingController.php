@@ -21,7 +21,7 @@ class PharmacyListingController extends Controller
 
         $lat = $request->input('lat');
         $lng = $request->input('lng');
-        $radius = $request->input('radius', 5);
+        $radius = (float) $request->input('radius', 5);
         $search = $request->input('search');
         $perPage = (int) $request->input('limit', 10);
         $hasCoordinates = $request->filled('lat') && $request->filled('lng');
@@ -45,7 +45,8 @@ class PharmacyListingController extends Controller
                 'state',
                 'latitude',
                 'longitude',
-                'pharmacy_photo'
+                'pharmacy_photo',
+                'created_at'
             )
             ->selectRaw("(6371 * acos(LEAST(1, GREATEST(-1,
                     cos(radians(?))
@@ -60,7 +61,7 @@ class PharmacyListingController extends Controller
                     * cos(radians(longitude) - radians(?))
                     + sin(radians(?))
                     * sin(radians(latitude))
-                )))) <= ? THEN 1 ELSE 0 END AS is_deliverable", [$lat, $lng, $lat, $radius])
+                )))) <= (? + 0) THEN 1 ELSE 0 END AS is_deliverable", [$lat, $lng, $lat, $radius])
             ->orderBy('distance_km', 'asc');
 
             if ($shouldFilterByDistance) {
@@ -70,7 +71,7 @@ class PharmacyListingController extends Controller
                     * cos(radians(longitude) - radians(?))
                     + sin(radians(?))
                     * sin(radians(latitude))
-                )))) <= ?", [$lat, $lng, $lat, $radius]);
+                )))) <= (? + 0)", [$lat, $lng, $lat, $radius]);
             }
         } else {
             $query->select(
@@ -82,12 +83,21 @@ class PharmacyListingController extends Controller
                 'state',
                 'latitude',
                 'longitude',
-                'pharmacy_photo'
+                'pharmacy_photo',
+                'created_at'
             )
             ->orderBy('created_at', 'desc');
         }
 
         $pharmacies = $query->paginate($perPage);
+
+        // Cover and extra shop photos, so patients can see the shop.
+        $pharmacies->getCollection()->load('files')->each(function ($pharmacy) {
+            $pharmacy->setAttribute('photo_urls', $pharmacy->photoUrls());
+            // Joined Mcare in the last 30 days: the app marks it "New".
+            $pharmacy->setAttribute('is_new', $pharmacy->created_at && $pharmacy->created_at->gt(now()->subDays(30)));
+            $pharmacy->unsetRelation('files');
+        });
 
         return response()->json([
             'success' => true,

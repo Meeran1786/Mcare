@@ -182,6 +182,13 @@ const en = {
   numberIsPharmacy: 'This number is already used by a pharmacy in Mcare+ Partner. Please use a different number.',
   smsFailed: 'We could not send the SMS. Please try again in a few minutes.',
   noInternet: 'No internet connection. Please check your connection and try again.',
+  pharmaciesNearMe: 'Pharmacies near me',
+  newPharmacy: 'New on Mcare',
+  noPharmacyNearby: 'No open pharmacy within 5 km yet.',
+  clearAll: 'Clear all',
+  clearAllQ: 'Remove all notifications?',
+  removeNotification: 'Remove notification',
+  noNotifications: 'No notifications yet.',
 };
 
 export type Strings = typeof en;

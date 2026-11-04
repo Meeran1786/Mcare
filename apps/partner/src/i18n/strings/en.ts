@@ -186,6 +186,13 @@ const en = {
   numberIsPatient: 'This number is already signed up in the Mcare+ patient app. Please use a different number for your pharmacy.',
   smsFailed: 'We could not send the SMS. Please try again in a few minutes.',
   noInternet: 'No internet connection. Please check your connection and try again.',
+  shopPhotos: 'Shop photos',
+  photosHint: 'Up to {max} photos. The first one is the main photo patients see.',
+  pagesHint: 'Add every page. Up to {max} pages.',
+  removePhoto: 'Remove',
+  clearAll: 'Clear all',
+  clearAllQ: 'Remove all notifications?',
+  removeNotification: 'Remove notification',
 };
 
 export type Strings = typeof en;

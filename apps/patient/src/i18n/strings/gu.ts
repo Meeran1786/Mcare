@@ -183,6 +183,13 @@ const gu: Strings = {
   numberIsPharmacy: 'આ નંબર Mcare+ Partner માં એક ફાર્મસી માટે વપરાય છે. કૃપા કરીને બીજો નંબર વાપરો.',
   smsFailed: 'SMS મોકલી શકાયો નહીં. થોડી મિનિટ પછી ફરી પ્રયાસ કરો.',
   noInternet: 'ઇન્ટરનેટ નથી. કનેક્શન તપાસીને ફરી પ્રયાસ કરો.',
+  pharmaciesNearMe: 'મારી નજીકની ફાર્મસી',
+  newPharmacy: 'Mcare પર નવી',
+  noPharmacyNearby: '5 કિમીની અંદર હજી કોઈ ખુલ્લી ફાર્મસી નથી.',
+  clearAll: 'બધું દૂર કરો',
+  clearAllQ: 'બધી સૂચનાઓ દૂર કરવી છે?',
+  removeNotification: 'સૂચના દૂર કરો',
+  noNotifications: 'હજી કોઈ સૂચના નથી.',
 };
 
 export default gu;
