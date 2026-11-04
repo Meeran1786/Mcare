@@ -189,6 +189,7 @@ const pa: Strings = {
   clearAll: 'ਸਭ ਹਟਾਓ',
   clearAllQ: 'ਸਾਰੀਆਂ ਸੂਚਨਾਵਾਂ ਹਟਾਉਣੀਆਂ ਹਨ?',
   removeNotification: 'ਸੂਚਨਾ ਹਟਾਓ',
+  removePhoto: 'ਫੋਟੋ ਹਟਾਓ',
   noNotifications: 'ਹਾਲੇ ਕੋਈ ਸੂਚਨਾ ਨਹੀਂ।',
 };
 

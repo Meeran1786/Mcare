@@ -188,6 +188,7 @@ const en = {
   clearAll: 'Clear all',
   clearAllQ: 'Remove all notifications?',
   removeNotification: 'Remove notification',
+  removePhoto: 'Remove photo',
   noNotifications: 'No notifications yet.',
 };
 

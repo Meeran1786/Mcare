@@ -109,8 +109,19 @@ export default function UploadScreen() {
       <BigButton label={t('takePhoto')} icon="camera" onPress={() => pick(true)} />
       <BigButton label={t('chooseFromGallery')} icon="image-multiple" kind="secondary" onPress={() => pick(false)} />
       <View style={styles.thumbs}>
-        {photos.map((uri) => (
-          <Image key={uri} source={{ uri }} style={styles.thumb} />
+        {photos.map((uri, i) => (
+          <View key={`${i}-${uri}`}>
+            <Image source={{ uri }} style={styles.thumb} />
+            <Pressable
+              onPress={() => setPhotos((p) => p.filter((_, j) => j !== i))}
+              accessibilityRole="button"
+              accessibilityLabel={t('removePhoto')}
+              hitSlop={8}
+              style={styles.removePhoto}
+            >
+              <MaterialCommunityIcons name="close" size={22} color="#fff" />
+            </Pressable>
+          </View>
         ))}
       </View>
 
@@ -187,6 +198,17 @@ export default function UploadScreen() {
 const styles = StyleSheet.create({
   thumbs: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   thumb: { width: 100, height: 130, borderRadius: 12 },
+  removePhoto: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   result: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -189,6 +189,7 @@ const bn: Strings = {
   clearAll: 'সব মুছুন',
   clearAllQ: 'সব বিজ্ঞপ্তি মুছবেন?',
   removeNotification: 'বিজ্ঞপ্তি মুছুন',
+  removePhoto: 'ছবি মুছুন',
   noNotifications: 'এখনও কোনো বিজ্ঞপ্তি নেই।',
 };
 

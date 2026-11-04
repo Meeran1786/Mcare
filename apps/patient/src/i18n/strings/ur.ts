@@ -189,6 +189,7 @@ const ur: Strings = {
   clearAll: 'سب ہٹائیں',
   clearAllQ: 'سبھی اطلاعات ہٹائیں؟',
   removeNotification: 'اطلاع ہٹائیں',
+  removePhoto: 'تصویر ہٹائیں',
   noNotifications: 'ابھی کوئی اطلاع نہیں ہے۔',
 };
 

@@ -189,6 +189,7 @@ const or: Strings = {
   clearAll: 'ସବୁ ହଟାନ୍ତୁ',
   clearAllQ: 'ସବୁ ବିଜ୍ଞପ୍ତି ହଟାଇବେ?',
   removeNotification: 'ବିଜ୍ଞପ୍ତି ହଟାନ୍ତୁ',
+  removePhoto: 'ଫଟୋ ହଟାନ୍ତୁ',
   noNotifications: 'ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବିଜ୍ଞପ୍ତି ନାହିଁ।',
 };
 
