@@ -74,6 +74,10 @@ export function apiErrorText(e: unknown, fallback: string): string {
     // A refusal the server explains (for example "Pharmacy already exists"). Server errors (5xx) stay generic.
     const message = (e.body as { message?: string } | null)?.message;
     if (e.status < 500 && message) return message;
+    // Keep the code, so a screenshot tells us what failed (500 server, 413 too large...).
+    return `${fallback} (${e.status})`;
   }
+  // fetch itself failed: usually no internet ("Network request failed").
+  if (e instanceof Error && e.message) return `${fallback} (${e.message})`;
   return fallback;
 }
