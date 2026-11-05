@@ -86,3 +86,35 @@ test('running low within 3 days of tablets, active reminders only', () => {
   expect(runningLow({ is_active: false, days_left: 1 })).toBe(false);
   expect(runningLow({ is_active: true, days_left: null })).toBe(false);
 });
+
+describe('refill plan', () => {
+  const { refillPlan, MAX_REFILL_ALERTS, MAX_ALARMS } = jest.requireActual('../alarms') as typeof import('../alarms');
+  const every = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as Reminder['days'];
+  const withDays = (id: number, days_left: number | null, active = true) => ({ ...r(id, '08:00', every, active), days_left });
+  const at = (p: { at: Date }) => `${p.at.getDate()} ${p.at.getHours()}:00`;
+
+  test('warns each morning from 3 days before running out', () => {
+    const now = new Date(2026, 10, 5, 9, 0); // 5 Nov, 9 am
+    const plan = refillPlan([withDays(1, 5)], now);
+    expect(plan.map((p) => [at(p), p.daysLeft])).toEqual([
+      ['7 10:00', 3],
+      ['8 10:00', 2],
+      ['9 10:00', 1],
+      ['10 10:00', 0],
+    ]);
+  });
+
+  test('already low: starts today if 10 am has not passed, else tomorrow', () => {
+    expect(at(refillPlan([withDays(1, 2)], new Date(2026, 10, 5, 9, 0))[0])).toBe('5 10:00');
+    expect(at(refillPlan([withDays(1, 2)], new Date(2026, 10, 5, 11, 0))[0])).toBe('6 10:00');
+  });
+
+  test('skips reminders without a tablet count or switched off, and stays within the iPhone limit', () => {
+    const now = new Date(2026, 10, 5, 9, 0);
+    expect(refillPlan([withDays(1, null), withDays(2, 1, false)], now)).toEqual([]);
+    // Plenty left: the first warning is set for 27 days from now, so it comes even if the app stays closed.
+    expect(at(refillPlan([withDays(3, 30)], now)[0])).toBe('2 10:00');
+    expect(refillPlan([withDays(1, 1), withDays(2, 2), withDays(3, 3)], now)).toHaveLength(MAX_REFILL_ALERTS);
+    expect(MAX_ALARMS + MAX_REFILL_ALERTS).toBeLessThanOrEqual(60);
+  });
+});
