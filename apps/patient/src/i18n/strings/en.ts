@@ -189,6 +189,14 @@ const en = {
   clearAllQ: 'Remove all notifications?',
   removeNotification: 'Remove notification',
   removePhoto: 'Remove photo',
+  orderTitle: 'Order medicines',
+  searchPharmacy: 'Search pharmacy',
+  deliverTo: 'Deliver to',
+  change: 'Change',
+  patientName: 'Patient: {name}',
+  currentLocation: 'Your current location',
+  uploadNearbyHint: 'Send it to pharmacies near this address.',
+  nearbyPharmacies: 'Nearby pharmacies',
   noNotifications: 'No notifications yet.',
 };
 

@@ -190,6 +190,14 @@ const kn: Strings = {
   clearAllQ: 'ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕೇ?',
   removeNotification: 'ಅಧಿಸೂಚನೆ ತೆಗೆದುಹಾಕಿ',
   removePhoto: 'ಫೋಟೋ ತೆಗೆದುಹಾಕಿ',
+  orderTitle: 'ಔಷಧಿ ಆರ್ಡರ್ ಮಾಡಿ',
+  searchPharmacy: 'ಫಾರ್ಮಸಿ ಹುಡುಕಿ',
+  deliverTo: 'ಇಲ್ಲಿಗೆ ತಲುಪಿಸಿ',
+  change: 'ಬದಲಿಸಿ',
+  patientName: 'ರೋಗಿ: {name}',
+  currentLocation: 'ನಿಮ್ಮ ಈಗಿನ ಸ್ಥಳ',
+  uploadNearbyHint: 'ಈ ವಿಳಾಸದ ಹತ್ತಿರದ ಫಾರ್ಮಸಿಗಳಿಗೆ ಕಳುಹಿಸಿ.',
+  nearbyPharmacies: 'ಹತ್ತಿರದ ಫಾರ್ಮಸಿಗಳು',
   noNotifications: 'ಇನ್ನೂ ಅಧಿಸೂಚನೆಗಳಿಲ್ಲ.',
 };
 

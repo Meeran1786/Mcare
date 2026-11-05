@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Alert, Image, Pressable, StyleSheet, View } from 'react-native';
 
@@ -12,10 +12,10 @@ import { colors, space } from '@/theme';
 
 type Point = { latitude: number; longitude: number; addressId?: number };
 
-/** Delivery point: the default saved address, else where the phone is now. */
-async function deliveryPoint(): Promise<Point | null> {
+/** Delivery point: the address picked on the order screen, else the default one, else where the phone is now. */
+async function deliveryPoint(addressId?: number): Promise<Point | null> {
   const addresses = await api.addresses().catch(() => []);
-  const home = addresses.find((a) => !!a.is_default) ?? addresses[0];
+  const home = addresses.find((a) => a.id === addressId) ?? addresses.find((a) => !!a.is_default) ?? addresses[0];
   if (home) return { latitude: Number(home.latitude), longitude: Number(home.longitude), addressId: home.id };
   const perm = await Location.requestForegroundPermissionsAsync();
   if (!perm.granted) return null;
@@ -27,11 +27,16 @@ const canDeliver = (p: PharmacyResult) => p.is_deliverable === undefined || !!Nu
 
 export default function UploadScreen() {
   const { t } = useSession();
+  const params = useLocalSearchParams<{ addressId?: string; pharmacyId?: string; pharmacyName?: string }>();
   const [photos, setPhotos] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   // Who gets the prescription: everyone nearby (null), or one chosen pharmacy.
-  const [chosen, setChosen] = useState<PharmacyResult | null>(null);
+  const [chosen, setChosen] = useState<PharmacyResult | null>(
+    params.pharmacyId
+      ? { id: Number(params.pharmacyId), pharmacy_name: params.pharmacyName ?? '', area: null, city: null }
+      : null,
+  );
   const [searching, setSearching] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PharmacyResult[] | null>(null);
@@ -40,7 +45,7 @@ export default function UploadScreen() {
   const point = useRef<Point | null>(null);
 
   async function getPoint() {
-    point.current = point.current ?? (await deliveryPoint());
+    point.current = point.current ?? (await deliveryPoint(params.addressId ? Number(params.addressId) : undefined));
     return point.current;
   }
 

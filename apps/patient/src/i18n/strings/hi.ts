@@ -190,6 +190,14 @@ const hi: Strings = {
   clearAllQ: 'सभी सूचनाएँ हटाएँ?',
   removeNotification: 'सूचना हटाएँ',
   removePhoto: 'फ़ोटो हटाएँ',
+  orderTitle: 'दवा मँगाएँ',
+  searchPharmacy: 'फ़ार्मेसी खोजें',
+  deliverTo: 'यहाँ पहुँचाएँ',
+  change: 'बदलें',
+  patientName: 'मरीज़: {name}',
+  currentLocation: 'आपकी अभी की जगह',
+  uploadNearbyHint: 'इस पते के पास की फ़ार्मेसियों को भेजें।',
+  nearbyPharmacies: 'पास की फ़ार्मेसियाँ',
   noNotifications: 'अभी कोई सूचना नहीं है।',
 };
 

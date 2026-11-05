@@ -190,6 +190,14 @@ const te: Strings = {
   clearAllQ: 'అన్ని నోటిఫికేషన్లు తొలగించాలా?',
   removeNotification: 'నోటిఫికేషన్ తొలగించు',
   removePhoto: 'ఫోటో తొలగించు',
+  orderTitle: 'మందులు ఆర్డర్ చేయండి',
+  searchPharmacy: 'ఫార్మసీ వెతకండి',
+  deliverTo: 'ఇక్కడికి డెలివరీ',
+  change: 'మార్చు',
+  patientName: 'రోగి: {name}',
+  currentLocation: 'మీ ప్రస్తుత స్థలం',
+  uploadNearbyHint: 'ఈ చిరునామా దగ్గరి ఫార్మసీలకు పంపండి.',
+  nearbyPharmacies: 'దగ్గరి ఫార్మసీలు',
   noNotifications: 'ఇంకా నోటిఫికేషన్లు లేవు.',
 };
 
