@@ -190,6 +190,14 @@ const pa: Strings = {
   clearAllQ: 'ਸਾਰੀਆਂ ਸੂਚਨਾਵਾਂ ਹਟਾਉਣੀਆਂ ਹਨ?',
   removeNotification: 'ਸੂਚਨਾ ਹਟਾਓ',
   removePhoto: 'ਫੋਟੋ ਹਟਾਓ',
+  orderTitle: 'ਦਵਾਈ ਮੰਗਵਾਓ',
+  searchPharmacy: 'ਫਾਰਮੇਸੀ ਲੱਭੋ',
+  deliverTo: 'ਇੱਥੇ ਪਹੁੰਚਾਓ',
+  change: 'ਬਦਲੋ',
+  patientName: 'ਮਰੀਜ਼: {name}',
+  currentLocation: 'ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਥਾਂ',
+  uploadNearbyHint: 'ਇਸ ਪਤੇ ਦੇ ਨੇੜੇ ਦੀਆਂ ਫਾਰਮੇਸੀਆਂ ਨੂੰ ਭੇਜੋ।',
+  nearbyPharmacies: 'ਨੇੜੇ ਦੀਆਂ ਫਾਰਮੇਸੀਆਂ',
   noNotifications: 'ਹਾਲੇ ਕੋਈ ਸੂਚਨਾ ਨਹੀਂ।',
 };
 

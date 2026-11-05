@@ -190,6 +190,14 @@ const gu: Strings = {
   clearAllQ: 'બધી સૂચનાઓ દૂર કરવી છે?',
   removeNotification: 'સૂચના દૂર કરો',
   removePhoto: 'ફોટો દૂર કરો',
+  orderTitle: 'દવા મંગાવો',
+  searchPharmacy: 'ફાર્મસી શોધો',
+  deliverTo: 'અહીં પહોંચાડો',
+  change: 'બદલો',
+  patientName: 'દર્દી: {name}',
+  currentLocation: 'તમારું હાલનું સ્થાન',
+  uploadNearbyHint: 'આ સરનામાની નજીકની ફાર્મસીઓને મોકલો.',
+  nearbyPharmacies: 'નજીકની ફાર્મસીઓ',
   noNotifications: 'હજી કોઈ સૂચના નથી.',
 };
 

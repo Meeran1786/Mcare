@@ -190,6 +190,14 @@ const ml: Strings = {
   clearAllQ: 'എല്ലാ അറിയിപ്പുകളും നീക്കണോ?',
   removeNotification: 'അറിയിപ്പ് നീക്കുക',
   removePhoto: 'ഫോട്ടോ നീക്കുക',
+  orderTitle: 'മരുന്ന് ഓർഡർ ചെയ്യുക',
+  searchPharmacy: 'ഫാർമസി തിരയുക',
+  deliverTo: 'ഇവിടെ എത്തിക്കുക',
+  change: 'മാറ്റുക',
+  patientName: 'രോഗി: {name}',
+  currentLocation: 'നിങ്ങളുടെ ഇപ്പോഴത്തെ സ്ഥലം',
+  uploadNearbyHint: 'ഈ വിലാസത്തിനടുത്തുള്ള ഫാർമസികളിലേക്ക് അയയ്ക്കുക.',
+  nearbyPharmacies: 'അടുത്തുള്ള ഫാർമസികൾ',
   noNotifications: 'ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.',
 };
 

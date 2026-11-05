@@ -190,6 +190,14 @@ const or: Strings = {
   clearAllQ: 'ସବୁ ବିଜ୍ଞପ୍ତି ହଟାଇବେ?',
   removeNotification: 'ବିଜ୍ଞପ୍ତି ହଟାନ୍ତୁ',
   removePhoto: 'ଫଟୋ ହଟାନ୍ତୁ',
+  orderTitle: 'ଔଷଧ ଅର୍ଡର କରନ୍ତୁ',
+  searchPharmacy: 'ଫାର୍ମାସି ଖୋଜନ୍ତୁ',
+  deliverTo: 'ଏଠାକୁ ପହଞ୍ଚାନ୍ତୁ',
+  change: 'ବଦଳାନ୍ତୁ',
+  patientName: 'ରୋଗୀ: {name}',
+  currentLocation: 'ଆପଣଙ୍କ ବର୍ତ୍ତମାନ ସ୍ଥାନ',
+  uploadNearbyHint: 'ଏହି ଠିକଣା ପାଖ ଫାର୍ମାସିକୁ ପଠାନ୍ତୁ।',
+  nearbyPharmacies: 'ପାଖ ଫାର୍ମାସି',
   noNotifications: 'ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବିଜ୍ଞପ୍ତି ନାହିଁ।',
 };
 

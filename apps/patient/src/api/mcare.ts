@@ -77,7 +77,11 @@ export interface Order {
 export interface Address {
   id: number;
   label: string | null;
+  name?: string | null;
   address_line: string;
+  city?: string | null;
+  state?: string | null;
+  pincode?: string | null;
   latitude: string | number;
   longitude: string | number;
   is_default: boolean | number;

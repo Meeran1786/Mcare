@@ -190,6 +190,14 @@ const ta: Strings = {
   clearAllQ: 'எல்லா அறிவிப்புகளையும் நீக்கவா?',
   removeNotification: 'அறிவிப்பை நீக்கு',
   removePhoto: 'புகைப்படத்தை நீக்கு',
+  orderTitle: 'மருந்து ஆர்டர் செய்',
+  searchPharmacy: 'மருந்தகத்தைத் தேடு',
+  deliverTo: 'இங்கே டெலிவரி',
+  change: 'மாற்று',
+  patientName: 'நோயாளி: {name}',
+  currentLocation: 'உங்கள் தற்போதைய இடம்',
+  uploadNearbyHint: 'இந்த முகவரிக்கு அருகிலுள்ள மருந்தகங்களுக்கு அனுப்பு.',
+  nearbyPharmacies: 'அருகிலுள்ள மருந்தகங்கள்',
   noNotifications: 'இன்னும் அறிவிப்புகள் இல்லை.',
 };
 

@@ -46,6 +46,7 @@ function RootStack() {
           <Stack.Screen name="name" options={{ headerShown: false }} />
           <Stack.Screen name="reminder/[id]" options={{ title: t('addReminder') }} />
           <Stack.Screen name="upload" options={{ title: t('uploadTitle') }} />
+          <Stack.Screen name="order" options={{ title: t('orderTitle') }} />
           <Stack.Screen name="notifications" options={{ title: t('notifications') }} />
           <Stack.Screen name="change-language" options={{ title: t('language') }} />
           <Stack.Screen name="addresses" options={{ title: t('addresses') }} />

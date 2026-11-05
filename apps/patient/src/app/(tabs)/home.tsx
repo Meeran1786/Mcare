@@ -107,7 +107,7 @@ export default function HomeScreen() {
 
       <BigButton label={t('setReminder')} icon="alarm-plus" kind="secondary" onPress={() => router.push('/reminder/new')} />
       <BigButton label={t('refillMedicines')} icon="refresh" kind="secondary" onPress={() => router.push('/orders')} />
-      <BigButton label={t('uploadPrescription')} icon="camera" kind="secondary" onPress={() => router.push('/upload')} />
+      <BigButton label={t('uploadPrescription')} icon="camera" kind="secondary" onPress={() => router.push('/order')} />
     </Screen>
   );
 }

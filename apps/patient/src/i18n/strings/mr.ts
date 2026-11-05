@@ -190,6 +190,14 @@ const mr: Strings = {
   clearAllQ: 'सर्व सूचना काढायच्या?',
   removeNotification: 'सूचना काढा',
   removePhoto: 'फोटो काढा',
+  orderTitle: 'औषध मागवा',
+  searchPharmacy: 'फार्मसी शोधा',
+  deliverTo: 'येथे पोहोचवा',
+  change: 'बदला',
+  patientName: 'रुग्ण: {name}',
+  currentLocation: 'तुमचे सध्याचे ठिकाण',
+  uploadNearbyHint: 'या पत्त्याजवळील फार्मसींना पाठवा.',
+  nearbyPharmacies: 'जवळच्या फार्मसी',
   noNotifications: 'अजून कोणत्याही सूचना नाहीत.',
 };
 

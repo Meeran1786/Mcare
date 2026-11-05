@@ -190,6 +190,14 @@ const ur: Strings = {
   clearAllQ: 'سبھی اطلاعات ہٹائیں؟',
   removeNotification: 'اطلاع ہٹائیں',
   removePhoto: 'تصویر ہٹائیں',
+  orderTitle: 'دوا منگوائیں',
+  searchPharmacy: 'فارمیسی تلاش کریں',
+  deliverTo: 'یہاں پہنچائیں',
+  change: 'بدلیں',
+  patientName: 'مریض: {name}',
+  currentLocation: 'آپ کی موجودہ جگہ',
+  uploadNearbyHint: 'اس پتے کے قریب کی فارمیسیوں کو بھیجیں۔',
+  nearbyPharmacies: 'قریبی فارمیسیاں',
   noNotifications: 'ابھی کوئی اطلاع نہیں ہے۔',
 };
 

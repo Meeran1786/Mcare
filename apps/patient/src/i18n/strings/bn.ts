@@ -190,6 +190,14 @@ const bn: Strings = {
   clearAllQ: 'সব বিজ্ঞপ্তি মুছবেন?',
   removeNotification: 'বিজ্ঞপ্তি মুছুন',
   removePhoto: 'ছবি মুছুন',
+  orderTitle: 'ওষুধ অর্ডার করুন',
+  searchPharmacy: 'ফার্মেসি খুঁজুন',
+  deliverTo: 'এখানে পৌঁছে দিন',
+  change: 'বদলান',
+  patientName: 'রোগী: {name}',
+  currentLocation: 'আপনার বর্তমান অবস্থান',
+  uploadNearbyHint: 'এই ঠিকানার কাছের ফার্মেসিতে পাঠান।',
+  nearbyPharmacies: 'কাছের ফার্মেসি',
   noNotifications: 'এখনও কোনো বিজ্ঞপ্তি নেই।',
 };
 
