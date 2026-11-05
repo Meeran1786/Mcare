@@ -42,7 +42,8 @@ class CheckRefills extends Command
                 ? "{$medicine} has run out. Tap to order more."
                 : "Only {$left} tablets of {$medicine} left, enough for about {$daysLeft} days. Tap to order more.";
 
-            $this->notify($firebase, $reminder->user, $title, $body, $reminder->id);
+            // The new app rings its own refill warning, like its dose alarms.
+            $this->notify($firebase, $reminder->user, $title, $body, $reminder->id, !$reminder->user->local_reminders);
 
             $name = $reminder->user->name ?: $reminder->user->mobile_number;
             $links = CaregiverLink::active()->where('patient_id', $reminder->user_id)->with('caregiver')->get();
@@ -64,7 +65,7 @@ class CheckRefills extends Command
         return self::SUCCESS;
     }
 
-    private function notify(FirebaseService $firebase, $user, string $title, string $body, int $reminderId): void
+    private function notify(FirebaseService $firebase, $user, string $title, string $body, int $reminderId, bool $push = true): void
     {
         Notification::create([
             'user_id' => $user->id,
@@ -75,7 +76,7 @@ class CheckRefills extends Command
             'is_read' => false,
         ]);
 
-        if (!$user->fcm_token) {
+        if (!$push || !$user->fcm_token) {
             return;
         }
 

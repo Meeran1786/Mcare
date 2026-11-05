@@ -167,4 +167,23 @@ class QuoteAndRefillTest extends TestCase
         $this->artisan('reminders:check-refills')->assertSuccessful();
         $this->assertCount(4, $this->pushes);
     }
+
+    public function test_new_app_rings_its_own_refill_warning_so_no_push_to_patient(): void
+    {
+        Carbon::setTestNow(Carbon::parse('2026-11-02 09:00', 'Asia/Kolkata'));
+        $patient = User::create(['mobile_number' => '9000000407', 'name' => 'Amma', 'role' => 'user', 'fcm_token' => 'p', 'local_reminders' => true]);
+        $son = User::create(['mobile_number' => '9000000408', 'name' => 'Ravi', 'role' => 'user', 'fcm_token' => 's']);
+        CaregiverLink::create(['patient_id' => $patient->id, 'caregiver_id' => $son->id, 'status' => 'active']);
+        Reminder::create([
+            'user_id' => $patient->id, 'time' => '08:00', 'days' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            'is_active' => true, 'medicine_name' => 'Metformin', 'timezone' => 'Asia/Kolkata',
+            'pills_left' => 3, 'pills_per_dose' => 1, 'pills_counted_at' => now(),
+        ]);
+
+        $this->artisan('reminders:check-refills')->assertSuccessful();
+
+        // Family still gets a push; the patient gets the in-app notice only.
+        $this->assertSame([['s']], array_map(fn ($p) => [$p[0]], $this->pushes));
+        $this->assertSame(1, Notification::where('user_id', $patient->id)->where('type', 'refill')->count());
+    }
 }

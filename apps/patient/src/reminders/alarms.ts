@@ -43,7 +43,12 @@ export const isDoseAlarm = (data: Record<string, unknown> | undefined) =>
  * every day becomes one daily alarm instead of seven weekly ones. Some room is
  * left for snoozes.
  */
-export const MAX_ALARMS = 60;
+export const MAX_ALARMS = 56;
+/** Refill warnings scheduled on the phone, out of the same 64. */
+export const MAX_REFILL_ALERTS = 4;
+/** Refill warnings ring at this hour, a quiet time to arrange an order. */
+export const REFILL_HOUR = 10;
+const REFILL_KIND = 'mcare-refill';
 
 export async function setupReminderChannel() {
   if (Platform.OS !== 'android') return;
@@ -106,6 +111,28 @@ export function alarmPlan(reminders: Reminder[]): { reminder: Reminder; day: Day
   return plan.slice(0, MAX_ALARMS);
 }
 
+/**
+ * Refill warnings for the days a medicine is running low (3 days left or
+ * fewer), so they come even when the app stays closed. days_left is counted
+ * from today, so each later day has one day less.
+ */
+export function refillPlan(
+  reminders: Reminder[],
+  now = new Date(),
+  lowDays = 3,
+): { reminder: Reminder; at: Date; daysLeft: number }[] {
+  const plan: { reminder: Reminder; at: Date; daysLeft: number }[] = [];
+  for (const r of reminders) {
+    if (!r.is_active || r.days_left == null) continue;
+    const left = Math.max(0, Math.floor(r.days_left));
+    for (let k = Math.max(0, left - lowDays); k <= left; k++) {
+      const at = new Date(now.getFullYear(), now.getMonth(), now.getDate() + k, REFILL_HOUR, 0, 0);
+      if (at > now) plan.push({ reminder: r, at, daysLeft: left - k });
+    }
+  }
+  return plan.sort((a, b) => a.at.getTime() - b.at.getTime()).slice(0, MAX_REFILL_ALERTS);
+}
+
 let syncing: Promise<void> = Promise.resolve();
 
 /** Replaces every scheduled medicine alarm with the current reminders. */
@@ -121,7 +148,7 @@ async function doSync(reminders: Reminder[], lang: Language) {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
     scheduled
-      .filter((n) => n.content.data?.kind === KIND)
+      .filter((n) => n.content.data?.kind === KIND || n.content.data?.kind === REFILL_KIND)
       .map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier)),
   );
 
@@ -150,4 +177,22 @@ async function doSync(reminders: Reminder[], lang: Language) {
         : { type: SchedulableTriggerInputTypes.DAILY, channelId: REMINDER_CHANNEL, hour, minute, delivery: 'alarmClock' },
     });
   }
+
+  for (const { reminder: r, at, daysLeft } of refillPlan(reminders)) {
+    const medicine = r.medicine_name || translate(lang, 'yourMedicine');
+    await Notifications.scheduleNotificationAsync({
+      identifier: `refill-${r.id}-${dateKeyOf(at)}`,
+      content: {
+        title: translate(lang, 'refillMedicines'),
+        body: daysLeft > 0 ? translate(lang, 'runsOutSoon', { medicine, days: daysLeft }) : translate(lang, 'runOut', { medicine }),
+        sound: true,
+        priority: AndroidNotificationPriority.HIGH,
+        // REFILL_DUE opens the orders page, like the server's refill push.
+        data: { kind: REFILL_KIND, type: 'REFILL_DUE', reminderId: r.id },
+      },
+      trigger: { type: SchedulableTriggerInputTypes.DATE, date: at, channelId: REMINDER_CHANNEL },
+    });
+  }
 }
+
+const dateKeyOf = (d: Date) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
