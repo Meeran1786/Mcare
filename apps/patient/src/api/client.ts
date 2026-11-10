@@ -29,6 +29,25 @@ export function setUnauthorizedHandler(handler: (() => void) | null) {
   onUnauthorized = handler;
 }
 
+/** Sends a multipart form with React Native's own XMLHttpRequest, which reads files from their uri. */
+function sendForm(
+  method: string,
+  url: string,
+  headers: Record<string, string>,
+  form: FormData,
+): Promise<{ ok: boolean; status: number; text: string }> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    Object.entries(headers).forEach(([k, v]) => xhr.setRequestHeader(k, v));
+    xhr.timeout = 120000;
+    xhr.onload = () => resolve({ ok: xhr.status >= 200 && xhr.status < 300, status: xhr.status, text: xhr.responseText });
+    xhr.onerror = () => reject(new TypeError('Network request failed'));
+    xhr.ontimeout = () => reject(new TypeError('Network request timed out'));
+    xhr.send(form);
+  });
+}
+
 type Options = { body?: unknown; form?: FormData; query?: Record<string, string | number | undefined> };
 
 export async function request<T>(method: string, path: string, { body, form, query }: Options = {}): Promise<T> {
@@ -43,13 +62,16 @@ export async function request<T>(method: string, path: string, { body, form, que
   if (authToken) headers.Authorization = `Bearer ${authToken}`;
   if (body !== undefined) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(`${API_URL}${path}${qs}`, {
-    method,
-    headers,
-    body: form ?? (body !== undefined ? JSON.stringify(body) : undefined),
-  });
+  const url = `${API_URL}${path}${qs}`;
+  // Uploads go through XMLHttpRequest: Expo's fetch cannot send React Native
+  // file parts ({ uri, name, type }) and fails with "Unsupported FormDataPart".
+  const res = form
+    ? await sendForm(method, url, headers, form)
+    : await fetch(url, { method, headers, body: body !== undefined ? JSON.stringify(body) : undefined }).then(
+        async (r) => ({ ok: r.ok, status: r.status, text: await r.text() }),
+      );
 
-  const text = await res.text();
+  const text = res.text;
   let json: any = null;
   try {
     json = text ? JSON.parse(text) : null;
