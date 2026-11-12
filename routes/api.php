@@ -34,7 +34,7 @@ use App\Http\Controllers\Api\TranslationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ServiceController;
 
-use App\Http\Controllers\api\InsightController;
+use App\Http\Controllers\Api\InsightController;
 
 use App\Http\Controllers\Admin\AppSettingController;
  
